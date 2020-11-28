@@ -23,3 +23,4 @@ Route::post('password/email', 'ForgotPasswordController@forgot');
 Route::post('password/reset', 'ForgotPasswordController@reset');
 Route::get('login/{provider}', 'LoginController@redirectToProvider');
 Route::get('login/{provider}/callback', 'LoginController@handleProviderCallback');
+Route::resource('people', 'PeopleController');
