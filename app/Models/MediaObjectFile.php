@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MediaObjeectFile extends Model
+class MediaObjectFile extends Model
 {
     //
 
