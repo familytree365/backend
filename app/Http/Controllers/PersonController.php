@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\People;
+use App\Models\Person;
 
-class PeopleController extends Controller
+class PersonController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class PeopleController extends Controller
      */
     public function index()
     {
-        return datatables()->of(People::query())->toJson();
+        return datatables()->of(Person::query())->toJson();
     }
 
     /**
@@ -39,7 +39,7 @@ class PeopleController extends Controller
             'name' => 'required'
         ]);
 
-        return People::create([
+        return Person::create([
             'name' => $request->name
         ]);
     }
@@ -52,7 +52,7 @@ class PeopleController extends Controller
      */
     public function show($id)
     {
-        return People::find($id);
+        return Person::find($id);
     }
 
     /**
@@ -79,10 +79,10 @@ class PeopleController extends Controller
             'name' => 'required'
         ]);
 
-        $people = People::find($id);
-        $people->name = $request->name;
-        $people->save();
-        return $people;
+        $person = Person::find($id);
+        $person->name = $request->name;
+        $person->save();
+        return $person;
     }
 
     /**
@@ -93,9 +93,9 @@ class PeopleController extends Controller
      */
     public function destroy($id)
     {
-        $people = People::find($id);
-        if($people) {
-            $people->delete();
+        $person = Person::find($id);
+        if($person) {
+            $person->delete();
             return "true";
         }
         return "false";
