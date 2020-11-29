@@ -36,11 +36,19 @@ class MediaObjectController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'gid' => 'required',
+            'group' => 'required',
+            'titl' => 'required',
+            'obje_id' => 'required',
+            'rin' => 'required'
         ]);
 
         return MediaObject::create([
-            'name' => $request->name
+            'gid' => $request->gid,
+            'group' => $request->group,
+            'titl' => $request->titl,
+            'obje_id' => $request->obje_id,
+            'rin' => $request->rin
         ]);
     }
 
@@ -76,11 +84,19 @@ class MediaObjectController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'gid' => 'required',
+            'group' => 'required',
+            'titl' => 'required',
+            'obje_id' => 'required',
+            'rin' => 'required'
         ]);
 
         $mediaobject = MediaObject::find($id);
-        $mediaobject->name = $request->name;
+        $mediaobject->gid = $request->gid;
+        $mediaobject->group = $request->group;
+        $mediaobject->titl = $request->titl;
+        $mediaobject->obje_id = $request->obje_id;
+        $mediaobject->rin = $request->rin;
         $mediaobject->save();
         return $mediaobject;
     }
