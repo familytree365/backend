@@ -36,11 +36,21 @@ class AddrController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'adr1' => 'required',
+            'adr2' => 'required',
+            'city' => 'required',
+            'stae' => 'required',
+            'post' => 'required',
+            'ctry' => 'required'
         ]);
 
         return Addr::create([
-            'name' => $request->name
+            'adr1' => $request->adr1,
+            'adr2' => $request->adr2,
+            'city' => $request->city,
+            'stae' => $request->stae,
+            'post' => $request->post,
+            'ctry' => $request->ctry
         ]);
     }
 
@@ -76,11 +86,21 @@ class AddrController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'adr1' => 'required',
+            'adr2' => 'required',
+            'city' => 'required',
+            'stae' => 'required',
+            'post' => 'required',
+            'ctry' => 'required'
         ]);
 
         $addr = Addr::find($id);
-        $addr->name = $request->name;
+        $addr->adr1 = $request->adr1;
+        $addr->adr2 = $request->adr2;
+        $addr->city = $request->city;
+        $addr->stae = $request->stae;
+        $addr->post = $request->post;
+        $addr->ctry = $request->ctry;
         $addr->save();
         return $addr;
     }
