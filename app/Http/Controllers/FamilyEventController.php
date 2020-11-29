@@ -36,11 +36,39 @@ class FamilyEventController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'family_id' => 'required',
+            'places_id' => 'required',
+            'date' => 'required',
+            'title' => 'required',
+            'description' => 'required',
+            'year' => 'required',
+            'month' => 'required',
+            'day' => 'required',
+            'type' => 'required',
+            'plac' => 'required',
+            'phon' => 'required',
+            'caus' => 'required',
+            'age' => 'required',
+            'husb' => 'required',
+            'wife' => 'required'
         ]);
 
         return FamilyEvent::create([
-            'name' => $request->name
+            'family_id' => $request->family_id,
+            'places_id' => $request->places_id,
+            'date' => $request->date,
+            'title' => $request->title,
+            'description' => $request->description,
+            'year' => $request->year,
+            'month' => $request->month,
+            'day' => $request->day,
+            'type' => $request->type,
+            'plac' => $request->plac,
+            'phon' => $request->phon,
+            'caus' => $request->caus,
+            'age' => $request->age,
+            'husb' => $request->husb,
+            'wife' => $request->wife
         ]);
     }
 
@@ -76,11 +104,39 @@ class FamilyEventController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'family_id' => 'required',
+            'places_id' => 'required',
+            'date' => 'required',
+            'title' => 'required',
+            'description' => 'required',
+            'year' => 'required',
+            'month' => 'required',
+            'day' => 'required',
+            'type' => 'required',
+            'plac' => 'required',
+            'phon' => 'required',
+            'caus' => 'required',
+            'age' => 'required',
+            'husb' => 'required',
+            'wife' => 'required'
         ]);
 
         $familyevent = FamilyEvent::find($id);
-        $familyevent->name = $request->name;
+        $familyevent->family_id = $request->family_id;
+        $familyevent->places_id = $request->places_id;
+        $familyevent->date = $request->date;
+        $familyevent->title = $request->title;
+        $familyevent->description = $request->description;
+        $familyevent->year = $request->year;
+        $familyevent->month = $request->month;
+        $familyevent->day = $request->day;
+        $familyevent->type = $request->type;
+        $familyevent->plac = $request->plac;
+        $familyevent->phon = $request->phon;
+        $familyevent->caus = $request->caus;
+        $familyevent->age = $request->age;
+        $familyevent->husb = $request->husb;
+        $familyevent->wife = $request->wife;
         $familyevent->save();
         return $familyevent;
     }
