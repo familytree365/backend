@@ -36,11 +36,25 @@ class NoteController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'gid' => 'required',
+            'note' => 'required',
+            'rin' => 'required',
+            'name' => 'required',
+            'description' => 'required',
+            'is_active' => 'required',
+            'type_id' => 'required',
+            'group' => 'required'
         ]);
 
         return Note::create([
-            'name' => $request->name
+            'gid' => $request->gid,
+            'note' => $request->note,
+            'rin' => $request->rin,
+            'name' => $request->name,
+            'description' => $request->description,
+            'is_active' => $request->is_active,
+            'type_id' => $request->type_id,
+            'group' => $request->group
         ]);
     }
 
@@ -76,11 +90,25 @@ class NoteController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'gid' => 'required',
+            'note' => 'required',
+            'rin' => 'required',
+            'name' => 'required',
+            'description' => 'required',
+            'is_active' => 'required',
+            'type_id' => 'required',
+            'group' => 'required'
         ]);
 
         $note = Note::find($id);
+        $note->gid = $request->gid;
+        $note->note = $request->note;
+        $note->rin = $request->rin;
         $note->name = $request->name;
+        $note->description = $request->description;
+        $note->is_active = $request->is_active;
+        $note->type_id = $request->type_id;
+        $note->group = $request->group;
         $note->save();
         return $note;
     }
