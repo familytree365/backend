@@ -36,11 +36,19 @@ class FamilySlgsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'family_id' => 'required',
+            'stat' => 'required',
+            'date' => 'required',
+            'plac' => 'required',
+            'temp' => 'required'
         ]);
 
         return FamilySlgs::create([
-            'name' => $request->name
+            'family_id' => $request->family_id,
+            'stat' => $request->stat,
+            'date' => $request->date,
+            'plac' => $request->plac,
+            'temp' => $request->temp
         ]);
     }
 
@@ -76,11 +84,19 @@ class FamilySlgsController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'family_id' => 'required',
+            'stat' => 'required',
+            'date' => 'required',
+            'plac' => 'required',
+            'temp' => 'required'
         ]);
 
         $familyslgs = FamilySlgs::find($id);
-        $familyslgs->name = $request->name;
+        $familyslgs->family_id = $request->family_id;
+        $familyslgs->stat = $request->stat;
+        $familyslgs->date = $request->date;
+        $familyslgs->plac = $request->plac;
+        $familyslgs->temp = $request->temp;
         $familyslgs->save();
         return $familyslgs;
     }
