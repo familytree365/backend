@@ -36,11 +36,17 @@ class ChanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'date' => 'required',
+            'time' => 'required'
         ]);
 
         return Chan::create([
-            'name' => $request->name
+            'group' => $request->group,
+            'gid' => $request->gid,
+            'date' => $request->date,
+            'time' => $request->time
         ]);
     }
 
@@ -76,11 +82,17 @@ class ChanController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'date' => 'required',
+            'time' => 'required'
         ]);
 
         $chan = Chan::find($id);
-        $chan->name = $request->name;
+        $chan->group = $request->group;
+        $chan->gid = $request->gid;
+        $chan->date = $request->date;
+        $chan->time = $request->time;
         $chan->save();
         return $chan;
     }
