@@ -36,11 +36,25 @@ class FamilyController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'description' => 'required',
+            'is_active' => 'required',
+            'husband_id' => 'required',
+            'wife_id' => 'required',
+            'type_id' => 'required',
+            'chan' => 'required',
+            'nchi' => 'required',
+            'rin' => 'required'
         ]);
 
         return Family::create([
-            'name' => $request->name
+            'description' => $request->description,
+            'is_active' => $request->is_active,
+            'husband_id' => $request->husband_id,
+            'wife_id' => $request->wife_id,
+            'type_id' => $request->type_id,
+            'chan' => $request->chan,
+            'nchi' => $request->nchi,
+            'rin' => $request->rin
         ]);
     }
 
@@ -76,11 +90,25 @@ class FamilyController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'description' => 'required',
+            'is_active' => 'required',
+            'husband_id' => 'required',
+            'wife_id' => 'required',
+            'type_id' => 'required',
+            'chan' => 'required',
+            'nchi' => 'required',
+            'rin' => 'required'
         ]);
 
         $family = Family::find($id);
-        $family->name = $request->name;
+        $family->description = $request->description;
+        $family->is_active = $request->is_active;
+        $family->husband_id = $request->husband_id;
+        $family->wife_id = $request->wife_id;
+        $family->type_id = $request->type_id;
+        $family->chan = $request->chan;
+        $family->nchi = $request->nchi;
+        $family->rin = $request->rin;
         $family->save();
         return $family;
     }
