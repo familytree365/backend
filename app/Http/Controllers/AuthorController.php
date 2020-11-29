@@ -36,11 +36,15 @@ class AuthorController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required',
+            'description' => 'required',
+            'is_active' => 'required'
         ]);
 
         return Author::create([
-            'name' => $request->name
+            'name' => $request->name,
+            'description' => $request->description,
+            'is_active' => $request->is_active
         ]);
     }
 
@@ -76,11 +80,15 @@ class AuthorController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required',
+            'description' => 'required',
+            'is_active' => 'required'
         ]);
 
         $author = Author::find($id);
         $author->name = $request->name;
+        $author->description = $request->description;
+        $author->is_active = $request->is_active;
         $author->save();
         return $author;
     }
