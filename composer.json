@@ -17,8 +17,7 @@
         "laravel/framework": "^8.12",
         "laravel/sanctum": "^2.8",
         "laravel/socialite": "^5.1",
-        "laravel/tinker": "^2.5",
-        "yajra/laravel-datatables-oracle": "~9.0"
+        "laravel/tinker": "^2.5"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

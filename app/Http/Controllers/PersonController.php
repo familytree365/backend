@@ -12,9 +12,29 @@ class PersonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return datatables()->of(Person::query())->toJson();
+        $query = Person::query();
+
+        if($request->has('columnFilters')) {
+
+            $filters = get_object_vars(json_decode($request->columnFilters));
+
+            foreach($filters as $key => $value) {
+                $query->orWhere($key, 'like', '%' . $value . '%');
+            }
+        }
+
+        if($request->has('sort.0')) {
+            $sort = json_decode($request->sort[0]);
+            $query->orderBy($sort->field, $sort->type);
+        }
+
+        if($request->has("perPage")) {
+            $rows = $query->paginate($request->perPage);
+        }
+
+        return $rows;
     }
 
     /**
