@@ -16,12 +16,25 @@ class PersonController extends Controller
     {
         $query = Person::query();
 
+        if($request->has('searchTerm')) {
+            $columnsToSearch = ['name', 'email', 'phone'];
+            $search_term = json_decode($request->searchTerm)->searchTerm;
+            if(!empty($search_term)) {
+                $searchQuery = '%' . $search_term . '%';
+                foreach($columnsToSearch as $column) {
+                    $query->orWhere($column, 'LIKE', $searchQuery);
+                }
+            }
+        }
+
         if($request->has('columnFilters')) {
 
             $filters = get_object_vars(json_decode($request->columnFilters));
 
             foreach($filters as $key => $value) {
-                $query->orWhere($key, 'like', '%' . $value . '%');
+                if(!empty($value)) {
+                    $query->orWhere($key, 'like', '%' . $value . '%'); 
+                }
             }
         }
 
@@ -60,7 +73,9 @@ class PersonController extends Controller
         ]);
 
         return Person::create([
-            'name' => $request->name
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone
         ]);
     }
 
