@@ -36,11 +36,17 @@ class PersonAssoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'indi' => 'required',
+            'import_confirm' => 'required'
         ]);
 
         return PersonAsso::create([
-            'name' => $request->name
+            'group' => $request->group,
+            'gid' => $request->gid,
+            'indi' => $request->indi,
+            'import_confirm' => $request->import_confirm,
         ]);
     }
 
@@ -76,11 +82,17 @@ class PersonAssoController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'indi' => 'required',
+            'import_confirm' => 'required'
         ]);
 
         $personasso = PersonAsso::find($id);
-        $personasso->name = $request->name;
+        $personasso->group = $request->group;
+        $personasso->gid = $request->gid;
+        $personasso->indi = $request->indi;
+        $personasso->import_confirm = $request->import_confirm;
         $personasso->save();
         return $personasso;
     }
