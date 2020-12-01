@@ -36,11 +36,17 @@ class PersonAliaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'alia' => 'required',
+            'import_confirm' => 'required'
         ]);
 
         return PersonAlia::create([
-            'name' => $request->name
+            'group' => $request->group,
+            'gid' => $request->gid,
+            'alia' => $request->alia,
+            'import_confirm' => $request->import_confirm
         ]);
     }
 
@@ -76,11 +82,17 @@ class PersonAliaController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'alia' => 'required',
+            'import_confirm' => 'required'
         ]);
 
         $personalia = PersonAlia::find($id);
-        $personalia->name = $request->name;
+        $personalia->group = $request->group;
+        $personalia->gid = $request->gid;
+        $personalia->alia = $request->alia;
+        $personalia->import_confirm = $request->import_confirm;
         $personalia->save();
         return $personalia;
     }

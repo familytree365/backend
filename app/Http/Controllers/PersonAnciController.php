@@ -36,11 +36,15 @@ class PersonAnciController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'anci' => 'required'
         ]);
 
         return PersonAnci::create([
-            'name' => $request->name
+            'group' => $request->group,
+            'gid' => $request->gid,
+            'anci' => $request->anci
         ]);
     }
 
@@ -76,11 +80,15 @@ class PersonAnciController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'anci' => 'required'
         ]);
 
         $personanci = PersonAnci::find($id);
-        $personanci->name = $request->name;
+        $personanci->group = $request->group;
+        $personanci->gid = $request->gid;
+        $personanci->anci = $request->anci;
         $personanci->save();
         return $personanci;
     }
