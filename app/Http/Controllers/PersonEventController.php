@@ -36,11 +36,39 @@ class PersonEventController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'person_id' => 'required',
+            'title' => 'required',
+            'type' => 'required',
+            'attr' => 'required',
+            'date' => 'required',
+            'plac' => 'required',
+            'phon' => 'required',
+            'caus' => 'required',
+            'age' => 'required',
+            'agnc' => 'required',
+            'places_id' => 'required',
+            'description' => 'required',
+            'year' => 'required',
+            'month' => 'required',
+            'day' => 'required'
         ]);
 
         return PersonEvent::create([
-            'name' => $request->name
+            'person_id' => $request->person_id,
+            'title' => $request->title,
+            'type' => $request->type,
+            'attr' => $request->attr,
+            'date' => $request->date,
+            'plac' => $request->plac,
+            'phon' => $request->phon,
+            'caus' => $request->caus,
+            'age' => $request->age,
+            'agnc' => $request->agnc,
+            'places_id' => $request->places_id,
+            'description' => $request->description,
+            'year' => $request->year,
+            'month' => $request->month,
+            'day' => $request->day
         ]);
     }
 
@@ -76,11 +104,38 @@ class PersonEventController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'person_id' => 'required',
+            'title' => 'required',
+            'type' => 'required',
+            'attr' => 'required',
+            'date' => 'required',
+            'plac' => 'required',
+            'phon' => 'required',
+            'caus' => 'required',
+            'age' => 'required',
+            'agnc' => 'required',
+            'places_id' => 'required',
+            'description' => 'required',
+            'year' => 'required',
+            'month' => 'required',
+            'day' => 'required'
         ]);
 
         $personevent = PersonEvent::find($id);
-        $personevent->name = $request->name;
+        $personevent->person_id = $request->person_id;
+        $personevent->title = $request->title;
+        $personevent->type = $request->type;
+        $personevent->attr = $request->attr;
+        $personevent->date = $request->date;
+        $personevent->plac = $request->plac;
+        $personevent->phon = $request->phon;
+        $personevent->caus = $request->caus;
+        $personevent->agnc = $request->agnc;
+        $personevent->places_id = $request->places_id;
+        $personevent->description = $request->description;
+        $personevent->year = $request->year;
+        $personevent->month = $request->month;
+        $personevent->day = $request->day;
         $personevent->save();
         return $personevent;
     }

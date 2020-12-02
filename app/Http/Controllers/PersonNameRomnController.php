@@ -36,11 +36,29 @@ class PersonNameRomnController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'type' => 'required',
+            'name' => 'required',
+            'npfx' => 'required',
+            'givn' => 'required',
+            'nick' => 'required',
+            'spfx' => 'required',
+            'surn' => 'required',
+            'nsfx' => 'required'
         ]);
 
         return PersonNameRomn::create([
-            'name' => $request->name
+            'group' => $request->group,
+            'gid' => $request->gid,
+            'type' => $request->type,
+            'name' => $request->name,
+            'npfx' => $request->npfx,
+            'givn' => $request->givn,
+            'nick' => $request->nick,
+            'spfx' => $request->spfx,
+            'surn' => $request->surn,
+            'nsfx' => $request->nsfx
         ]);
     }
 
@@ -76,13 +94,31 @@ class PersonNameRomnController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'type' => 'required',
+            'name' => 'required',
+            'npfx' => 'required',
+            'givn' => 'required',
+            'nick' => 'required',
+            'spfx' => 'required',
+            'surn' => 'required',
+            'nsfx' => 'required'
         ]);
 
-        $personnameromn = PersonNameRomn::find($id);
-        $personnameromn->name = $request->name;
-        $personnameromn->save();
-        return $personnameromn;
+        $personameromn = PersonNameRomn::find($id);
+        $personameromn->group = $request->group;
+        $personameromn->gid = $request->gid;
+        $personameromn->type = $request->type;
+        $personameromn->name = $request->name;
+        $personameromn->npfx = $request->npfx;
+        $personameromn->givn = $request->givn;
+        $personameromn->nick = $request->nick;
+        $personameromn->spfx = $request->spfx;
+        $personameromn->surn = $request->surn;
+        $personameromn->nsfx = $request->nsfx;
+        $personameromn->save();
+        return $personameromn;
     }
 
     /**

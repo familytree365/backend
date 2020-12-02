@@ -36,10 +36,14 @@ class PublicationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'description' => 'required',
+            'is_active' => 'required',
             'name' => 'required'
         ]);
 
         return Publication::create([
+            'description' => $request->description,
+            'is_active' => $request->is_active,
             'name' => $request->name
         ]);
     }
@@ -76,10 +80,14 @@ class PublicationController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'description' => 'required',
+            'is_active' => 'required',
             'name' => 'required'
         ]);
 
         $publication = Publication::find($id);
+        $publication->description = $request->description;
+        $publication->is_active = $request->is_active;
         $publication->name = $request->name;
         $publication->save();
         return $publication;

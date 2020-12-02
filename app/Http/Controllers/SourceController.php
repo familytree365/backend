@@ -36,11 +36,43 @@ class SourceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'sour' => 'required',
+            'titl' => 'required',
+            'auth' => 'required',
+            'data' => 'required',
+            'text' => 'required',
+            'publ' => 'required',
+            'abbr' => 'required',
+            'name' => 'required',
+            'description' => 'required',
+            'repository_id' => 'required',
+            'author_id' => 'required',
+            'publication_id' => 'required',
+            'is_active' => 'required',
+            'group' => 'required',
+            'gid' => 'required',
+            'quay' => 'required',
+            'page' => 'required'
         ]);
 
         return Source::create([
-            'name' => $request->name
+            'sour' => $request->name,
+            'titl' => $request->name,
+            'auth' => $request->name,
+            'data' => $request->name,
+            'text' => $request->name,
+            'publ' => $request->name,
+            'abbr' => $request->name,
+            'name' => $request->name,
+            'description' => $request->name,
+            'repository_id' => $request->name,
+            'author_id' => $request->name,
+            'publication_id' => $request->name,
+            'is_active' => $request->name,
+            'group' => $request->name,
+            'gid' => $request->name,
+            'quay' => $request->name,
+            'page' => $request->name
         ]);
     }
 
@@ -76,11 +108,43 @@ class SourceController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'sour' => 'required',
+            'titl' => 'required',
+            'auth' => 'required',
+            'data' => 'required',
+            'text' => 'required',
+            'publ' => 'required',
+            'abbr' => 'required',
+            'name' => 'required',
+            'description' => 'required',
+            'repository_id' => 'required',
+            'author_id' => 'required',
+            'publication_id' => 'required',
+            'is_active' => 'required',
+            'group' => 'required',
+            'gid' => 'required',
+            'quay' => 'required',
+            'page' => 'required'
         ]);
 
         $source = Source::find($id);
+        $source->sour = $request->sour;
+        $source->titl = $request->titl;
+        $source->auth = $request->auth;
+        $source->data = $request->data;
+        $source->text = $request->text;
+        $source->publ = $request->publ;
+        $source->abbr = $request->abbr;
         $source->name = $request->name;
+        $source->description = $request->description;
+        $source->repository_id = $request->repository_id;
+        $source->author_id = $request->author_id;
+        $source->publication_id = $request->publication_id;
+        $source->is_active = $request->is_active;
+        $source->group = $request->group;
+        $source->gid = $request->gid;
+        $source->quay = $request->quay;
+        $source->page = $request->page;
         $source->save();
         return $source;
     }

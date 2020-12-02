@@ -36,11 +36,18 @@ class SourceRepoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'repo_id' => 'required',
+            'caln' => 'required'
+
         ]);
 
         return SourceRepo::create([
-            'name' => $request->name
+            'group' => $request->group,
+            'gid' => $request->gid,
+            'repo_id' => $request->repo_id,
+            'caln' => $request->caln
         ]);
     }
 
@@ -76,11 +83,17 @@ class SourceRepoController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'repo_id' => 'required',
+            'caln' => 'required'
         ]);
 
         $sourcerepo = SourceRepo::find($id);
-        $sourcerepo->name = $request->name;
+        $sourcerepo->group = $request->group;
+        $sourcerepo->gid = $request->gid;
+        $sourcerepo->repo_id = $request->repo_id;
+        $sourcerepo->caln = $request->caln;
         $sourcerepo->save();
         return $sourcerepo;
     }

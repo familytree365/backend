@@ -36,11 +36,15 @@ class PersonSubmController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'subm' => 'required'
         ]);
 
         return PersonSubm::create([
-            'name' => $request->name
+            'group' => $request->group,
+            'gid' => $request->gid,
+            'subm' => $request->subm
         ]);
     }
 
@@ -76,11 +80,15 @@ class PersonSubmController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'subm' => 'required'
         ]);
 
         $personsubm = PersonSubm::find($id);
-        $personsubm->name = $request->name;
+        $personsubm->group = $request->group;
+        $personsubm->gid = $request->gid;
+        $personsubm->subm = $request->subm;
         $personsubm->save();
         return $personsubm;
     }

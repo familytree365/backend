@@ -36,11 +36,27 @@ class RepositoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'repo' => 'required',
+            'addr_id' => 'required',
+            'rin' => 'required',
+            'phon' => 'required',
+            'email' => 'required',
+            'fax' => 'required',
+            'www' => 'required',
+            'name' => 'required',
+            'description' => 'required'
         ]);
 
         return Repository::create([
-            'name' => $request->name
+            'repo' => $request->repo,
+            'addr_id' => $request->addr_id,
+            'rin' => $request->rin,
+            'phon' => $request->phon,
+            'email' => $request->email,
+            'fax' => $request->fax,
+            'www' => $request->www,
+            'name' => $request->name,
+            'description' => $request->description,
         ]);
     }
 
@@ -76,11 +92,27 @@ class RepositoryController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'repo' => 'required',
+            'addr_id' => 'required',
+            'rin' => 'required',
+            'phon' => 'required',
+            'email' => 'required',
+            'fax' => 'required',
+            'www' => 'required',
+            'name' => 'required',
+            'description' => 'required'
         ]);
 
         $repository = Repository::find($id);
+        $repository->repo = $request->repo;
+        $repository->addr_id = $request->addr_id;
+        $repository->rin = $request->rin;
+        $repository->phon = $request->phon;
+        $repository->email = $request->email;
+        $repository->fax = $request->fax;
+        $repository->www = $request->www;
         $repository->name = $request->name;
+        $repository->description = $request->description;
         $repository->save();
         return $repository;
     }

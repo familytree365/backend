@@ -36,11 +36,29 @@ class PersonNameFoneController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'type' => 'required',
+            'name' => 'required',
+            'npfx' => 'required',
+            'givn' => 'required',
+            'nick' => 'required',
+            'spfx' => 'required',
+            'surn' => 'required',
+            'nsfx' => 'required'
         ]);
 
         return PersonNameFone::create([
-            'name' => $request->name
+            'group' => $request->group,
+            'gid' => $request->gid,
+            'type' => $request->type,
+            'name' => $request->name,
+            'npfx' => $request->npfx,
+            'givn' => $request->givn,
+            'nick' => $request->nick,
+            'spfx' => $request->spfx,
+            'surn' => $request->surn,
+            'nsfx' => $request->nsfx
         ]);
     }
 
@@ -76,15 +94,32 @@ class PersonNameFoneController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'type' => 'required',
+            'name' => 'required',
+            'npfx' => 'required',
+            'givn' => 'required',
+            'nick' => 'required',
+            'spfx' => 'required',
+            'surn' => 'required',
+            'nsfx' => 'required'
         ]);
 
         $personnamefone = PersonNameFone::find($id);
+        $personnamefone->group = $request->group;
+        $personnamefone->gid = $request->gid;
+        $personnamefone->type = $request->type;
         $personnamefone->name = $request->name;
+        $personnamefone->npfx = $request->npfx;
+        $personnamefone->givn = $request->givn;
+        $personnamefone->nick = $request->nick;
+        $personnamefone->spfx = $request->spfx;
+        $personnamefone->surn = $request->surn;
+        $personnamefone->nsfx = $request->nsfx;
         $personnamefone->save();
         return $personnamefone;
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -93,9 +128,9 @@ class PersonNameFoneController extends Controller
      */
     public function destroy($id)
     {
-        $personnamefone = PersonNameFone::find($id);
-        if($personnamefone) {
-            $personnamefone->delete();
+        $personnamefonefone = PersonNameFone::find($id);
+        if($personnamefonefone) {
+            $personnamefonefone->delete();
             return "true";
         }
         return "false";

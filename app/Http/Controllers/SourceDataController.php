@@ -36,11 +36,19 @@ class SourceDataController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'date' => 'required',
+            'text' => 'required',
+            'agnc' => 'required'
         ]);
 
         return SourceData::create([
-            'name' => $request->name
+            'group' => $request->group,
+            'gid' => $request->gid,
+            'date' => $request->date,
+            'text' => $request->text,
+            'agnc' => $request->agnc
         ]);
     }
 
@@ -76,11 +84,19 @@ class SourceDataController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'date' => 'required',
+            'text' => 'required',
+            'agnc' => 'required'
         ]);
 
         $sourcedata = SourceData::find($id);
-        $sourcedata->name = $request->name;
+        $sourcedata->group = $request->group;
+        $sourcedata->gid = $request->gid;
+        $sourcedata->date = $request->date;
+        $sourcedata->text = $request->text;
+        $sourcedata->agnc = $request->agnc;
         $sourcedata->save();
         return $sourcedata;
     }

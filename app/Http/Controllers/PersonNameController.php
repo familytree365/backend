@@ -36,11 +36,29 @@ class PersonNameController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'type' => 'required',
+            'name' => 'required',
+            'npfx' => 'required',
+            'givn' => 'required',
+            'nick' => 'required',
+            'spfx' => 'required',
+            'surn' => 'required',
+            'nsfx' => 'required'
         ]);
 
         return PersonName::create([
-            'name' => $request->name
+            'group' => $request->group,
+            'gid' => $request->gid,
+            'type' => $request->type,
+            'name' => $request->name,
+            'npfx' => $request->npfx,
+            'givn' => $request->givn,
+            'nick' => $request->nick,
+            'spfx' => $request->spfx,
+            'surn' => $request->surn,
+            'nsfx' => $request->nsfx
         ]);
     }
 
@@ -76,11 +94,29 @@ class PersonNameController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'type' => 'required',
+            'name' => 'required',
+            'npfx' => 'required',
+            'givn' => 'required',
+            'nick' => 'required',
+            'spfx' => 'required',
+            'surn' => 'required',
+            'nsfx' => 'required'
         ]);
 
         $personname = PersonName::find($id);
+        $personname->group = $request->group;
+        $personname->gid = $request->gid;
+        $personname->type = $request->type;
         $personname->name = $request->name;
+        $personname->npfx = $request->npfx;
+        $personname->givn = $request->givn;
+        $personname->nick = $request->nick;
+        $personname->spfx = $request->spfx;
+        $personname->surn = $request->surn;
+        $personname->nsfx = $request->nsfx;
         $personname->save();
         return $personname;
     }

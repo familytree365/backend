@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PersonLds;
+use voku\helper\ASCII;
 
 class PersonLdsController extends Controller
 {
@@ -36,11 +37,25 @@ class PersonLdsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'type' => 'required',
+            'stat' => 'required',
+            'date' => 'required',
+            'plac' => 'required',
+            'temp' => 'required',
+            'slac_famc' => 'required'
         ]);
 
         return PersonLds::create([
-            'name' => $request->name
+            'group' => $request->group,
+            'gid' => $request->gid,
+            'type' => $request->type,
+            'stat' => $request->stat,
+            'date' => $request->date,
+            'plac' => $request->plac,
+            'temp' => $request->temp,
+            'slac_famc' => $request->slac_famc,
         ]);
     }
 
@@ -76,11 +91,24 @@ class PersonLdsController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'type' => 'required',
+            'stat' => 'required',
+            'date' => 'required',
+            'plac' => 'required',
+            'temp' => 'required',
+            'slac_famc' => 'required'
         ]);
 
         $personlds = PersonLds::find($id);
-        $personlds->name = $request->name;
+        $personlds->group = $request->group;
+        $personlds->gid = $request->gid;
+        $personlds->type = $request->type;
+        $personlds->date = $request->date;
+        $personlds->plac = $request->plac;
+        $personlds->temp = $request->temp;
+        $personlds->slac_famc = $request->slac_famc;
         $personlds->save();
         return $personlds;
     }

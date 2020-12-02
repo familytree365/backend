@@ -36,11 +36,15 @@ class PersonDesiController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'desi' => 'required'
         ]);
 
         return PersonDesi::create([
-            'name' => $request->name
+            'group' => $request->name,
+            'gid' => $request->name,
+            'desi' => $request->name
         ]);
     }
 
@@ -76,11 +80,15 @@ class PersonDesiController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'desi' => 'required'
         ]);
 
         $persondesi = PersonDesi::find($id);
-        $persondesi->name = $request->name;
+        $persondesi->group = $request->group;
+        $persondesi->gid = $request->gid;
+        $persondesi->desi = $request->desi;
         $persondesi->save();
         return $persondesi;
     }

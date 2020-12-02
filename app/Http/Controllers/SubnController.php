@@ -36,11 +36,23 @@ class SubnController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'subm' => 'required',
+            'famf' => 'required',
+            'temp' => 'required',
+            'ance' => 'required',
+            'desc' => 'required',
+            'ordi' => 'required',
+            'rin' => 'required'
         ]);
 
         return Subn::create([
-            'name' => $request->name
+            'subm' => $request->name,
+            'famf' => $request->name,
+            'temp' => $request->name,
+            'ance' => $request->name,
+            'desc' => $request->name,
+            'ordi' => $request->name,
+            'rin' => $request->name
         ]);
     }
 
@@ -76,11 +88,23 @@ class SubnController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'subm' => 'required',
+            'famf' => 'required',
+            'temp' => 'required',
+            'ance' => 'required',
+            'desc' => 'required',
+            'ordi' => 'required',
+            'rin' => 'required'
         ]);
 
         $subn = Subn::find($id);
-        $subn->name = $request->name;
+        $subn->subm = $request->subm;
+        $subn->famf = $request->famf;
+        $subn->temp = $request->temp;
+        $subn->ance = $request->ance;
+        $subn->desc = $request->desc;
+        $subn->ordi = $request->ordi;
+        $subn->rin = $request->rin;
         $subn->save();
         return $subn;
     }

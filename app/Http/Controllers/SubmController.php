@@ -36,11 +36,31 @@ class SubmController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'name' => 'required',
+            'addr_id' => 'required',
+            'rin' => 'required',
+            'rfn' => 'required',
+            'lang' => 'required',
+            'phon' => 'required',
+            'email' => 'required',
+            'fax' => 'required',
+            'www' => 'required'
         ]);
 
         return Subm::create([
-            'name' => $request->name
+            'group' => $request->name,
+            'gid' => $request->name,
+            'name' => $request->name,
+            'addr_id' => $request->name,
+            'rin' => $request->name,
+            'rfn' => $request->name,
+            'lang' => $request->name,
+            'phon' => $request->name,
+            'email' => $request->name,
+            'fax' => $request->name,
+            'www' => $request->name
         ]);
     }
 
@@ -76,11 +96,31 @@ class SubmController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'name' => 'required',
+            'addr_id' => 'required',
+            'rin' => 'required',
+            'rfn' => 'required',
+            'lang' => 'required',
+            'phon' => 'required',
+            'email' => 'required',
+            'fax' => 'required',
+            'www' => 'required'
         ]);
 
         $subm = Subm::find($id);
+        $subm->group = $request->group;
+        $subm->gid = $request->gid;
         $subm->name = $request->name;
+        $subm->addr_id = $request->addr_id;
+        $subm->rin = $request->rin;
+        $subm->rfn = $request->rfn;
+        $subm->lang = $request->lang;
+        $subm->phon = $request->phon;
+        $subm->email = $request->email;
+        $subm->fax = $request->fax;
+        $subm->www = $request->www;
         $subm->save();
         return $subm;
     }

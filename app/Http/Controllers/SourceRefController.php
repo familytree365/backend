@@ -36,11 +36,21 @@ class SourceRefController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'sour_id' => 'required',
+            'text' => 'required',
+            'quay' => 'required',
+            'page' => 'required'
         ]);
 
         return SourceRef::create([
-            'name' => $request->name
+            'group' => $request->group,
+            'gid' => $request->gid,
+            'sour_id' => $request->sour_id,
+            'text' => $request->text,
+            'quay' => $request->quay,
+            'page' => $request->page
         ]);
     }
 
@@ -76,11 +86,21 @@ class SourceRefController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'sour_id' => 'required',
+            'text' => 'required',
+            'quay' => 'required',
+            'page' => 'required'
         ]);
 
         $sourceref = SourceRef::find($id);
-        $sourceref->name = $request->name;
+        $sourceref->group = $request->group;
+        $sourceref->gid = $request->gid;
+        $sourceref->sour_id = $request->sour_id;
+        $sourceref->text = $request->text;
+        $sourceref->quay = $request->quay;
+        $sourceref->page = $request->page;
         $sourceref->save();
         return $sourceref;
     }

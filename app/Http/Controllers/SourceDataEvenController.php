@@ -36,11 +36,17 @@ class SourceDataEvenController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'date' => 'required',
+            'plac' => 'required'
         ]);
 
         return SourceDataEven::create([
-            'name' => $request->name
+            'group' => $request->group,
+            'gid' => $request->gid,
+            'date' => $request->date,
+            'plac' => $request->plac,
         ]);
     }
 
@@ -76,11 +82,17 @@ class SourceDataEvenController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'date' => 'required',
+            'plac' => 'required'
         ]);
 
         $sourcedataeven = SourceDataEven::find($id);
-        $sourcedataeven->name = $request->name;
+        $sourcedataeven->group = $request->group;
+        $sourcedataeven->gid = $request->gid;
+        $sourcedataeven->date = $request->date;
+        $sourcedataeven->plac = $request->plac;
         $sourcedataeven->save();
         return $sourcedataeven;
     }

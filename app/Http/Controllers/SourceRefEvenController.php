@@ -36,11 +36,17 @@ class SourceRefEvenController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'even' => 'required',
+            'role' => 'required'
         ]);
 
         return SourceRefEven::create([
-            'name' => $request->name
+            'group' => $request->name,
+            'gid' => $request->name,
+            'even' => $request->name,
+            'role' => $request->name
         ]);
     }
 
@@ -76,11 +82,17 @@ class SourceRefEvenController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'group' => 'required',
+            'gid' => 'required',
+            'even' => 'required',
+            'role' => 'required'
         ]);
 
         $sourcerefeven = SourceRefEven::find($id);
-        $sourcerefeven->name = $request->name;
+        $sourcerefeven->group = $request->group;
+        $sourcerefeven->gid = $request->gid;
+        $sourcerefeven->even = $request->even;
+        $sourcerefeven->role = $request->role;
         $sourcerefeven->save();
         return $sourcerefeven;
     }
