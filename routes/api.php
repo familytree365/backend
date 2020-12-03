@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/register', 'RegisterController@register');
 Route::post('password/email', 'ForgotPasswordController@forgot');
-Route::post('password/reset', 'ForgotPasswordController@reset');
+Route::post('password/reset', 'ForgotPasswordController@reset')->name('password.reset');
 Route::get('login/{provider}', 'LoginController@redirectToProvider');
 Route::get('login/{provider}/callback', 'LoginController@handleProviderCallback');
 Route::resource('addr', 'AddrController');
