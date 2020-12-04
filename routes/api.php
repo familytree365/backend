@@ -57,3 +57,7 @@ Route::resource('sourcerefeven', 'SourceRefEvenController');
 Route::resource('sourcerepo', 'SourceRepoController');
 Route::resource('subm', 'SubmController');
 Route::resource('subn', 'SubnController');
+
+Route::middleware('tenant')->group(function() {
+    // routes
+});
