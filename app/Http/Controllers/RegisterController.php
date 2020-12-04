@@ -52,6 +52,6 @@ class RegisterController extends Controller
 
         DB::statement('create database tenant'.$tree_id);
 
-        Artisan::call('tenants:artisan "migrate --database=tenant"');
+        Artisan::call('tenants:artisan "migrate --database=tenant --force"');
     }
 }
