@@ -14,8 +14,7 @@ class CreateCompaniesTable extends Migration
     public function up()
     {
         Schema::create('companies', function (Blueprint $table) {
-            $table->id();
-
+	    $table->bigIncrements('id');
             $table->string('name')->unique()->index();
 
             $table->string('reg_com_nr')->nullable();
@@ -36,10 +35,10 @@ class CreateCompaniesTable extends Migration
             $table->unique('reg_com_nr');
             $table->unique('fiscal_code');
 
-            $table->integer('created_by')->unsigned()->index()->nullable();
+            $table->bigInteger('created_by')->unsigned()->index()->nullable();
             $table->foreign('created_by')->references('id')->on('users');
 
-            $table->integer('updated_by')->unsigned()->index()->nullable();
+            $table->bigInteger('updated_by')->unsigned()->index()->nullable();
             $table->foreign('updated_by')->references('id')->on('users');
 
             $table->timestamps();
