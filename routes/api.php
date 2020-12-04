@@ -23,6 +23,8 @@ Route::post('password/email', 'ForgotPasswordController@forgot');
 Route::post('password/reset', 'ForgotPasswordController@reset')->name('password.reset');
 Route::get('login/{provider}', 'LoginController@redirectToProvider');
 Route::get('login/{provider}/callback', 'LoginController@handleProviderCallback');
+
+Route::middleware('tenant')->group(function() {
 Route::resource('addr', 'AddrController');
 Route::resource('author', 'AuthorController');
 Route::resource('chan', 'ChanController');
@@ -57,7 +59,4 @@ Route::resource('sourcerefeven', 'SourceRefEvenController');
 Route::resource('sourcerepo', 'SourceRepoController');
 Route::resource('subm', 'SubmController');
 Route::resource('subn', 'SubnController');
-
-Route::middleware('tenant')->group(function() {
-    // routes
 });
