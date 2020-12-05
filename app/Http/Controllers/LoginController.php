@@ -6,15 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Validation;
 use Illuminate\Validation\ValidationException;
-use Spatie\Multitenancy\Models\Tenant;
-use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
-use App\Models\Company;
-use App\Models\Tree;
 use DB;
 
 class LoginController extends Controller
 {
-    use UsesLandlordConnection;
 
     public function login(Request $request) {
     	$request->validate([
@@ -23,11 +18,6 @@ class LoginController extends Controller
     	]);
 
     	if(Auth::attempt($request->only(["email", "password"]))) {
-            $user = auth()->user();
-            $company = DB::connection($this->getConnectionName())->table('user_company')->where('user_id', $user->id)->select('company_id')->first();
-            $tree = Tree::where('company_id', $company->company_id)->first();
-            $tenant = Tenant::where('tree_id', $tree->id)->first();
-            $tenant->makeCurrent();
     		return response()->json(auth()->user(), 200);
     	}
 
