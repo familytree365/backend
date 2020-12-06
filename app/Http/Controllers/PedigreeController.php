@@ -31,6 +31,7 @@ class PedigreeController extends Controller
 
     public function show(Request $request)
     {
+        //dd("Here");
         $start_id = $request->get('start_id', 3);
         $nest = $request->get('nest', 3);
         $ret = [];
@@ -55,8 +56,8 @@ class PedigreeController extends Controller
 
     private function getGraphDataUpward($start_id, $nest = 0)
     {
-        $conn = $this->getConnection();
-        $db = $this->getDB();
+        $conn = 'mysql';
+        //$db = $this->getDB();
 
         $threshold = (int) ($this->nest) * 1;
         $has = (int) ($nest) * 1;

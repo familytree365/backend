@@ -7,14 +7,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Validation;
 use Illuminate\Validation\ValidationException;
 use Spatie\Multitenancy\Models\Tenant;
-use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
+//use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
 use App\Models\Company;
 use App\Models\Tree;
 use DB;
 
 class LoginController extends Controller
 {
-    use UsesLandlordConnection;
+    //use UsesLandlordConnection;
 
     public function login(Request $request) {
     	$request->validate([
