@@ -20,7 +20,7 @@ services:
     container_name: familytree365-nginx
     restart: unless-stopped
     ports:
-      - 8000:80
+      - 8080:80
     volumes:
       - ./:/var/www
       - ./docker-compose/nginx:/etc/nginx/conf.d
