@@ -1,30 +1,33 @@
-FROM php:7.4.8-apache
+FROM php:7.4-fpm
 
-USER root
+# Arguments defined in docker-compose.yml
+ARG user
+ARG uid
 
-WORKDIR /var/www/html
-
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
-        libpng-dev \
-        zlib1g-dev \
-        libxml2-dev \
-        libzip-dev \
-        libonig-dev \
-        zip \
-        curl \
-        unzip \
-    && docker-php-ext-configure gd \
-    && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install pdo_mysql \
-    && docker-php-ext-install mysqli \
-    && docker-php-ext-install zip \
-    && docker-php-source delete
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip
 
-COPY ./.docker/vhost.conf /etc/apache2/sites-available/000-default.conf
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Install PHP extensions
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-RUN chown -R www-data:www-data /var/www/html \
-        && a2enmod rewrite
+# Get latest Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-COPY ./. /var/www/html
+# Create system user to run Composer and Artisan Commands
+RUN useradd -G www-data,root -u $uid -d /home/$user $user
+RUN mkdir -p /home/$user/.composer && \
+    chown -R $user:$user /home/$user
+
+USER $user
+
+COPY . /var/www
