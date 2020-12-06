@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: familytree365-backend
+  labels:
+    app: familytree365-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: familytree365-backend
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: familytree365-backend
+    spec:
+      containers:
+        - name: familytree365-backend
+          image: <IMAGE>
+          ports:
+            - containerPort: 5000
+          resources:
+            requests:
+              cpu: 100m
+            limits:
+              cpu: 100m
+      imagePullSecrets:
+        - name: asb
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: familytree365-backend-service
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: "doctl-action.do-api.dev"
+    service.beta.kubernetes.io/do-loadbalancer-certificate-id: "37f354b1-0043-4bef-84b9-4666390026f3"
+    service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https: "true"
+spec:
+  type: LoadBalancer
+  ports:
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 5000
+  selector:
+    app: familytree365-backend
