@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Validation;
 use Illuminate\Validation\ValidationException;
+use DB;
 
 class LoginController extends Controller
 {
+
     public function login(Request $request) {
     	$request->validate([
     		"email" => ["required"],
