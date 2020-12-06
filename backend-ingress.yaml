@@ -6,7 +6,7 @@ metadata:
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
-    - host: development.familytree365.com
+    - host: api.familytree365.com
       http:
         paths:
           - backend:
