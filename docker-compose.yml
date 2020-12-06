@@ -1,16 +1,11 @@
-version: '3.5'
+version: '3.7'
 services:
-  php:
-    image: familytree365/backend:latest
-    restart: always
+  app:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+    image: 'familytree365/backend'
     ports:
-      - 8000:80
-    environment:
-      - APP_KEY="base64:Yh1Bw3m1Tj7eyPFbCyUUg6q0Znct8Em0YpsxACWPVx0="
-      - APP_ENV=local
-      - APP_DEBUG=true
-      - DB_PORT=3306
-      - DB_HOST=mysql
-      - DB_DATABASE
-      - DB_USERNAME
-      - DB_PASSWORD
+      - 8080:80
+    volumes:
+      - ./:/var/www/html
