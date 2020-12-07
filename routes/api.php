@@ -36,6 +36,7 @@ Route::middleware('tenant')->group(function() {
 	Route::resource('family', 'FamilyController');
 	Route::resource('familyevent', 'FamilyEventController');
 	Route::resource('familyslgs', 'FamilySlgsController');
+	Route::resource('gedcom', 'GedcomController');
 	Route::resource('mediaobject', 'MediaObjectController');
 	Route::resource('mediaobjectfile', 'MediaObjectFileController');
 	Route::resource('note', 'NoteController');
