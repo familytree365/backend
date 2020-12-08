@@ -23,6 +23,9 @@ Route::post('password/email', 'ForgotPasswordController@forgot');
 Route::post('password/reset', 'ForgotPasswordController@reset')->name('password.reset');
 Route::get('login/{provider}', 'LoginController@redirectToProvider');
 Route::get('login/{provider}/callback', 'LoginController@handleProviderCallback');
+Route::post('password/change', 'ProfileController@changePassword');
+Route::post('profile/update', 'ProfileController@changeProfile');
+
 
 Route::middleware('tenant')->group(function() {
     Route::resource('addr', 'AddrController');
@@ -33,6 +36,7 @@ Route::middleware('tenant')->group(function() {
 	Route::resource('family', 'FamilyController');
 	Route::resource('familyevent', 'FamilyEventController');
 	Route::resource('familyslgs', 'FamilySlgsController');
+	Route::resource('gedcom', 'GedcomController');
 	Route::resource('mediaobject', 'MediaObjectController');
 	Route::resource('mediaobjectfile', 'MediaObjectFileController');
 	Route::resource('note', 'NoteController');

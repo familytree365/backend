@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\ImportJob;
 use Illuminate\Http\Request;
 use App\Jobs\ImportGedcom;
+use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
 
 class GedcomController extends Controller
 {
+    use UsesLandlordConnection;
 
     /**
      * Store a newly created resource in storage.
@@ -17,13 +19,16 @@ class GedcomController extends Controller
      */
     public function store(Request $request)
     {
-        $slug = $request->get('slug');
+        $slug = '';
         if ($request->hasFile('file')) {
+
             if ($request->file('file')->isValid()) {
+
                 try {
-                    $conn = $this->getConnection();
-                    $db = $this->getDB();
-                    $currentUser = Auth::user();
+                    $conn= 'tenant';
+                    $currentTenant = app('currentTenant'); 
+                    $db = $currentTenant->database;
+                    $currentUser = auth()->user();
                     $_name = uniqid().'.ged';
                     $request->file->storeAs('gedcom', $_name);
                     define('STDIN', fopen('php://stdin', 'r'));
