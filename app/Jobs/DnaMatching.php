@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Dna;
-use App\DnaMatching as DM;
+use App\Models\Dna;
+use App\Models\DnaMatching as DM;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

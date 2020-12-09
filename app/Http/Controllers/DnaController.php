@@ -13,9 +13,42 @@ class DnaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return datatables()->of(Dna::query())->toJson();
+        $query = Dna::query();
+
+        if($request->has('searchTerm')) {
+            $columnsToSearch = ['name'];
+            $search_term = json_decode($request->searchTerm)->searchTerm;
+            if(!empty($search_term)) {
+                $searchQuery = '%' . $search_term . '%';
+                foreach($columnsToSearch as $column) {
+                    $query->orWhere($column, 'LIKE', $searchQuery);
+                }
+            }
+        }
+
+        if($request->has('columnFilters')) {
+
+            $filters = get_object_vars(json_decode($request->columnFilters));
+
+            foreach($filters as $key => $value) {
+                if(!empty($value)) {
+                    $query->orWhere($key, 'like', '%' . $value . '%'); 
+                }
+            }
+        }
+
+        if($request->has('sort.0')) {
+            $sort = json_decode($request->sort[0]);
+            $query->orderBy($sort->field, $sort->type);
+        }
+
+        if($request->has("perPage")) {
+            $rows = $query->paginate($request->perPage);
+        }
+
+        return $rows;
     }
 
     /**
@@ -40,11 +73,8 @@ class DnaController extends Controller
         if ($request->hasFile('file')) {
             if ($request->file('file')->isValid()) {
                 try {
-//                    $conn = $this->getConnection();
-//                    $db = $this->getDB();
                     $currentUser = Auth::user();
                     $file_name = 'dna_' . $request->file('file')->getClientOriginalName() . uniqid() . '.' . $request->file('file')->extension();
-//                    $file_name = 'dna_' . $request->file('file')->getClientOriginalName() . uniqid() . '.csv';
                     $request->file->storeAs('dna', $file_name);
                     define('STDIN', fopen('php://stdin', 'r'));
                     $random_string = unique_random('dnas', 'variable_name', 5);
