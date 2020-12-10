@@ -40,6 +40,7 @@ Route::middleware('tenant')->group(function() {
 	Route::resource('mediaobject', 'MediaObjectController');
 	Route::resource('mediaobjectfile', 'MediaObjectFileController');
 	Route::resource('note', 'NoteController');
+	Route::resource('pedigree', 'PedigreeController');
 	Route::resource('person', 'PersonController');
 	Route::resource('personalia', 'PersonAliaController');
 	Route::resource('personanci', 'PersonAnciController');
