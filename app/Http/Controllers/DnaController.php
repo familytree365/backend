@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\DnaMatching;
 use Illuminate\Http\Request;
 use App\Models\Dna;
+use Auth;
 
 class DnaController extends Controller
 {
@@ -67,9 +68,8 @@ class DnaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Dna $dna)
+    public function store(Request $request)
     {
-        $slug = $request->get('slug');
         if ($request->hasFile('file')) {
             if ($request->file('file')->isValid()) {
                 try {
@@ -81,6 +81,7 @@ class DnaController extends Controller
                     $var_name = 'var_' . $random_string;
                     $filename = 'app/dna/' . $file_name;
                     $user_id = $currentUser->id;
+                    $dna = new Dna();
                     $dna->name = 'DNA Kit for user ' . $user_id;
                     $dna->user_id = $user_id;
                     $dna->variable_name = $var_name;
@@ -98,7 +99,7 @@ class DnaController extends Controller
             }
             return ['File corrupted'];
         }
-        return ['Not uploaded'];
+        return response()->json(['Not uploaded'], 422);
     }
 
     /**
@@ -143,11 +144,21 @@ class DnaController extends Controller
      */
     public function destroy($id)
     {
+        $user = auth()->user();
         $dna = Dna::find($id);
-        if($dna) {
+        if ($user->id == $dna->user_id) {
             $dna->delete();
-            return "true";
+            return [
+                'message' => __('The dna was successfully deleted'),
+                'redirect' => 'dna.index',
+            ];
         }
-        return "false";
+        else 
+        {
+            return [
+                'message' => __('The dna could not be deleted'),
+                'redirect' => 'dna.index',
+            ];
+        }
     }
 }
