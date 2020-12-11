@@ -26,7 +26,7 @@ class User extends Authenticatable
         'password',
     ];
 
-    //protected $connection = 'landlord';
+    protected $connection = 'landlord';
 
     public function sendPasswordResetNotification($token)
     {
