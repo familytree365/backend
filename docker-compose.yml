@@ -6,7 +6,7 @@ services:
         user: familytree365
         uid: 1000
       context: ./
-      dockerfile: Dockerfile
+      dockerfile: .docker/Dockerfile
     image: familytree365/backend
     container_name: familytree365-backend
     restart: unless-stopped

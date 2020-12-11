@@ -2,15 +2,16 @@
 
 namespace App\Jobs;
 
-use App\Dna;
-use App\DnaMatching as DM;
+use App\Models\Dna;
+use App\Models\DnaMatching as DM;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Spatie\Multitenancy\Jobs\TenantAware;
 
-class DnaMatching implements ShouldQueue
+class DnaMatching implements ShouldQueue, TenantAware
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 

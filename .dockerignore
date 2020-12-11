@@ -1,0 +1,16 @@
+.git
+.idea
+.env
+node_modules
+storage/framework/cache/**
+storage/framework/sessions/**
+storage/framework/views/**
+deploy/app
+deploy/worker
+deploy/mysql
+deploy/env
+docker
+docker-compose.yml
+docker-compose.yml.example
+.DS_Store
+storage/logs/*.log

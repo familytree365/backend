@@ -56,16 +56,15 @@ class PedigreeController extends Controller
 
     private function getGraphDataUpward($start_id, $nest = 0)
     {
-        $conn = 'mysql';
-        //$db = $this->getDB();
+        // $conn = $this->getConnection();
+        // $db = $this->getDB();
 
         $threshold = (int) ($this->nest) * 1;
         $has = (int) ($nest) * 1;
         if ($threshold >= $has) {
-            $person = Person::on($conn)->find($start_id);
+            $person = Person::find($start_id);
             if ($person) {
                 $user = $person->user;
-
                 if($user) {
                     $av = Avatar::where('user_id', '=', $user->id)->first();
                     $file = UploadFile::where('attachable_id', '=', $av->id)->where('attachable_type', '=', 'avatar')->first();
@@ -77,7 +76,7 @@ class PedigreeController extends Controller
                     }
                 }
             }
-
+            
             // do not process for null
             if ($person == null) {
                 return;
@@ -90,7 +89,7 @@ class PedigreeController extends Controller
             // do self
             if (! array_key_exists($start_id, $this->persons)) {
                 // this is not added
-                $_families = Family::on($conn)->where('husband_id', $start_id)->orwhere('wife_id', $start_id)->select('id')->get();
+                $_families = Family::where('husband_id', $start_id)->orwhere('wife_id', $start_id)->select('id')->get();
                 $_union_ids = [];
                 foreach ($_families as $item) {
                     $_union_ids[] = 'u'.$item->id;
@@ -109,7 +108,7 @@ class PedigreeController extends Controller
                     // add parent family link
                     // $this->links[] = ['u'.$p_family_id,  $start_id] ;
                     array_unshift($this->links, ['u'.$p_family_id,  $start_id]);
-                    $p_family = Family::on($conn)->find($p_family_id);
+                    $p_family = Family::find($p_family_id);
                     if (isset($p_family->husband_id)) {
                         $p_fatherid = $p_family->husband_id;
                         $this->getGraphDataUpward($p_fatherid, $nest + 1);
@@ -121,11 +120,11 @@ class PedigreeController extends Controller
                 }
             }
             // get partner
-            $cu_families = Family::on($conn)->where('husband_id', $start_id)->orwhere('wife_id', $start_id)->get();
+            $cu_families = Family::where('husband_id', $start_id)->orwhere('wife_id', $start_id)->get();
             foreach ($cu_families as $family) {
                 $family_id = $family->id;
-                $father = Person::on($conn)->find($family->husband_id);
-                $mother = Person::on($conn)->find($family->wife_id);
+                $father = Person::find($family->husband_id);
+                $mother = Person::find($family->wife_id);
 
                 $user = $father->user;
 
@@ -160,7 +159,7 @@ class PedigreeController extends Controller
                 if (isset($father->id)) {
                     if (! array_key_exists($father->id, $this->persons)) {
                         // this is not added
-                        $_families = Family::on($conn)->where('husband_id', $father->id)->orwhere('wife_id', $father->id)->select('id')->get();
+                        $_families = Family::where('husband_id', $father->id)->orwhere('wife_id', $father->id)->select('id')->get();
                         $_union_ids = [];
                         foreach ($_families as $item) {
                             $_union_ids[] = 'u'.$item->id;
@@ -179,7 +178,7 @@ class PedigreeController extends Controller
                             // add parent family link
                             // $this->links[] = ['u'.$p_family_id,  $father->id] ;
                             array_unshift($this->links, ['u'.$p_family_id,  $father->id]);
-                            $p_family = Family::on($conn)->find($p_family_id);
+                            $p_family = Family::find($p_family_id);
                             if (isset($p_family->husband_id)) {
                                 $p_fatherid = $p_family->husband_id;
                                 $this->getGraphDataUpward($p_fatherid, $nest + 1);
@@ -194,7 +193,7 @@ class PedigreeController extends Controller
                 if (isset($mother->id)) {
                     if (! array_key_exists($mother->id, $this->persons)) {
                         // this is not added
-                        $_families = Family::on($conn)->where('husband_id', $mother->id)->orwhere('wife_id', $mother->id)->select('id')->get();
+                        $_families = Family::where('husband_id', $mother->id)->orwhere('wife_id', $mother->id)->select('id')->get();
                         $_union_ids = [];
                         foreach ($_families as $item) {
                             $_union_ids[] = $item->id;
@@ -213,7 +212,7 @@ class PedigreeController extends Controller
                             // $this->links[] = ['u'.$p_family_id,  $father->id] ;
                             array_unshift($this->links, ['u'.$p_family_id,  $mother->id]);
 
-                            $p_family = Family::on($conn)->find($p_family_id);
+                            $p_family = Family::find($p_family_id);
                             if (isset($p_family->husband_id)) {
                                 $p_fatherid = $p_family->husband_id;
                                 $this->getGraphDataUpward($p_fatherid, $nest + 1);
@@ -227,7 +226,7 @@ class PedigreeController extends Controller
                 }
 
                 // find children
-                $children = Person::on($conn)->where('child_in_family_id', $family_id)->get();
+                $children = Person::where('child_in_family_id', $family_id)->get();
                 $children_ids = [];
                 foreach ($children as $child) {
                     $child_id = $child->id;
@@ -242,7 +241,7 @@ class PedigreeController extends Controller
                 $this->unions['u'.$family_id] = $union;
             }
             // get brother/sisters
-            // $brothers = Person::on($conn)->where('child_in_family_id', $person->child_in_family_id)
+            // $brothers = Person::where('child_in_family_id', $person->child_in_family_id)
             //     ->whereNotNull('child_in_family_id')
             //     ->where('id', '<>', $start_id)->get();
             // // $nest = $nest -1;
