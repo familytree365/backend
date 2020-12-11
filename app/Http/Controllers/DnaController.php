@@ -87,7 +87,7 @@ class DnaController extends Controller
                     $dna->variable_name = $var_name;
                     $dna->file_name = $file_name;
                     $dna->save();
-                    DnaMatching::dispatch($var_name, $file_name);
+                    DnaMatching::dispatch($currentUser, $var_name, $file_name);
                     return [
                         'message' => __('The dna was successfully created'),
                         'redirect' => 'dna.edit',

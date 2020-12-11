@@ -65,5 +65,5 @@ Route::middleware('tenant')->group(function() {
 	Route::resource('subm', 'SubmController');
 	Route::resource('subn', 'SubnController');
 	Route::resource('dnaupload', 'DnaController');
-	//Route::resource('dnamatching', 'DnaMatchingController');
+	Route::resource('dnamatching', 'DnaMatchingController');
 });

@@ -15,15 +15,16 @@ class DnaMatching implements ShouldQueue, TenantAware
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $var_name, $file_name;
+    protected $current_user, $var_name, $file_name;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($var_name, $file_name)
+    public function __construct($current_user, $var_name, $file_name)
     {
+        $this->current_user = $current_user;
         $this->var_name = $var_name;
         $this->file_name = $file_name;
     }
@@ -35,12 +36,12 @@ class DnaMatching implements ShouldQueue, TenantAware
      */
     public function handle()
     {
-        $user = auth()->user();
+        $user = $this->current_user;
         $dnas = Dna::where('variable_name', '!=', $this->var_name)->get();
         foreach ($dnas as $dna) {
 //            system('/usr/bin/python3 /home/genealogia/public_html/dna.py ' . $this->var_name . ' ' . $dna->variable_name . ' ' . '/home/genealogia/public_html/storage/app/dna/'. $this->file_name . ' ' . '/home/genealogia/public_html/storage/app/dna/'. $dna->file_name);
-            chdir('/home/genealogia/public_html');
-	        exec('/usr/bin/python3.8 dna.py ' . $this->var_name . ' ' . $dna->variable_name . ' ' . $this->file_name . ' ' .  $dna->file_name);
+            //chdir('/home/genealogia/public_html');
+	        exec('python dna.py ' . $this->var_name . ' ' . $dna->variable_name . ' ' . $this->file_name . ' ' .  $dna->file_name);
             $dm = new DM();
             $dm->user_id = $user->id;
             $dm->image = 'shared_dna_' . $this->var_name . '_' . $dna->variable_name . '.png';
