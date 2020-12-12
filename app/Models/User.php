@@ -9,12 +9,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Provider;
 use App\Notifications\ResetPassword as ResetPasswordNotification;
+use Laravel\Cashier\Billable;
 
-class User extends Authenticatable {
-
-    use HasFactory,
-        Notifiable,
-        HasApiTokens;
+class User extends Authenticatable
+{
+    use HasFactory, Notifiable, HasApiTokens, Billable;
 
     /**
      * The attributes that are mass assignable.
