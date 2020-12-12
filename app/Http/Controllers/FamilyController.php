@@ -70,10 +70,10 @@ class FamilyController extends Controller
     {
         $request->validate([
             'description' => 'required',
-    //        'is_active' => 'required',
+            'is_active' => 'required',
             'husband_id' => 'required',
             'wife_id' => 'required',
-    //        'type_id' => 'required',
+            'type_id' => 'required',
             'chan' => 'required',
             'nchi' => 'required',
             'rin' => 'required'
@@ -81,10 +81,10 @@ class FamilyController extends Controller
 
         return Family::create([
             'description' => $request->description,
-  //          'is_active' => $request->is_active,
+            'is_active' => $request->is_active,
             'husband_id' => $request->husband_id,
             'wife_id' => $request->wife_id,
-  //          'type_id' => $request->type_id,
+            'type_id' => $request->type_id,
             'chan' => $request->chan,
             'nchi' => $request->nchi,
             'rin' => $request->rin
@@ -124,10 +124,10 @@ class FamilyController extends Controller
     {
         $request->validate([
             'description' => 'required',
-   //         'is_active' => 'required',
+            'is_active' => 'required',
             'husband_id' => 'required',
             'wife_id' => 'required',
-   //         'type_id' => 'required',
+            'type_id' => 'required',
             'chan' => 'required',
             'nchi' => 'required',
             'rin' => 'required'
@@ -135,10 +135,10 @@ class FamilyController extends Controller
 
         $family = Family::find($id);
         $family->description = $request->description;
-  //      $family->is_active = $request->is_active;
+        $family->is_active = $request->is_active;
         $family->husband_id = $request->husband_id;
         $family->wife_id = $request->wife_id;
-  //      $family->type_id = $request->type_id;
+        $family->type_id = $request->type_id;
         $family->chan = $request->chan;
         $family->nchi = $request->nchi;
         $family->rin = $request->rin;

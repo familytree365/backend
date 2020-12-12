@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Family extends Model
 {
-    protected $fillable = ['description',  'husband_id', 'wife_id', 'type_id', 'chan', 'nchi', 'rin'];
+    protected $fillable = ['description', 'is_active', 'husband_id', 'wife_id', 'type_id', 'chan', 'nchi', 'rin'];
+
+    protected $attributes = ['is_active' => false];
+
+    protected $casts = ['is_active' => 'boolean'];
 
     public function events()
     {
