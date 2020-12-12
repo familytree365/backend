@@ -42,4 +42,10 @@ return [
         'redirect' => env('FACEBOOK_REDIRECT_URI'),
     ],
 
+    'stripe' => [
+      'model' => App\Models\User::class,
+      'key' => env('STRIPE_KEY'),
+      'secret' => env('STRIPE_SECRET'),
+    ],
+
 ];

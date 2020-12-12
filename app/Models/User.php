@@ -9,10 +9,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Provider;
 use App\Notifications\ResetPassword as ResetPasswordNotification;
+use Laravel\Cashier\Billable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasFactory, Notifiable, HasApiTokens, Billable;
 
     /**
      * The attributes that are mass assignable.
@@ -25,11 +26,9 @@ class User extends Authenticatable
         'email',
         'password',
     ];
-
     protected $connection = 'landlord';
 
-    public function sendPasswordResetNotification($token)
-    {
+    public function sendPasswordResetNotification($token) {
         // Your your own implementation.
         $this->notify(new ResetPasswordNotification($token));
     }
@@ -56,4 +55,17 @@ class User extends Authenticatable
     public function providers() {
         return $this->hasMany(Provider::class, 'user_id', 'id');
     }
+
+    public function userStartedChats() {
+        return $this->hasMany('App\Chat', 'user_1');
+    }
+
+    public function userNotStartedChats() {
+        return $this->hasMany('App\Chat', 'user_2');
+    }
+
+    public function userChats() {
+        return $this->userStartedChats->merge($this->userNotStartedChats);
+    }
+
 }
