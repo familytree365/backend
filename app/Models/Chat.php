@@ -20,4 +20,12 @@ class Chat extends Model {
         return $this->chatMessages()->orderBy('created_at', 'DESC')->firrst();
     }
 
+    public function firstUser() {
+        return $this->belongsTo(User::class, 'user_1');
+    }
+
+    public function secondUser() {
+        return $this->belongsTo(User::class, 'user_2');
+    }
+
 }

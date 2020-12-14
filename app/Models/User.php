@@ -58,11 +58,11 @@ class User extends Authenticatable {
     }
 
     public function userStartedChats() {
-        return $this->hasMany('App\Chat', 'user_1');
+        return $this->hasMany(Chat::class, 'user_1')->join('users as partner', 'user_2', '=', 'partner.id');
     }
 
     public function userNotStartedChats() {
-        return $this->hasMany('App\Chat', 'user_2');
+        return $this->hasMany(Chat::class, 'user_2')->join('users as partner', 'user_1', '=', 'partner.id');
     }
 
     public function userChats() {

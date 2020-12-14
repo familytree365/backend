@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Chat;
 use Illuminate\Http\Request;
+use App\Events\ChatMessageSentEvent;
 
 class ChatController extends Controller
 {
@@ -14,8 +15,8 @@ class ChatController extends Controller
      */
     public function index(Request $request)
     {
-        dd($request->user());
-        $requester = $request->user();        
+        $requester = $request->user();       
+        return $requester->userChats();
     }
 
     /**
@@ -23,6 +24,13 @@ class ChatController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function test()
+    {
+        $event = new ChatMessageSentEvent();
+        event($event);
+        dd("here");
+    }
+    
     public function create()
     {
         //
@@ -36,7 +44,9 @@ class ChatController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $event = new ChatMessageSentEvent();
+        broadcast($event);
+        return ($request->all());
     }
 
     /**
