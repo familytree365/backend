@@ -28,5 +28,6 @@ class DatabaseSeeder extends Seeder
     {
         // run landlord specific seeders
         $this->call(UserSeeder::class);
+        $this->call(RolesAndPermissionsSeeder::class);
     }
 }

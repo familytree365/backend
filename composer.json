@@ -14,12 +14,14 @@
         "fruitcake/laravel-cors": "^2.0",
         "genealogiawebsite/laravel-gedcom": "^2.3",
         "guzzlehttp/guzzle": "^7.0.1",
+        "laravel/cashier": "^12.6",
         "laravel/framework": "^8.12",
         "laravel/sanctum": "^2.8",
         "laravel/socialite": "^5.1",
         "laravel/tinker": "^2.5",
         "predis/predis": "^1.1",
-        "spatie/laravel-multitenancy": "^1.0"
+        "spatie/laravel-multitenancy": "^1.0",
+        "spatie/laravel-permission": "^3.18"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

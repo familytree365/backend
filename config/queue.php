@@ -39,7 +39,7 @@ return [
             'connection' => 'landlord',
             'table' => 'jobs',
             'queue' => 'default',
-            'retry_after' => 90,
+            'retry_after' => 36000,
         ],
 
         'beanstalkd' => [

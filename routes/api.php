@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Laravel\Cashier\Http\Middleware\VerifyWebhookSignature;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,16 @@ Route::get('login/{provider}', 'LoginController@redirectToProvider');
 Route::get('login/{provider}/callback', 'LoginController@handleProviderCallback');
 Route::post('password/change', 'ProfileController@changePassword');
 Route::post('profile/update', 'ProfileController@changeProfile');
-
+//Cashier Routes
+Route::get('get-plans', 'StripeController@getPlans');
+Route::get('get-current-subscription', 'StripeController@getCurrentSubscription')->middleware(['auth:sanctum']);
+Route::get('get-intent', 'StripeController@getIntent')->middleware(['auth:sanctum']);
+Route::post('subscribe', 'StripeController@subscribe')->middleware(['auth:sanctum']);
+Route::post('unsubscribe', 'StripeController@unsubscribe')->middleware(['auth:sanctum']);
+Route::post('webhook', 'StripeController@webhook')->middleware([VerifyWebhookSignature::class]);
+// Roles and Permissions
+Route::get('roles', 'RoleController@index')->middleware(['auth:sanctum']);
+Route::get('permissions', 'PermissionController@index')->middleware(['auth:sanctum']);
 
 Route::middleware('tenant')->group(function() {
     Route::resource('addr', 'AddrController');
@@ -66,6 +76,7 @@ Route::middleware('tenant')->group(function() {
 	Route::resource('subn', 'SubnController');
 	Route::resource('dnaupload', 'DnaController');
 	Route::resource('dnamatching', 'DnaMatchingController');
+        Route::resource('tree', 'TreeController');
         Route::resource('chats', 'ChatController');
         Route::resource('chatmessages', 'ChatMessageController');
         Route::resource('forumcategory', 'ForumCategoryController');
