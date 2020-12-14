@@ -68,4 +68,7 @@ Route::middleware('tenant')->group(function() {
 	//Route::resource('dnamatching', 'DnaMatchingController');
         Route::resource('chats', 'ChatController');
         Route::resource('chatmessages', 'ChatMessageController');
+        Route::resource('forumcategory', 'ForumCategoryController');
+        Route::resource('forumtopic', 'ForumTopicController');
+        Route::resource('forumpost', 'ForumPostController');
 });
