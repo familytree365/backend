@@ -33,6 +33,9 @@ Route::get('get-intent', 'StripeController@getIntent')->middleware(['auth:sanctu
 Route::post('subscribe', 'StripeController@subscribe')->middleware(['auth:sanctum']);
 Route::post('unsubscribe', 'StripeController@unsubscribe')->middleware(['auth:sanctum']);
 Route::post('webhook', 'StripeController@webhook')->middleware([VerifyWebhookSignature::class]);
+// Roles and Permissions
+Route::get('roles', 'RoleController@index')->middleware(['auth:sanctum']);
+Route::get('permissions', 'PermissionController@index')->middleware(['auth:sanctum']);
 
 Route::middleware('tenant')->group(function() {
     Route::resource('addr', 'AddrController');
