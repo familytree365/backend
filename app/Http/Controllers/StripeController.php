@@ -80,7 +80,7 @@ class StripeController extends Controller
     public function unsubscribe() {
         $user = auth()->user();
         $user->subscription('default')->cancel();
-        $user->role_id = 3; //expired role
+        // $user->role_id = 3; //expired role
         $user->save();
         $user->notify(new UnsubscribeSuccessfully($user->subscription()->stripe_plan));
         return ['success' => true];

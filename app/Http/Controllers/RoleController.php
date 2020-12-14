@@ -7,6 +7,6 @@ use Illuminate\Http\Request;
 class RoleController extends Controller
 {
     public function index() {
-    	return auth()->user()->getAllPermissions()->pluck('name');
+    	return auth()->user()->getRoleNames();    
     }
 }

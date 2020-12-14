@@ -28,6 +28,9 @@ class RegisterController extends Controller
             'password' => bcrypt($request->password)
         ]);
 
+        $user = User::find($user_id);
+        $user->assignRole('admin');
+
         $company_id = DB::connection($this->getConnectionName())->table('companies')->insertGetId([
             'name' => 'company' . $user_id,
             'status' => 1
