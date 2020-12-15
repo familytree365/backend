@@ -29,7 +29,7 @@ class RegisterController extends Controller
         ]);
 
         $user = User::find($user_id);
-        $user->assignRole('admin');
+        $user->assignRole('free');
 
         $company_id = DB::connection($this->getConnectionName())->table('companies')->insertGetId([
             'name' => 'company' . $user_id,
