@@ -6,6 +6,7 @@ use App\Models\Family;
 use App\Models\Person;
 use Illuminate\Http\Request;
 use App\Models\Tree;
+use App\Models\Company;
 
 class TreeController extends Controller
 {
@@ -25,7 +26,7 @@ class TreeController extends Controller
         $query = Tree::query();
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
+            $columnsToSearch = ['name'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -65,7 +66,7 @@ class TreeController extends Controller
      */
     public function create()
     {
-        //
+        //  
     }
 
     /**
@@ -78,14 +79,14 @@ class TreeController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'description' => 'required',
-            'user_id' => 'required'
         ]);
+        $user = auth()->user();
+        $company = $user->Company()->first();
 
         return Tree::create([
-            'name' => $request->adr1,
-            'description' => $request->adr2,
-            'user_id' => $request->city
+            'name' => $request->name,
+            'company_id' => $company->id,
+            'description' => $request->description,
         ]);
     }
 
@@ -359,7 +360,8 @@ class TreeController extends Controller
      */
     public function edit($id)
     {
-        //
+        $tree = Tree::find($id);
+        return $tree;
     }
 
     /**
@@ -374,13 +376,11 @@ class TreeController extends Controller
         $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'user_id' => 'required'
         ]);
 
         $tree = Tree::find($id);
         $tree->name = $request->name;
         $tree->description = $request->description;
-        $tree->user_id = $request->user_id;
         $tree->save();
         return $tree;
     }

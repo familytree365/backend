@@ -44,6 +44,7 @@ Route::middleware('tenant')->group(function() {
 	Route::resource('author', 'AuthorController');
 	Route::resource('chan', 'ChanController');
 	Route::resource('citation', 'CitationController');
+	Route::resource('dashboard', 'DashboardController');
 	Route::resource('event', 'EventController');
 	Route::resource('family', 'FamilyController');
 	Route::resource('familyevent', 'FamilyEventController');

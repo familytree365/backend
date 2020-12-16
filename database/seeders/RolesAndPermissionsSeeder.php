@@ -22,18 +22,20 @@ class RolesAndPermissionsSeeder extends Seeder
             ['name' => 'dashboard', 'guard_name' => 'web'],
             ['name' => 'calendar', 'guard_name' => 'web'],
             ['name' => 'files', 'guard_name' => 'web'],
-            ['name' => 'information', 'guard_name' => 'web'],
-            ['name' => 'sources', 'guard_name' => 'web'],
-            ['name' => 'people', 'guard_name' => 'web'],
-            ['name' => 'family', 'guard_name' => 'web'],
-            ['name' => 'references', 'guard_name' => 'web'],
-            ['name' => 'trees', 'guard_name' => 'web'],
+            ['name' => 'information menu', 'guard_name' => 'web'],
+            ['name' => 'sources menu', 'guard_name' => 'web'],
+            ['name' => 'people menu', 'guard_name' => 'web'],
+            ['name' => 'family menu', 'guard_name' => 'web'],
+            ['name' => 'references menu', 'guard_name' => 'web'],
+            ['name' => 'trees menu', 'guard_name' => 'web'],
             ['name' => 'forum', 'guard_name' => 'web'],
             ['name' => 'gedcom import', 'guard_name' => 'web'],
             ['name' => 'subscription', 'guard_name' => 'web'],
             ['name' => 'dna upload', 'guard_name' => 'web'],
             ['name' => 'dna matching', 'guard_name' => 'web'],
             ['name' => 'how to videos', 'guard_name' => 'web'],
+            ['name' => 'roles', 'guard_name' => 'web'],
+            ['name' => 'permissions', 'guard_name' => 'web'],
         ];
 
         foreach($permissions as $permission){
@@ -41,6 +43,7 @@ class RolesAndPermissionsSeeder extends Seeder
         }
 
         $role = Role::create(['name' => 'free']);
+        $role->givePermissionTo(Permission::all());
 		$role = Role::create(['name' => 'expired']);
 
         $role = Role::create(['name' => 'UTY']);
@@ -53,6 +56,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $role = Role::create(['name' => 'OTM']);
 
         $role = Role::create(['name' => 'admin']);
+        $role->givePermissionTo(Permission::all());
 
         //Free Role
         $free = Role::where('name', 'free')->first();

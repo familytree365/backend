@@ -68,5 +68,9 @@ class User extends Authenticatable
     public function userChats() {
         return $this->userStartedChats->merge($this->userNotStartedChats);
     }
+    public function Company()
+    {
+        return $this->belongsToMany(Company::class,'user_company');
+    }
 
 }
