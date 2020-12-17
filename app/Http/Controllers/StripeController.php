@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use Stripe;
 use App\Notifications\SubscribeSuccessfully;
 use App\Notifications\UnsubscribeSuccessfully;
+use App\Models\User;
 
 class StripeController extends Controller
 {
     protected $plans;
 
-    public function __construct(){
+    public function __construct() {
         Stripe\Stripe::setApiKey(\Config::get('services.stripe.secret'));
         $this->plans = Stripe\Plan::all();
     }
@@ -89,28 +90,28 @@ class StripeController extends Controller
     public function webhook() {
         $data = request()->all();
         $custom_data = explode(",", $data['data']['object']['client_reference_id']);
-        $user = App\Models\User::find($custom_data[0]);
+        $user = User::find($custom_data[0]);
         $user->stripe_id = $data['data']['object']['customer'];
         foreach($this->plans as $plan) {
             if($custom_data[1] == $plan->id) {
                 switch($plan->nickname) {
                     case 'UTY':
-                        $user->role_id = 9;
+                        $user->syncRoles('UTY');
                     break;
                     case 'UTM':
-                        $user->role_id = 8;
+                        $user->syncRoles('UTM');
                     break;
                     case 'TTY':
-                        $user->role_id = 7;
+                        $user->syncRoles('TTY');
                     break;
                     case 'TTM':
-                        $user->role_id = 6;
+                        $user->syncRoles('TTM');
                     break;
                     case 'OTY':
-                        $user->role_id = 5;
+                        $user->syncRoles('OTY');
                     break;
                     case 'OTM':
-                        $user->role_id = 4;
+                        $user->syncRoles('OTM');
                     break;
                 }
             }
