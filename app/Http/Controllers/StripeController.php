@@ -89,33 +89,35 @@ class StripeController extends Controller
 
     public function webhook() {
         $data = request()->all();
-        $custom_data = explode(",", $data['data']['object']['client_reference_id']);
-        $user = User::find($custom_data[0]);
-        $user->stripe_id = $data['data']['object']['customer'];
-        foreach($this->plans as $plan) {
-            if($custom_data[1] == $plan->id) {
-                switch($plan->nickname) {
-                    case 'UTY':
-                        $user->syncRoles('UTY');
-                    break;
-                    case 'UTM':
-                        $user->syncRoles('UTM');
-                    break;
-                    case 'TTY':
-                        $user->syncRoles('TTY');
-                    break;
-                    case 'TTM':
-                        $user->syncRoles('TTM');
-                    break;
-                    case 'OTY':
-                        $user->syncRoles('OTY');
-                    break;
-                    case 'OTM':
-                        $user->syncRoles('OTM');
-                    break;
+        $user = User::where('stripe_id', $data['data']['object']['customer'])->first();
+        if($user) {
+            $plan_nickname = $data['data']['object']['items']['data'][0]['plan']['nickname'];
+            foreach($this->plans as $plan) {
+                if($plan->nickname == $plan_nickname) {
+                    switch($plan->nickname) {
+                        case 'UTY':
+                            $user->syncRoles('UTY');
+                        break;
+                        case 'UTM':
+                            $user->syncRoles('UTM');
+                        break;
+                        case 'TTY':
+                            $user->syncRoles('TTY');
+                        break;
+                        case 'TTM':
+                            $user->syncRoles('TTM');
+                        break;
+                        case 'OTY':
+                            $user->syncRoles('OTY');
+                        break;
+                        case 'OTM':
+                            $user->syncRoles('OTM');
+                        break;
+                    }
                 }
             }
+        } else {
+            echo "User not found!";
         }
-        $user->save();
     }
 }
