@@ -44,6 +44,9 @@ class PermissionController extends Controller
         if($request->has("perPage")) {
             $rows = $query->paginate($request->perPage);
         }
+        if(!count($request->all())) {
+            $rows = $query->get()->toArray();
+        }
 
         return $rows;
     }

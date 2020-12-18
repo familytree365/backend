@@ -13,4 +13,8 @@ class Tree extends Model
     protected $fillable = ['name', 'description','company_id','user_id'];
 
     protected $connection = 'landlord';
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
 }

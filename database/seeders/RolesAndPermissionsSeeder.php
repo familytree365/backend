@@ -19,23 +19,27 @@ class RolesAndPermissionsSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
 		$permissions = [
-            ['name' => 'dashboard', 'guard_name' => 'web'],
-            ['name' => 'calendar', 'guard_name' => 'web'],
-            ['name' => 'files', 'guard_name' => 'web'],
+            ['name' => 'dashboard menu', 'guard_name' => 'web'],
+            ['name' => 'calendar menu', 'guard_name' => 'web'],
+            ['name' => 'files menu', 'guard_name' => 'web'],
             ['name' => 'information menu', 'guard_name' => 'web'],
             ['name' => 'sources menu', 'guard_name' => 'web'],
             ['name' => 'people menu', 'guard_name' => 'web'],
+            ['name' => 'people index', 'guard_name' => 'web'],
+            ['name' => 'people create', 'guard_name' => 'web'],
+            ['name' => 'people edit', 'guard_name' => 'web'],
+            ['name' => 'people delete', 'guard_name' => 'web'],
             ['name' => 'family menu', 'guard_name' => 'web'],
             ['name' => 'references menu', 'guard_name' => 'web'],
             ['name' => 'trees menu', 'guard_name' => 'web'],
-            ['name' => 'forum', 'guard_name' => 'web'],
-            ['name' => 'gedcom import', 'guard_name' => 'web'],
-            ['name' => 'subscription', 'guard_name' => 'web'],
-            ['name' => 'dna upload', 'guard_name' => 'web'],
-            ['name' => 'dna matching', 'guard_name' => 'web'],
-            ['name' => 'how to videos', 'guard_name' => 'web'],
-            ['name' => 'roles', 'guard_name' => 'web'],
-            ['name' => 'permissions', 'guard_name' => 'web'],
+            ['name' => 'forum menu', 'guard_name' => 'web'],
+            ['name' => 'gedcom import menu', 'guard_name' => 'web'],
+            ['name' => 'subscription menu', 'guard_name' => 'web'],
+            ['name' => 'dna upload menu', 'guard_name' => 'web'],
+            ['name' => 'dna matching menu', 'guard_name' => 'web'],
+            ['name' => 'how to videos menu', 'guard_name' => 'web'],
+            ['name' => 'roles menu', 'guard_name' => 'web'],
+            ['name' => 'permissions menu', 'guard_name' => 'web'],
         ];
 
         foreach($permissions as $permission){

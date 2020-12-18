@@ -23,7 +23,7 @@ class TreeController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Tree::query();
+        $query = Tree::query()->with('company');
 
         if($request->has('searchTerm')) {
             $columnsToSearch = ['name'];
@@ -55,7 +55,9 @@ class TreeController extends Controller
         if($request->has("perPage")) {
             $rows = $query->paginate($request->perPage);
         }
-
+        if(!count($request->all())) {
+            $rows = $query->get()->toArray();
+        }
         return $rows;
     }
 

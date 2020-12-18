@@ -46,5 +46,31 @@ class RoleController extends Controller
 
         return $rows;
     }
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        $role = Role::create(['name' => $request->name, 'guard_name' => 'web']);
+        $role->givePermissionTo($request->permissions);
+    }
+
+    public function getRolePermission($id) {
+        $role = Role::find($id);   
+        $permissions = $role->getAllPermissions()->pluck('id'); 
+        return ['role' => $role , 'permissions' => $permissions];
+    }
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        $role = Role::find($id);
+        $role->name = $request->name;
+        $role->syncPermissions($request->permissions);
+        $role->save();
+    }
     
 }

@@ -10,4 +10,9 @@ class Company extends Model
     use HasFactory;
 
     protected $connection = 'landlord';
+
+    public function trees()
+    {
+        return $this->hasMany(App\Model\Tree::class);
+    }
 }

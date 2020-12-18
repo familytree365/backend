@@ -34,7 +34,9 @@ Route::post('subscribe', 'StripeController@subscribe')->middleware(['auth:sanctu
 Route::post('unsubscribe', 'StripeController@unsubscribe')->middleware(['auth:sanctum']);
 Route::post('webhook', 'StripeController@webhook')->middleware([VerifyWebhookSignature::class]);
 // Roles and Permissions
-Route::get('roles', 'RoleController@index')->middleware(['auth:sanctum']);
+Route::resource('roles', 'RoleController')->middleware(['auth:sanctum']);
+Route::get('getrolepermission/{id}', 'RoleController@getRolePermission')->middleware(['auth:sanctum']);
+
 Route::get('getroles', 'RoleController@getRole')->middleware(['auth:sanctum']);
 Route::get('permissions', 'PermissionController@index')->middleware(['auth:sanctum']);
 Route::get('getpermissions', 'PermissionController@getPermission')->middleware(['auth:sanctum']);
