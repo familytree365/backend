@@ -47,7 +47,7 @@ class RolesAndPermissionsSeeder extends Seeder
         }
 
         $role = Role::create(['name' => 'free']);
-        $role->givePermissionTo(Permission::all());
+        $role->givePermissionTo([1,2,3,20,21]);
 		$role = Role::create(['name' => 'expired']);
 
         $role = Role::create(['name' => 'UTY']);
