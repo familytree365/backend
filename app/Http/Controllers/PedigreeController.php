@@ -28,13 +28,14 @@ class PedigreeController extends Controller
     private $nest;
     private $family_id;
     private $person_id;
+    private $child_id;
 
 
     public function show(Request $request)
     {
         //dd("Here");
-        $start_id = $request->get('start_id', 4);
-        $nest = $request->get('nest', 3);
+        $start_id = $request->get('start_id');
+        $nest = $request->get('nest', 2);
         $ret = [];
         $ret['start'] = (int) $start_id;
         $this->persons = [];
@@ -44,9 +45,11 @@ class PedigreeController extends Controller
         $this->family_id = [];
         $this->person_id = [];
         $this->start_id = [];
-
+        $this->child_id = [];
+        $this->checklink = [];
         // $this->getGraphData((int)$start_id);
         $this->getGraphDataUpward((int) $start_id);
+        $ret['checklink'] = $this->checklink;
         $ret['persons'] = $this->persons;
         $ret['unions'] = $this->unions;
         $ret['links'] = $this->links;
@@ -54,6 +57,7 @@ class PedigreeController extends Controller
         $ret['family_id'] = $this->family_id;
         $ret['person_id'] = $this->person_id;
         $ret['start_id'] = $this->start_id;
+        $ret['child_id'] = $this->child_id;
         // ExportGedCom::dispatch(2, $request);
         // $file = 'file.GED';
         // $destinationPath = public_path().'/upload/';
@@ -64,15 +68,10 @@ class PedigreeController extends Controller
 
     private function getGraphDataUpward($start_id, $nest = 0)
     {
-        
+            
         // $conn = $this->getConnection();
         // $db = $this->getDB();
-            if($start_id == 10) {
-                array_unshift($this->start_id, 'id10'.$start_id);
-            }
-        $threshold = (int) ($this->nest) * 1;
-        $has = (int) ($nest) * 1;
-        if ($threshold >= $has) {
+        if ($this->nest >= $nest) {
             $person = Person::find($start_id);
 
             if ($person) {
@@ -147,16 +146,8 @@ class PedigreeController extends Controller
                 $family_id = $family->id;
                 $father = Person::find($family->husband_id);
                 $mother = Person::find($family->wife_id);
-                if($father->id == 680) {
-                        array_unshift($this->family_id, 'father'.$father->id);
-                    }
-                    if($mother) {
-                        if($mother->id == 680) {
-                        array_unshift($this->family_id, 'mother'.$mother->id);
-                    }
-                    }
                     
-                $user = $father->user;
+                $user = NULL;//$father->user;
 
                 if($user) {
                     $av = Avatar::where('user_id', '=', $user->id)->first();
@@ -267,6 +258,7 @@ class PedigreeController extends Controller
                 $children = Person::where('child_in_family_id', $family_id)->get();
                 $children_ids = [];
                 foreach ($children as $child) {
+                    $this->getGraphDataUpward($child->id, $nest+1);
                     if($child->id == 680) {
                         array_unshift($this->family_id, $child->id);
                     }
@@ -286,10 +278,10 @@ class PedigreeController extends Controller
             $brothers = Person::where('child_in_family_id', $person->child_in_family_id)
                 ->whereNotNull('child_in_family_id')
                 ->where('id', '<>', $start_id)->get();
-            $nest = $nest;
+
             foreach ($brothers as $brother) {
                 // if($i < 2) {
-                    $this->getGraphDataUpward($brother->id, 1);
+                    $this->getGraphDataUpward($brother->id, $nest+1);
                 // }
                 $i++;
             }
