@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Person;
 use App\Models\User;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -83,5 +84,15 @@ class DashboardController extends Controller
      */
     public function destroy($id)
     {
+    }
+    public function trial()
+    {
+        $user = auth()->user();
+        if($user->subscribed('default')) {
+            $days = Carbon::now()->diffInDays(Carbon::parse($user->subscription('default')->asStripeSubscription()->current_period_end));
+        } else {
+            $days = Carbon::now()->diffInDays($user->trial_ends_at);
+        }
+        return ['days' => $days];
     }
 }

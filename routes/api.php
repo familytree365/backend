@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Cashier\Http\Middleware\VerifyWebhookSignature;
-
+ 
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -47,6 +47,7 @@ Route::middleware('tenant')->group(function() {
 	Route::resource('chan', 'ChanController');
 	Route::resource('citation', 'CitationController');
 	Route::resource('dashboard', 'DashboardController');
+	Route::get('trial', 'DashboardController@trial');
 	Route::resource('event', 'EventController');
 	Route::resource('family', 'FamilyController');
 	Route::resource('familyevent', 'FamilyEventController');
