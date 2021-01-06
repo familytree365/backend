@@ -16,6 +16,7 @@ class CreateTreesTable extends Migration
         Schema::create('trees', function (Blueprint $table) {
             $table->id();
             $table->integer('company_id');
+            $table->tinyInteger('current_tenant');
             $table->string('name',255);
             $table->text('description');
             $table->timestamps();

@@ -33,18 +33,20 @@ class RegisterController extends Controller
 
         $company_id = DB::connection($this->getConnectionName())->table('companies')->insertGetId([
             'name' => 'company' . $user_id,
-            'status' => 1
+            'status' => 1,
+            'current_tenant' => 1
         ]);
 
         DB::connection($this->getConnectionName())->table('user_company')->insert([
             'user_id' => $user_id,
-            'company_id' => $company_id
+            'company_id' => $company_id 
         ]);
 
         $tree_id = DB::connection($this->getConnectionName())->table('trees')->insertGetId([
             'company_id' => $company_id,
             'name' => 'tree' . $company_id,
-            'description' => ''
+            'description' => '',
+            'current_tenant' => 1
         ]);
 
         $tenant_id = DB::connection($this->getConnectionName())->table('tenants')->insertGetId([

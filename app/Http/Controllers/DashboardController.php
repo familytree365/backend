@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Person;
 use App\Models\User;
 use Carbon\Carbon;
+use App\Models\Tree;
+use App\Models\Company;
 
 class DashboardController extends Controller
 {
@@ -30,7 +32,39 @@ class DashboardController extends Controller
      */
     public function create()
     {
-        //
+        $user = auth()->user();
+        $company = $user->Company()->first();
+        $trees =Tree::where('company_id',$company->id)->get();
+        return $trees;
+    }
+
+    public function getCompany() {
+        $user = auth()->user();
+        $company = $user->Company;
+        return $company;
+    }
+
+    public function getTree() {
+        $trees =Tree::where('company_id',request('company_id'))->get();
+        return $trees;
+    }
+    public function changedb(Request $request)
+    {
+        $company_id = $request->get('company_id');
+        $tree_id = $request->get('tree_id');
+        if (!empty($company_id) && !empty($tree_id)) {
+            $company = Company::find($company_id);
+            $company->current_tenant = 1;
+            $company->save();
+            Tree::where('company_id', $company_id)->update(['current_tenant' => 0]);
+            $tree = Tree::find($tree_id);
+            $tree->current_tenant = 1;
+            $tree->save();
+            return response()->json(['changedb' => true]);
+        }
+        else {
+            return response()->json(['changedb' => false]);
+        }
     }
 
     /**

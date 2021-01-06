@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Role;
 use App\Models\Permission;
+use DB;
+use Spatie\Multitenancy\Models\Tenant;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
@@ -15,6 +17,11 @@ class RolesAndPermissionsSeeder extends Seeder
      */
     public function run()
     {
+        $tenants = Tenant::get();
+        foreach($tenants as $tenant) {
+            DB::statement("DROP DATABASE $tenant->name");
+        }
+       
          // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 

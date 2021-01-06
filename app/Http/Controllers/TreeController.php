@@ -7,9 +7,13 @@ use App\Models\Person;
 use Illuminate\Http\Request;
 use App\Models\Tree;
 use App\Models\Company;
+use DB;
+use Artisan;
+use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
 
 class TreeController extends Controller
 {
+    use UsesLandlordConnection;
 
     private $persons;
     private $unions;
@@ -68,7 +72,29 @@ class TreeController extends Controller
      */
     public function create()
     {
-        //  
+        $user = auth()->user();
+        // return $user->Company()->pluck('company_id')->toArray();
+        $roles = $user->roles;
+        $role = $roles[0]->id;
+        if ($role == 7 || $role == 8) {
+            if(Tree::where('user_id', '=', $user->id)->count() < 1){
+                return response()->json(['create_tree' => true]);
+            }
+        }
+
+        else if ($role == 5 || $role == 6) {
+            if(Tree::where('user_id', '=', $user->id)->count() < 10){
+               return response()->json(['create_tree' => true]);
+            }
+        }
+
+        else if ($role == 3 || $role == 4) {
+            return response()->json(['create_tree' => true]);
+        } 
+        else {
+            return response()->json(['create_tree' => false]);
+        }
+        
     }
 
     /**
@@ -84,12 +110,32 @@ class TreeController extends Controller
         ]);
         $user = auth()->user();
         $company = $user->Company()->first();
+        // $company_id = DB::connection($this->getConnectionName())->table('companies')->insertGetId([
+        //     'name' => 'company' . $user->id,
+        //     'status' => 1
+        // ]);
 
-        return Tree::create([
-            'name' => $request->name,
-            'company_id' => $company->id,
-            'description' => $request->description,
+        // DB::connection($this->getConnectionName())->table('user_company')->insert([
+        //     'user_id' => $user->id,
+        //     'company_id' => $company_id
+        // ]);
+
+        $tree_id = Tree::create([
+                    'name' => $request->name,
+                    'company_id' => $company->id,
+                    'current_tenant' => 0,
+                    'description' => $request->description,
+                ])->id;
+        
+        $tenant_id = DB::connection($this->getConnectionName())->table('tenants')->insertGetId([
+            'name' => 'tenant'.$tree_id,
+            'tree_id' => $tree_id,
+            'database' => 'tenant'.$tree_id
         ]);
+
+        DB::statement('create database tenant'.$tree_id);
+
+        Artisan::call('tenants:artisan "migrate --database=tenant --force"');
     }
 
     /**

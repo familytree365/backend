@@ -48,6 +48,9 @@ Route::middleware('tenant')->group(function() {
 	Route::resource('citation', 'CitationController');
 	Route::resource('dashboard', 'DashboardController');
 	Route::get('trial', 'DashboardController@trial');
+	Route::get('get_companies', 'DashboardController@getCompany');
+    Route::get('get_tree', 'DashboardController@getTree');
+    Route::post('changedb', 'DashboardController@changedb');
 	Route::resource('event', 'EventController');
 	Route::resource('family', 'FamilyController');
 	Route::resource('familyevent', 'FamilyEventController');
