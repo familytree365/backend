@@ -33,7 +33,7 @@ class DashboardController extends Controller
     public function create()
     {
         $user = auth()->user();
-        $company = $user->Company()->first();
+        $company = $user->Company();
         $trees =Tree::where('company_id',$company->id)->get();
         return $trees;
     }
@@ -53,10 +53,15 @@ class DashboardController extends Controller
         $company_id = $request->get('company_id');
         $tree_id = $request->get('tree_id');
         if (!empty($company_id) && !empty($tree_id)) {
+            $user = auth()->user();
+            $companies_id = $user->Company()->pluck('companies.id');
+            $company = $user->Company()->update([
+                'current_tenant'=> 0,
+            ]);
             $company = Company::find($company_id);
             $company->current_tenant = 1;
             $company->save();
-            Tree::where('company_id', $company_id)->update(['current_tenant' => 0]);
+            Tree::whereIn('company_id', $companies_id)->update(['current_tenant' => 0]);
             $tree = Tree::find($tree_id);
             $tree->current_tenant = 1;
             $tree->save();

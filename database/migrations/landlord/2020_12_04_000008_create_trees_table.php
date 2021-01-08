@@ -18,7 +18,7 @@ class CreateTreesTable extends Migration
             $table->integer('company_id');
             $table->tinyInteger('current_tenant');
             $table->string('name',255);
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

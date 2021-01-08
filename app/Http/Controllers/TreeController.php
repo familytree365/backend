@@ -107,22 +107,11 @@ class TreeController extends Controller
     {
         $request->validate([
             'name' => 'required',
+            'company_id' => 'required',
         ]);
-        $user = auth()->user();
-        $company = $user->Company()->first();
-        // $company_id = DB::connection($this->getConnectionName())->table('companies')->insertGetId([
-        //     'name' => 'company' . $user->id,
-        //     'status' => 1
-        // ]);
-
-        // DB::connection($this->getConnectionName())->table('user_company')->insert([
-        //     'user_id' => $user->id,
-        //     'company_id' => $company_id
-        // ]);
-
         $tree_id = Tree::create([
                     'name' => $request->name,
-                    'company_id' => $company->id,
+                    'company_id' => $request->company_id,
                     'current_tenant' => 0,
                     'description' => $request->description,
                 ])->id;

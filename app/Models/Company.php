@@ -11,6 +11,7 @@ class Company extends Model
 
     protected $connection = 'landlord';
 
+    protected $fillable = ['name','status','current_tenant'];
     public function trees()
     {
         return $this->hasMany(App\Model\Tree::class);

@@ -49,7 +49,6 @@ class Kernel extends HttpKernel
         'tenant' => [
             \App\Http\Middleware\SetTenant::class,
             \Spatie\Multitenancy\Http\Middleware\NeedsTenant::class,
-            \Spatie\Multitenancy\Http\Middleware\EnsureValidTenantSession::class
         ]
     ];
 

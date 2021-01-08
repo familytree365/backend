@@ -239,8 +239,6 @@ class RolesAndPermissionsSeeder extends Seeder
         $roles = Role::whereNotIn('name', ['free', 'expired'])->get();
         $permissions = Permission::where([
             ['name','not like', '%information%'],
-            ['name','not like', '%sources%'],
-            ['name','not like', '%people%'],
         ])->get();
         foreach($roles as $role) {
             foreach($permissions as $permission){

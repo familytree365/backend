@@ -14,6 +14,8 @@ class CompanyController extends Controller
      */
     public function index(Request $request)
     {
+        $user = auth()->user();
+        $companies_id = $user->Company()->pluck('companies.id');
         $query = Company::query();
 
         if($request->has('searchTerm')) {
@@ -42,9 +44,12 @@ class CompanyController extends Controller
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
-
+        $query->find($companies_id);
         if($request->has("perPage")) {
             $rows = $query->paginate($request->perPage);
+        }
+        if(!count($request->all())) {
+            $rows = $query->get()->toArray();
         }
 
         return $rows;
@@ -69,14 +74,15 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
+        $user = auth()->user();
         //
-       $request->validate([
-           'name' => 'require',
-           'status' =>'require'
-    ]);
-        return Company::create([
-            'name' => $request->cname,
-            'status' => $request->status
+        $request->validate([
+           'name' => 'required',
+        ]);
+        return $user->Company()->create([
+            'name' => $request->name,
+            'status' => 1,
+            'current_tenant' => 0,
         ]);
     }
 
@@ -114,14 +120,11 @@ class CompanyController extends Controller
     {
         //
         $request->validate([
-
-            'name'=>'require',
-            'status'=>'require'
+           'name' => 'required',
         ]);
 
         $company=Company::find($id);
-        $company->name = $request->cname;
-        $company->status = $request->status;
+        $company->name = $request->name;
         $company->save();
         return $company;
     }
