@@ -73,17 +73,17 @@ class TreeController extends Controller
     public function create()
     {
         $user = auth()->user();
-        // return $user->Company()->pluck('company_id')->toArray();
+        $companies_id = $user->Company()->pluck('companies.id');
         $roles = $user->roles;
         $role = $roles[0]->id;
         if ($role == 7 || $role == 8) {
-            if(Tree::where('user_id', '=', $user->id)->count() < 1){
+            if(Tree::whereIn('company_id', $companies_id)->count() < 1){
                 return response()->json(['create_tree' => true]);
             }
         }
 
         else if ($role == 5 || $role == 6) {
-            if(Tree::where('user_id', '=', $user->id)->count() < 10){
+            if(Tree::whereIn('company_id', $companies_id)->count() < 10){
                return response()->json(['create_tree' => true]);
             }
         }

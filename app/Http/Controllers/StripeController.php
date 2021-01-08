@@ -63,7 +63,7 @@ class StripeController extends Controller
 
     public function subscribe() {
         $user = auth()->user();
-        $user->syncRoles('OTY');
+        $user->syncRoles('TTM');
         $plan_id = request()->plan_id;
         if(request()->has('payment_method')) {
             $paymentMethod = request()->payment_method;
