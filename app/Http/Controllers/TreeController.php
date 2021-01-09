@@ -79,12 +79,16 @@ class TreeController extends Controller
         if ($role == 7 || $role == 8) {
             if(Tree::whereIn('company_id', $companies_id)->count() < 1){
                 return response()->json(['create_tree' => true]);
+            } else {
+                return response()->json(['create_tree' => false]);
             }
         }
 
         else if ($role == 5 || $role == 6) {
             if(Tree::whereIn('company_id', $companies_id)->count() < 10){
                return response()->json(['create_tree' => true]);
+            } else {
+                return response()->json(['create_tree' => false]);
             }
         }
 
