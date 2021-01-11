@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Family;
+use App\Models\Person;
+use DB;
 
 class FamilyController extends Controller
 {
@@ -14,7 +16,7 @@ class FamilyController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Family::query();
+        $query = Family::query()->with(['husband','wife']);
 
         if($request->has('searchTerm')) {
             $columnsToSearch = ['name', 'email', 'phone'];
@@ -46,6 +48,9 @@ class FamilyController extends Controller
         if($request->has("perPage")) {
             $rows = $query->paginate($request->perPage);
         }
+        if(!count($request->all())) {
+            $rows = $query->get();
+        }
 
         return $rows;
     }
@@ -57,7 +62,10 @@ class FamilyController extends Controller
      */
     public function create()
     {
-        //
+        $male = Person::where('sex','M')->get();
+        $female = Person::where('sex','F')->get();
+        $types = DB::table('types')->get();
+        return response()->json(['male' => $male, 'female' => $female , 'types' => $types]);
     }
 
     /**

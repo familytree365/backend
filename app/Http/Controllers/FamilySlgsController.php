@@ -14,7 +14,7 @@ class FamilySlgsController extends Controller
      */
     public function index(Request $request)
     {
-        $query = FamilySlgs::query();
+        $query = FamilySlgs::query()->with('family');
 
         if($request->has('searchTerm')) {
             $columnsToSearch = ['name', 'email', 'phone'];

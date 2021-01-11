@@ -27,4 +27,9 @@ class FamilySlgs extends Model
      * @var array
      */
     protected $fillable = ['family_id', 'stat', 'date', 'plac', 'temp', 'created_at', 'updated_at'];
+
+    public function family()
+    {
+        return $this->hasOne(Family::class, 'id', 'family_id');
+    }
 }
