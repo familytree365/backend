@@ -7,6 +7,7 @@ use App\Models\Person;
 use Illuminate\Http\Request;
 use App\Models\Tree;
 use App\Models\Company;
+use App\Models\User;
 use DB;
 use Artisan;
 use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
@@ -27,6 +28,7 @@ class TreeController extends Controller
      */
     public function index(Request $request)
     {
+
         $query = Tree::query()->with('company');
 
         if($request->has('searchTerm')) {
@@ -51,6 +53,10 @@ class TreeController extends Controller
             }
         }
 
+        $user =  auth()->user();
+        $company = $user->Company()->pluck('companies.id');
+        $query->whereIn('company_id',$company);
+
         if($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
@@ -62,6 +68,8 @@ class TreeController extends Controller
         if(!count($request->all())) {
             $rows = $query->get()->toArray();
         }
+
+
         return $rows;
     }
 
@@ -94,11 +102,11 @@ class TreeController extends Controller
 
         else if ($role == 3 || $role == 4) {
             return response()->json(['create_tree' => true]);
-        } 
+        }
         else {
             return response()->json(['create_tree' => false]);
         }
-        
+
     }
 
     /**
@@ -119,7 +127,7 @@ class TreeController extends Controller
                     'current_tenant' => 0,
                     'description' => $request->description,
                 ])->id;
-        
+
         $tenant_id = DB::connection($this->getConnectionName())->table('tenants')->insertGetId([
             'name' => 'tenant'.$tree_id,
             'tree_id' => $tree_id,
