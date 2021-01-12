@@ -86,10 +86,11 @@ Route::middleware('tenant')->group(function() {
 	Route::resource('dnaupload', 'DnaController');
     Route::resource('dnamatching', 'DnaMatchingController');
     Route::resource('company', 'CompanyController');
-        Route::resource('tree', 'TreeController');
-        Route::resource('chats', 'ChatController');
-        Route::resource('chatmessages', 'ChatMessageController');
-        Route::resource('forumcategory', 'ForumCategoryController');
-        Route::resource('forumtopic', 'ForumTopicController');
-        Route::resource('forumpost', 'ForumPostController');
+    Route::resource('tree', 'TreeController');
+    Route::resource('chats', 'ChatController');
+    Route::resource('chatmessages', 'ChatMessageController');
+    Route::resource('forumcategory', 'ForumCategoryController');
+    Route::resource('forumtopic', 'ForumTopicController');
+    Route::resource('forumpost', 'ForumPostController');
+    Route::resource('calendar_event', 'CalendarEventController');
 });
