@@ -13,8 +13,9 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\File;
 use GenealogiaWebsite\LaravelGedcom\Utils\GedcomParser;
 use Illuminate\Support\Facades\Artisan;
+use Spatie\Multitenancy\Jobs\TenantAware;
 
-class ImportGedcom implements ShouldQueue
+class ImportGedcom implements ShouldQueue, TenantAware
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $filename;
