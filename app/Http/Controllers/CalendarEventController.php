@@ -14,7 +14,8 @@ class CalendarEventController extends Controller
      */
     public function index(Request $request)
     {
-        
+        $calender_event = CalendarEvent::get();
+        return $calender_event;
     }
 
     /**
@@ -48,7 +49,7 @@ class CalendarEventController extends Controller
      */
     public function show($id)
     {
-        
+
     }
 
     /**

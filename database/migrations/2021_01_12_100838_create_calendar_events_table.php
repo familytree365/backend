@@ -28,8 +28,8 @@ class CreateCalendarEventsTable extends Migration
             $table->decimal('lat', 10, 8)->nullable();
             $table->decimal('lng', 11, 8)->nullable();
 
-            $table->integer('created_by')->unsigned()->index()->nullable();
-            $table->foreign('created_by')->references('id')->on('users');
+            // $table->integer('created_by')->unsigned()->index()->nullable();
+            // $table->foreign('created_by')->references('id')->on('users');
 
             $table->timestamps();
         });
