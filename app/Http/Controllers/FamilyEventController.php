@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Family;
 use Illuminate\Http\Request;
 use App\Models\FamilyEvent;
+use App\Models\Place;
+use App\Models\Company;
+use Illuminate\Support\Facades\DB;
 
 class FamilyEventController extends Controller
 {
@@ -14,7 +18,7 @@ class FamilyEventController extends Controller
      */
     public function index(Request $request)
     {
-        $query = FamilyEvent::query();
+        $query = FamilyEvent::query()->with(['family','place']);
 
         if($request->has('searchTerm')) {
             $columnsToSearch = ['name', 'email', 'phone'];
@@ -57,7 +61,18 @@ class FamilyEventController extends Controller
      */
     public function create()
     {
+        // return "hellooooo";
         //
+
+        // $placesid = Place::all('id');
+
+    }
+    function get()
+    {
+        // $family = Family::get();
+        // return $family;
+        $company = Company::all()->count();
+        return $company;
     }
 
     /**

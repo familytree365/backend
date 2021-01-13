@@ -93,4 +93,6 @@ Route::middleware('tenant')->group(function() {
     Route::resource('forumtopic', 'ForumTopicController');
     Route::resource('forumpost', 'ForumPostController');
     Route::resource('calendar_event', 'CalendarEventController');
+    Route::get('allfamily', 'FamilyEventController@get');
+    Route::get('allplaces', 'PlaceController@get');
 });

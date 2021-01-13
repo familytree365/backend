@@ -21,7 +21,7 @@ class RolesAndPermissionsSeeder extends Seeder
         foreach($tenants as $tenant) {
             DB::statement("DROP DATABASE $tenant->name");
         }
-       
+
          // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
@@ -31,6 +31,14 @@ class RolesAndPermissionsSeeder extends Seeder
             ['name' => 'calendar menu', 'guard_name' => 'web'],
 
             ['name' => 'files menu', 'guard_name' => 'web'],
+
+            //Company menu permission
+            ['name' => 'company menu', 'guard_name' => 'web'],
+            ['name' => 'company index', 'guard_name' => 'web'],
+            ['name' => 'company create', 'guard_name' => 'web'],
+            ['name' => 'company edit', 'guard_name' => 'web'],
+            ['name' => 'company delete', 'guard_name' => 'web'],
+
             //Information menu permission
             ['name' => 'information menu', 'guard_name' => 'web'],
             ['name' => 'objects index', 'guard_name' => 'web'],
@@ -210,6 +218,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $free_permission = [
             'dashboard menu',
             'subscription menu',
+            'gedcom import menu'
         ];
         foreach($free_permission as $link){
             $permission = Permission::where('name', $link)->first();
@@ -217,7 +226,7 @@ class RolesAndPermissionsSeeder extends Seeder
                 $permission->roles()->detach($role_id);
                 $permission->roles()->attach($role_id);
             }
-        } 
+        }
 
         //Expired Role
         $expired = Role::where('name', 'expired')->first();

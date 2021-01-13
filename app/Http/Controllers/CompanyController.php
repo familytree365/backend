@@ -15,6 +15,7 @@ class CompanyController extends Controller
     public function index(Request $request)
     {
         $user = auth()->user();
+
         $companies_id = $user->Company()->pluck('companies.id');
         $query = Company::query();
 
@@ -75,9 +76,11 @@ class CompanyController extends Controller
     public function store(Request $request)
     {
         $user = auth()->user();
+
         //
         $request->validate([
-           'name' => 'required',
+           'name' => ['required','unique:landlord.companies'],
+
         ]);
         return $user->Company()->create([
             'name' => $request->name,
@@ -120,7 +123,8 @@ class CompanyController extends Controller
     {
         //
         $request->validate([
-           'name' => 'required',
+           'name' =>  ['required','unique:landlord.companies'],
+
         ]);
 
         $company=Company::find($id);

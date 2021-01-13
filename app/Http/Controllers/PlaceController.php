@@ -141,4 +141,10 @@ class PlaceController extends Controller
         }
         return "false";
     }
+
+    function get()
+    {
+        $places = Place::get();
+        return $places;
+    }
 }

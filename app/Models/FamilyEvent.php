@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use GenealogiaWebsite\LaravelGedcom\Models\Place;
 use GenealogiaWebsite\LaravelGedcom\Observers\EventActionsObserver;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -45,6 +46,10 @@ class FamilyEvent extends Event
 
     public function family()
     {
-        return $this->hasOne(Family::class, 'id', 'family_id');
+        return $this->hasMany(Family::class, 'id', 'family_id');
+    }
+    public function place()
+    {
+        return $this->hasMany(Place::class,'id','places_id');
     }
 }
