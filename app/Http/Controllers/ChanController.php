@@ -70,7 +70,6 @@ class ChanController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'date' => 'required',
             'time' => 'required'
         ]);
@@ -116,7 +115,6 @@ class ChanController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'date' => 'required',
             'time' => 'required'
         ]);

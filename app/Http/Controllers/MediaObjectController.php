@@ -18,7 +18,7 @@ class MediaObjectController extends Controller
         $query = MediaObjectFile::query();
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
+            $columnsToSearch = ['gid', 'group', 'titl','obje_id','rin'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -70,7 +70,6 @@ class MediaObjectController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'gid' => 'required',
             'group' => 'required',
             'titl' => 'required',
             'obje_id' => 'required',
@@ -118,7 +117,6 @@ class MediaObjectController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'gid' => 'required',
             'group' => 'required',
             'titl' => 'required',
             'obje_id' => 'required',

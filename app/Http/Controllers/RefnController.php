@@ -70,7 +70,6 @@ class RefnController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'refn' => 'required',
             'type' => 'required'
         ]);
@@ -116,7 +115,6 @@ class RefnController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'refn' => 'required',
             'type' => 'required'
         ]);

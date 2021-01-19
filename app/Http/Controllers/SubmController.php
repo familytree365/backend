@@ -70,7 +70,6 @@ class SubmController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'name' => 'required',
             'addr_id' => 'required',
             'rin' => 'required',
@@ -130,7 +129,6 @@ class SubmController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'name' => 'required',
             'addr_id' => 'required',
             'rin' => 'required',
