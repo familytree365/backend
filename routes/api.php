@@ -95,4 +95,12 @@ Route::middleware('tenant')->group(function() {
     Route::resource('calendar_event', 'CalendarEventController');
     Route::get('allfamily', 'FamilyEventController@get');
     Route::get('allplaces', 'PlaceController@get');
+    Route::get('addrname', 'AddrController@get');
+    Route::get('allrepository', 'RepositoryController@get');
+    Route::get('allauthor', 'AuthorController@get');
+	Route::get('alltype', 'SourceController@get');
+
+
+
+
 });

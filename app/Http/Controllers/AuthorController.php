@@ -17,7 +17,7 @@ class AuthorController extends Controller
         $query = Author::query();
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
+            $columnsToSearch = ['name', 'description', 'is_active'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -140,5 +140,11 @@ class AuthorController extends Controller
             return "true";
         }
         return "false";
+    }
+
+    public function get()
+    {
+        $author_data = Author::all();
+        return $author_data;
     }
 }

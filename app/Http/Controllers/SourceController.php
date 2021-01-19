@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Source;
+use Illuminate\Support\Facades\DB;
 
 class SourceController extends Controller
 {
@@ -196,5 +197,11 @@ class SourceController extends Controller
             return "true";
         }
         return "false";
+    }
+
+    public function get()
+    {
+        $type_data = DB::table('types')->get();
+        return $type_data;
     }
 }

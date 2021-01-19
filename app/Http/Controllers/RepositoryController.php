@@ -165,4 +165,10 @@ class RepositoryController extends Controller
         }
         return "false";
     }
+
+    public function get()
+    {
+        $repo_data = Repository::all();
+        return $repo_data;
+    }
 }

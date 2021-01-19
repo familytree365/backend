@@ -79,13 +79,13 @@ class SubnController extends Controller
         ]);
 
         return Subn::create([
-            'subm' => $request->name,
-            'famf' => $request->name,
-            'temp' => $request->name,
-            'ance' => $request->name,
-            'desc' => $request->name,
-            'ordi' => $request->name,
-            'rin' => $request->name
+            'subm' => $request->subm,
+            'famf' => $request->famf,
+            'temp' => $request->temp,
+            'ance' => $request->ance,
+            'desc' => $request->desc,
+            'ordi' => $request->ordi,
+            'rin' => $request->rin
         ]);
     }
 

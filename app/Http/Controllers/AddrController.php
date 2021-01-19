@@ -57,7 +57,8 @@ class AddrController extends Controller
      */
     public function create()
     {
-        //
+        $address = Addr::get();
+        return $address;
     }
 
     /**
@@ -152,5 +153,11 @@ class AddrController extends Controller
             return "true";
         }
         return "false";
+    }
+
+    function get()
+    {
+        $address = Addr::all();
+        return $address;
     }
 }

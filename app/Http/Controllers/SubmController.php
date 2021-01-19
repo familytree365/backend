@@ -82,16 +82,16 @@ class SubmController extends Controller
         ]);
 
         return Subm::create([
-            'group' => $request->name,
+            'group' => $request->group,
             'name' => $request->name,
-            'addr_id' => $request->name,
-            'rin' => $request->name,
-            'rfn' => $request->name,
-            'lang' => $request->name,
-            'phon' => $request->name,
-            'email' => $request->name,
-            'fax' => $request->name,
-            'www' => $request->name
+            'addr_id' => $request->addr_id,
+            'rin' => $request->rin,
+            'rfn' => $request->rfn,
+            'lang' => $request->lang,
+            'phon' => $request->phon,
+            'email' => $request->email,
+            'fax' => $request->fax,
+            'www' => $request->www
         ]);
     }
 
