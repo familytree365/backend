@@ -17,7 +17,7 @@ class RefnController extends Controller
         $query = Refn::query();
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['group','gid','refn','type'];
+            $columnsToSearch = ['group','refn','type'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -76,7 +76,6 @@ class RefnController extends Controller
 
         return Refn::create([
             'group' => $request->group,
-            'gid' => $request->gid,
             'refn' => $request->refn,
             'type' => $request->type
         ]);
@@ -121,7 +120,6 @@ class RefnController extends Controller
 
         $refn = Refn::find($id);
         $refn->group = $request->group;
-        $refn->gid = $request->gid;
         $refn->refn = $request->refn;
         $refn->type = $request->type;
         $refn->save();

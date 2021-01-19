@@ -18,7 +18,7 @@ class MediaObjectController extends Controller
         $query = MediaObjectFile::query();
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['gid', 'group', 'titl','obje_id','rin'];
+            $columnsToSearch = ['group','titl','obje_id','rin'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -77,7 +77,6 @@ class MediaObjectController extends Controller
         ]);
 
         return MediaObject::create([
-            'gid' => $request->gid,
             'group' => $request->group,
             'titl' => $request->titl,
             'obje_id' => $request->obje_id,
@@ -124,7 +123,6 @@ class MediaObjectController extends Controller
         ]);
 
         $mediaobject = MediaObject::find($id);
-        $mediaobject->gid = $request->gid;
         $mediaobject->group = $request->group;
         $mediaobject->titl = $request->titl;
         $mediaobject->obje_id = $request->obje_id;

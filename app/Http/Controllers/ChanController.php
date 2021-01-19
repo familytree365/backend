@@ -17,7 +17,7 @@ class ChanController extends Controller
         $query = Chan::query();
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['group','gid','date','time'];
+            $columnsToSearch = ['group','date','time'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -76,7 +76,6 @@ class ChanController extends Controller
 
         return Chan::create([
             'group' => $request->group,
-            'gid' => $request->gid,
             'date' => $request->date,
             'time' => $request->time
         ]);
@@ -121,7 +120,6 @@ class ChanController extends Controller
 
         $chan = Chan::find($id);
         $chan->group = $request->group;
-        $chan->gid = $request->gid;
         $chan->date = $request->date;
         $chan->time = $request->time;
         $chan->save();

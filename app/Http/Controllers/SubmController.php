@@ -17,7 +17,7 @@ class SubmController extends Controller
         $query = Subm::query();
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['group','gid','name','addr_id','rin','rfn','lang','email','phon','fax','www'];
+            $columnsToSearch = ['group','name','addr_id','rin','rfn','lang','email','phon','fax','www'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -83,7 +83,6 @@ class SubmController extends Controller
 
         return Subm::create([
             'group' => $request->name,
-            'gid' => $request->name,
             'name' => $request->name,
             'addr_id' => $request->name,
             'rin' => $request->name,
@@ -142,7 +141,6 @@ class SubmController extends Controller
 
         $subm = Subm::find($id);
         $subm->group = $request->group;
-        $subm->gid = $request->gid;
         $subm->name = $request->name;
         $subm->addr_id = $request->addr_id;
         $subm->rin = $request->rin;
