@@ -17,7 +17,7 @@ class SubmController extends Controller
         $query = Subm::query();
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
+            $columnsToSearch = ['group','gid','name','addr_id','rin','rfn','lang','email','phon','fax','www'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';

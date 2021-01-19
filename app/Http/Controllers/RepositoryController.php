@@ -17,7 +17,7 @@ class RepositoryController extends Controller
         $query = Repository::query();
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
+            $columnsToSearch = ['repo','name','addr_id','rin','email','phon','fax','www','description','type_id','is_active'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
