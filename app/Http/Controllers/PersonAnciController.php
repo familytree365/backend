@@ -17,7 +17,7 @@ class PersonAnciController extends Controller
         $query = PersonAnci::query();
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
+            $columnsToSearch = ['group','anci'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -70,13 +70,11 @@ class PersonAnciController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'anci' => 'required'
         ]);
 
         return PersonAnci::create([
             'group' => $request->group,
-            'gid' => $request->gid,
             'anci' => $request->anci
         ]);
     }
@@ -114,13 +112,11 @@ class PersonAnciController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'anci' => 'required'
         ]);
 
         $personanci = PersonAnci::find($id);
         $personanci->group = $request->group;
-        $personanci->gid = $request->gid;
         $personanci->anci = $request->anci;
         $personanci->save();
         return $personanci;

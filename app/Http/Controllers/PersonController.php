@@ -17,7 +17,7 @@ class PersonController extends Controller
         $query = Person::query();
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
+            $columnsToSearch = ['title','name','appellative','uid','email','phone','birthday','deathday','bank','bank_account','obs','givn','surn','type','npfx','nick','spfx','nsfx','secx','description','child_in_family_id','chan','rin','resn','rfn','afn'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -33,7 +33,7 @@ class PersonController extends Controller
 
             foreach($filters as $key => $value) {
                 if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%'); 
+                    $query->orWhere($key, 'like', '%' . $value . '%');
                 }
             }
         }
@@ -73,6 +73,7 @@ class PersonController extends Controller
         $request->validate([
             'title' => 'required',
             'name' => 'required',
+            'appellative' => 'required',
             'uid' => 'required',
             'email' => 'required',
             'phone' => 'required',
@@ -80,21 +81,52 @@ class PersonController extends Controller
             'deathday' => 'required',
             'bank' => 'required',
             'bank_account' => 'required',
+            'obs' => 'required',
+            'givn' => 'required',
+            'surn' => 'required',
             'type' => 'required',
+            'npfx' => 'required',
+            'nick' => 'required',
+            'spfx' => 'required',
+            'nsfx' => 'required',
             'sex' => 'required',
-            'description' => 'required'
-
-
-
-
-
+            'description' => 'required',
+            'child_in_family_id' => 'required',
+            'chan' => 'required',
+            'rin' => 'required',
+            'resn' => 'required',
+            'rfn' => 'required',
+            'afn' => 'required'
         ]);
 
         return Person::create([
+            'title' => $request->title,
             'name' => $request->name,
+            'appellative' => $request->appellative,
+            'uid' => $request->uid,
             'email' => $request->email,
-            'phone' => $request->phone
-        ]);
+            'phone' => $request->phone,
+            'birthday' => $request->birthday,
+            'deathday' => $request->deathday,
+            'bank' => $request->bank,
+            'bank_account' => $request->bank_account,
+            'obs' => $request->obs,
+            'givn' => $request->givn,
+            'surn' => $request->surn,
+            'type' => $request->type,
+            'npfx' => $request->npfx,
+            'nick' => $request->nick,
+            'spfx' => $request->spfx,
+            'nsfx' => $request->nsfx,
+            'sex' => $request->sex,
+            'description' => $request->description,
+            'child_in_family_id' => $request->child_in_family_id,
+            'chan' => $request->chan,
+            'rin' => $request->rin,
+            'resn' => $request->resn,
+            'rfn' => $request->rfn,
+            'afn' => $request->afn
+            ]);
     }
 
     /**
@@ -129,11 +161,62 @@ class PersonController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'title' => 'required',
+            'name' => 'required',
+            'appellative' => 'required',
+            'uid' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'birthday' => 'required',
+            'deathday' => 'required',
+            'bank' => 'required',
+            'bank_account' => 'required',
+            'obs' => 'required',
+            'givn' => 'required',
+            'surn' => 'required',
+            'type' => 'required',
+            'npfx' => 'required',
+            'nick' => 'required',
+            'spfx' => 'required',
+            'nsfx' => 'required',
+            'sex' => 'required',
+            'description' => 'required',
+            'child_in_family_id' => 'required',
+            'chan' => 'required',
+            'rin' => 'required',
+            'resn' => 'required',
+            'rfn' => 'required',
+            'afn' => 'required'
+
         ]);
 
         $person = Person::find($id);
+        $person->title = $request->title;
         $person->name = $request->name;
+        $person->appellative = $request->appellative;
+        $person->uid = $request->uid;
+        $person->email = $request->email;
+        $person->phone = $request->phone;
+        $person->birthday = $request->birthday;
+        $person->deathday = $request->deathday;
+        $person->bank = $request->bank;
+        $person->bank_account = $request->bank_account;
+        $person->obs = $request->obs;
+        $person->givn = $request->givn;
+        $person->surn = $request->surn;
+        $person->type = $request->type;
+        $person->npfx = $request->npfx;
+        $person->nick = $request->nick;
+        $person->spfx = $request->spfx;
+        $person->nsfx = $request->nsfx;
+        $person->sex = $request->sex;
+        $person->description = $request->description;
+        $person->child_in_family_id = $request->child_in_family_id;
+        $person->chan = $request->chan;
+        $person->rin = $request->rin;
+        $person->resn = $request->resn;
+        $person->rfn = $request->rfn;
+        $person->afn = $request->afn;
         $person->save();
         return $person;
     }

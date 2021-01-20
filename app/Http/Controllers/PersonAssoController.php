@@ -17,7 +17,7 @@ class PersonAssoController extends Controller
         $query = PersonAsso::query();
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
+            $columnsToSearch = ['group','indi','rela','import_confirm'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -70,15 +70,15 @@ class PersonAssoController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'indi' => 'required',
+            'rela' => 'required',
             'import_confirm' => 'required'
         ]);
 
         return PersonAsso::create([
             'group' => $request->group,
-            'gid' => $request->gid,
             'indi' => $request->indi,
+            'rela' => $request->rela,
             'import_confirm' => $request->import_confirm,
         ]);
     }
@@ -116,15 +116,15 @@ class PersonAssoController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'indi' => 'required',
+            'rela' => 'required',
             'import_confirm' => 'required'
         ]);
 
         $personasso = PersonAsso::find($id);
         $personasso->group = $request->group;
-        $personasso->gid = $request->gid;
         $personasso->indi = $request->indi;
+        $personasso->rela = $request->rela;
         $personasso->import_confirm = $request->import_confirm;
         $personasso->save();
         return $personasso;

@@ -17,7 +17,7 @@ class SourceDataEvenController extends Controller
         $query = SourceDataEven::query();
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
+            $columnsToSearch = ['group', 'date', 'plac'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -70,14 +70,12 @@ class SourceDataEvenController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'date' => 'required',
             'plac' => 'required'
         ]);
 
         return SourceDataEven::create([
             'group' => $request->group,
-            'gid' => $request->gid,
             'date' => $request->date,
             'plac' => $request->plac,
         ]);
@@ -116,14 +114,12 @@ class SourceDataEvenController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'date' => 'required',
             'plac' => 'required'
         ]);
 
         $sourcedataeven = SourceDataEven::find($id);
         $sourcedataeven->group = $request->group;
-        $sourcedataeven->gid = $request->gid;
         $sourcedataeven->date = $request->date;
         $sourcedataeven->plac = $request->plac;
         $sourcedataeven->save();

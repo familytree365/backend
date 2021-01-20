@@ -70,7 +70,6 @@ class SourceRefController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'sour_id' => 'required',
             'text' => 'required',
             'quay' => 'required',
@@ -79,7 +78,6 @@ class SourceRefController extends Controller
 
         return SourceRef::create([
             'group' => $request->group,
-            'gid' => $request->gid,
             'sour_id' => $request->sour_id,
             'text' => $request->text,
             'quay' => $request->quay,
@@ -120,7 +118,6 @@ class SourceRefController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'sour_id' => 'required',
             'text' => 'required',
             'quay' => 'required',
@@ -129,7 +126,6 @@ class SourceRefController extends Controller
 
         $sourceref = SourceRef::find($id);
         $sourceref->group = $request->group;
-        $sourceref->gid = $request->gid;
         $sourceref->sour_id = $request->sour_id;
         $sourceref->text = $request->text;
         $sourceref->quay = $request->quay;

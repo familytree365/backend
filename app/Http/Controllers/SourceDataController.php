@@ -17,7 +17,7 @@ class SourceDataController extends Controller
         $query = SourceData::query();
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
+            $columnsToSearch = ['group','date', 'text','agnc'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -70,7 +70,6 @@ class SourceDataController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'date' => 'required',
             'text' => 'required',
             'agnc' => 'required'
@@ -78,7 +77,6 @@ class SourceDataController extends Controller
 
         return SourceData::create([
             'group' => $request->group,
-            'gid' => $request->gid,
             'date' => $request->date,
             'text' => $request->text,
             'agnc' => $request->agnc
@@ -118,7 +116,6 @@ class SourceDataController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'date' => 'required',
             'text' => 'required',
             'agnc' => 'required'
@@ -126,7 +123,6 @@ class SourceDataController extends Controller
 
         $sourcedata = SourceData::find($id);
         $sourcedata->group = $request->group;
-        $sourcedata->gid = $request->gid;
         $sourcedata->date = $request->date;
         $sourcedata->text = $request->text;
         $sourcedata->agnc = $request->agnc;

@@ -33,4 +33,13 @@ class Subm extends Model
      * @var array
      */
     protected $fillable = ['group', 'gid', 'name', 'addr_id', 'rin', 'rfn', 'lang', 'phon', 'email', 'fax', 'www', 'created_at', 'updated_at'];
+
+    public function addr()
+    {
+       return $this->hasMany(Addr::class,'id','addr_id');
+    }
+
+
+
+
 }

@@ -17,7 +17,7 @@ class PersonEventController extends Controller
         $query = PersonEvent::query();
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
+            $columnsToSearch = ['converted_date', 'year', 'month','day','type','attr','plac','addr_id','phon','caus','age','agnc','adop','adop_famc','person_id','title','date','description','places_id'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -68,25 +68,31 @@ class PersonEventController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
+            'converted_date' => 'required',
             'person_id' => 'required',
             'title' => 'required',
             'type' => 'required',
             'attr' => 'required',
             'date' => 'required',
             'plac' => 'required',
+            'addr_id' => 'required',
             'phon' => 'required',
             'caus' => 'required',
             'age' => 'required',
             'agnc' => 'required',
+            'adop' => 'required',
             'places_id' => 'required',
             'description' => 'required',
+            'adop_famc' => 'required',
             'year' => 'required',
             'month' => 'required',
             'day' => 'required'
         ]);
 
         return PersonEvent::create([
+            'converted_date' => $request->converted_date,
             'person_id' => $request->person_id,
             'title' => $request->title,
             'type' => $request->type,
@@ -97,8 +103,10 @@ class PersonEventController extends Controller
             'caus' => $request->caus,
             'age' => $request->age,
             'agnc' => $request->agnc,
+            'adop' => $request->adop,
             'places_id' => $request->places_id,
             'description' => $request->description,
+            'adop_famc' => $request->adop_famc,
             'year' => $request->year,
             'month' => $request->month,
             'day' => $request->day
@@ -137,35 +145,44 @@ class PersonEventController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'converted_date' => 'required',
             'person_id' => 'required',
             'title' => 'required',
             'type' => 'required',
             'attr' => 'required',
             'date' => 'required',
             'plac' => 'required',
+            'addr_id' => 'required',
             'phon' => 'required',
             'caus' => 'required',
             'age' => 'required',
             'agnc' => 'required',
+            'adop' => 'required',
             'places_id' => 'required',
             'description' => 'required',
+            'adop_famc' => 'required',
             'year' => 'required',
             'month' => 'required',
             'day' => 'required'
         ]);
 
         $personevent = PersonEvent::find($id);
+        $personevent->converted_date = $request->converted_date;
         $personevent->person_id = $request->person_id;
         $personevent->title = $request->title;
         $personevent->type = $request->type;
         $personevent->attr = $request->attr;
         $personevent->date = $request->date;
         $personevent->plac = $request->plac;
+        $personevent->addr_id = $request->addr_id;
         $personevent->phon = $request->phon;
         $personevent->caus = $request->caus;
+        $personevent->age = $request->age;
         $personevent->agnc = $request->agnc;
+        $personevent->adop = $request->adop;
         $personevent->places_id = $request->places_id;
         $personevent->description = $request->description;
+        $personevent->adop_famc = $request->adop_famc;
         $personevent->year = $request->year;
         $personevent->month = $request->month;
         $personevent->day = $request->day;

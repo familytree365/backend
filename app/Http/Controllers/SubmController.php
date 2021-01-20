@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Subm;
+use App\Models\Addr;
 
 class SubmController extends Controller
 {
@@ -14,7 +15,7 @@ class SubmController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Subm::query();
+        $query = Subm::query()->with('addr');
 
         if($request->has('searchTerm')) {
             $columnsToSearch = ['group','name','addr_id','rin','rfn','lang','email','phon','fax','www'];

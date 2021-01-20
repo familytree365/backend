@@ -17,7 +17,7 @@ class PersonAliaController extends Controller
         $query = PersonAlia::query();
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
+            $columnsToSearch = ['group','alia','import_confirm'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -70,14 +70,12 @@ class PersonAliaController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'alia' => 'required',
             'import_confirm' => 'required'
         ]);
 
         return PersonAlia::create([
             'group' => $request->group,
-            'gid' => $request->gid,
             'alia' => $request->alia,
             'import_confirm' => $request->import_confirm
         ]);
@@ -116,14 +114,12 @@ class PersonAliaController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'alia' => 'required',
             'import_confirm' => 'required'
         ]);
 
         $personalia = PersonAlia::find($id);
         $personalia->group = $request->group;
-        $personalia->gid = $request->gid;
         $personalia->alia = $request->alia;
         $personalia->import_confirm = $request->import_confirm;
         $personalia->save();

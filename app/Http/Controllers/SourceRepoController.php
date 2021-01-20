@@ -17,7 +17,7 @@ class SourceRepoController extends Controller
         $query = SourceRepo::query();
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
+            $columnsToSearch = ['group', 'repo_id', 'caln'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -70,7 +70,6 @@ class SourceRepoController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'repo_id' => 'required',
             'caln' => 'required'
 
@@ -78,7 +77,6 @@ class SourceRepoController extends Controller
 
         return SourceRepo::create([
             'group' => $request->group,
-            'gid' => $request->gid,
             'repo_id' => $request->repo_id,
             'caln' => $request->caln
         ]);
@@ -117,14 +115,12 @@ class SourceRepoController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'repo_id' => 'required',
             'caln' => 'required'
         ]);
 
         $sourcerepo = SourceRepo::find($id);
         $sourcerepo->group = $request->group;
-        $sourcerepo->gid = $request->gid;
         $sourcerepo->repo_id = $request->repo_id;
         $sourcerepo->caln = $request->caln;
         $sourcerepo->save();

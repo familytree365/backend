@@ -18,7 +18,7 @@ class SourceController extends Controller
         $query = Source::query();
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
+            $columnsToSearch = ['titl', 'sour', 'auth','data','text','publ','abbr','name','description','repository_id','author_id','publication_id','type_id','is_active','group','quay','page'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -82,31 +82,31 @@ class SourceController extends Controller
             'repository_id' => 'required',
             'author_id' => 'required',
             'publication_id' => 'required',
+            'type_id' => 'required',
             'is_active' => 'required',
             'group' => 'required',
-            'gid' => 'required',
             'quay' => 'required',
             'page' => 'required'
         ]);
 
         return Source::create([
-            'sour' => $request->name,
-            'titl' => $request->name,
-            'auth' => $request->name,
-            'data' => $request->name,
-            'text' => $request->name,
-            'publ' => $request->name,
-            'abbr' => $request->name,
+            'sour' => $request->sour,
+            'titl' => $request->titl,
+            'auth' => $request->auth,
+            'data' => $request->data,
+            'text' => $request->text,
+            'publ' => $request->publ,
+            'abbr' => $request->abbr,
             'name' => $request->name,
-            'description' => $request->name,
-            'repository_id' => $request->name,
-            'author_id' => $request->name,
-            'publication_id' => $request->name,
-            'is_active' => $request->name,
-            'group' => $request->name,
-            'gid' => $request->name,
-            'quay' => $request->name,
-            'page' => $request->name
+            'description' => $request->description,
+            'repository_id' => $request->repository_id,
+            'author_id' => $request->author_id,
+            'publication_id' => $request->publication_id,
+            'type_id' => $request->type_id,
+            'is_active' => $request->is_active,
+            'group' => $request->group,
+            'quay' => $request->quay,
+            'page' => $request->page
         ]);
     }
 
@@ -154,9 +154,9 @@ class SourceController extends Controller
             'repository_id' => 'required',
             'author_id' => 'required',
             'publication_id' => 'required',
+            'type_id' => 'required',
             'is_active' => 'required',
             'group' => 'required',
-            'gid' => 'required',
             'quay' => 'required',
             'page' => 'required'
         ]);
@@ -174,9 +174,9 @@ class SourceController extends Controller
         $source->repository_id = $request->repository_id;
         $source->author_id = $request->author_id;
         $source->publication_id = $request->publication_id;
+        $source->type_id = $request->type_id;
         $source->is_active = $request->is_active;
         $source->group = $request->group;
-        $source->gid = $request->gid;
         $source->quay = $request->quay;
         $source->page = $request->page;
         $source->save();

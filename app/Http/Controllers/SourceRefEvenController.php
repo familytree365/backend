@@ -17,7 +17,7 @@ class SourceRefEvenController extends Controller
         $query = SourceRefEven::query();
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
+            $columnsToSearch = ['group','even','role'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -70,14 +70,12 @@ class SourceRefEvenController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'even' => 'required',
             'role' => 'required'
         ]);
 
         return SourceRefEven::create([
             'group' => $request->name,
-            'gid' => $request->name,
             'even' => $request->name,
             'role' => $request->name
         ]);
@@ -116,14 +114,12 @@ class SourceRefEvenController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'even' => 'required',
             'role' => 'required'
         ]);
 
         $sourcerefeven = SourceRefEven::find($id);
         $sourcerefeven->group = $request->group;
-        $sourcerefeven->gid = $request->gid;
         $sourcerefeven->even = $request->even;
         $sourcerefeven->role = $request->role;
         $sourcerefeven->save();
