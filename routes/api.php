@@ -98,7 +98,9 @@ Route::middleware('tenant')->group(function() {
     Route::get('addrname', 'AddrController@get');
     Route::get('allrepository', 'RepositoryController@get');
     Route::get('allauthor', 'AuthorController@get');
-	Route::get('alltype', 'SourceController@get');
+    Route::get('alltype', 'SourceController@get');
+	Route::get('allpublication', 'SourceController@getdata');
+
 
 
 

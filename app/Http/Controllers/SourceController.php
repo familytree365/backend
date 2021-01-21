@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Source;
 use Illuminate\Support\Facades\DB;
+use App\Models\Publication;
 
 class SourceController extends Controller
 {
@@ -15,7 +16,7 @@ class SourceController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Source::query();
+        $query = Source::query()->with(['publication','repositories','author','type']);
 
         if($request->has('searchTerm')) {
             $columnsToSearch = ['titl', 'sour', 'auth','data','text','publ','abbr','name','description','repository_id','author_id','publication_id','type_id','is_active','group','quay','page'];
@@ -204,4 +205,5 @@ class SourceController extends Controller
         $type_data = DB::table('types')->get();
         return $type_data;
     }
+
 }

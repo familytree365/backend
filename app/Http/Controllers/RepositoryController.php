@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Models\Repository;
 
@@ -14,7 +13,7 @@ class RepositoryController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Repository::query();
+        $query = Repository::query()->with(['type','addr']);
 
         if($request->has('searchTerm')) {
             $columnsToSearch = ['repo','name','addr_id','rin','email','phon','fax','www','description','type_id','is_active'];
