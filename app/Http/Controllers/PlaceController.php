@@ -70,14 +70,13 @@ class PlaceController extends Controller
     {
         $request->validate([
             'description' => 'required',
-            'title' => 'required',
-            'date' => 'required'
+            'title' => 'required'
         ]);
 
         return Place::create([
-            'description' => $request->name,
-            'title' => $request->name,
-            'date' => $request->name
+            'description' => $request->description,
+            'title' => $request->title,
+            'date' => $request->date
         ]);
     }
 
@@ -114,8 +113,7 @@ class PlaceController extends Controller
     {
         $request->validate([
             'description' => 'required',
-            'title' => 'required',
-            'date' => 'required'
+            'title' => 'required'
         ]);
 
         $place = Place::find($id);

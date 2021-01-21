@@ -69,14 +69,8 @@ class NoteController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'note' => 'required',
-            'rin' => 'required',
-            'name' => 'required',
-            'description' => 'required',
-            'is_active' => 'required',
-            'type_id' => 'required',
-            'group' => 'required',
-            'date' => 'required'
+            'name' => 'required'
+
         ]);
 
         return Note::create([
@@ -123,14 +117,7 @@ class NoteController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'note' => 'required',
-            'rin' => 'required',
-            'name' => 'required',
-            'description' => 'required',
-            'is_active' => 'required',
-            'type_id' => 'required',
-            'group' => 'required',
-            'date' => 'required'
+            'name' => 'required'
         ]);
 
         $note = Note::find($id);

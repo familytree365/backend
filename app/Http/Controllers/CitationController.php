@@ -71,7 +71,6 @@ class CitationController extends Controller
         $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'date' => 'required',
             'volume' => 'required',
             'page' => 'required',
             'is_active' => 'required',
@@ -125,7 +124,6 @@ class CitationController extends Controller
         $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'date' => 'required',
             'volume' => 'required',
             'page' => 'required',
             'is_active' => 'required',
