@@ -71,12 +71,6 @@ class PersonLdsController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'type' => 'required',
-            'stat' => 'required',
-            'date' => 'required',
-            'plac' => 'required',
-            'temp' => 'required',
-            'slac_famc' => 'required'
         ]);
 
         return PersonLds::create([
@@ -123,12 +117,6 @@ class PersonLdsController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'type' => 'required',
-            'stat' => 'required',
-            'date' => 'required',
-            'plac' => 'required',
-            'temp' => 'required',
-            'slac_famc' => 'required'
         ]);
 
         $personlds = PersonLds::find($id);

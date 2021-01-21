@@ -70,8 +70,6 @@ class PersonAssoController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'indi' => 'required',
-            'rela' => 'required',
             'import_confirm' => 'required'
         ]);
 
@@ -116,8 +114,6 @@ class PersonAssoController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'indi' => 'required',
-            'rela' => 'required',
             'import_confirm' => 'required'
         ]);
 

@@ -15,7 +15,7 @@ class MediaObjectController extends Controller
      */
     public function index(Request $request)
     {
-        $query = MediaObjectFile::query();
+        $query = MediaObject::query();
 
         if($request->has('searchTerm')) {
             $columnsToSearch = ['group','titl','obje_id','rin'];
@@ -70,10 +70,7 @@ class MediaObjectController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'group' => 'required',
             'titl' => 'required',
-            'obje_id' => 'required',
-            'rin' => 'required'
         ]);
 
         return MediaObject::create([
@@ -116,10 +113,7 @@ class MediaObjectController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'group' => 'required',
             'titl' => 'required',
-            'obje_id' => 'required',
-            'rin' => 'required'
         ]);
 
         $mediaobject = MediaObject::find($id);
