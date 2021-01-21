@@ -17,7 +17,7 @@ class NoteController extends Controller
         $query = Note::query();
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
+            $columnsToSearch = ['note', 'rin', 'name','description','is_active','type_id','group'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -69,25 +69,25 @@ class NoteController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'gid' => 'required',
             'note' => 'required',
             'rin' => 'required',
             'name' => 'required',
             'description' => 'required',
             'is_active' => 'required',
             'type_id' => 'required',
-            'group' => 'required'
+            'group' => 'required',
+            'date' => 'required'
         ]);
 
         return Note::create([
-            'gid' => $request->gid,
             'note' => $request->note,
             'rin' => $request->rin,
             'name' => $request->name,
             'description' => $request->description,
             'is_active' => $request->is_active,
             'type_id' => $request->type_id,
-            'group' => $request->group
+            'group' => $request->group,
+            'date' => $request->date
         ]);
     }
 
@@ -123,18 +123,17 @@ class NoteController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'gid' => 'required',
             'note' => 'required',
             'rin' => 'required',
             'name' => 'required',
             'description' => 'required',
             'is_active' => 'required',
             'type_id' => 'required',
-            'group' => 'required'
+            'group' => 'required',
+            'date' => 'required'
         ]);
 
         $note = Note::find($id);
-        $note->gid = $request->gid;
         $note->note = $request->note;
         $note->rin = $request->rin;
         $note->name = $request->name;
@@ -142,6 +141,7 @@ class NoteController extends Controller
         $note->is_active = $request->is_active;
         $note->type_id = $request->type_id;
         $note->group = $request->group;
+        $note->date = $request->date;
         $note->save();
         return $note;
     }

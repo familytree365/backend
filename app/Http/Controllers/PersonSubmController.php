@@ -16,8 +16,8 @@ class PersonSubmController extends Controller
     {
         $query = PersonSubm::query();
 
-        if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
+        if($request->has('searchTerm')){
+            $columnsToSearch = ['group','subm'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -70,13 +70,11 @@ class PersonSubmController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'subm' => 'required'
         ]);
 
         return PersonSubm::create([
             'group' => $request->group,
-            'gid' => $request->gid,
             'subm' => $request->subm
         ]);
     }
@@ -114,13 +112,11 @@ class PersonSubmController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'subm' => 'required'
         ]);
 
         $personsubm = PersonSubm::find($id);
         $personsubm->group = $request->group;
-        $personsubm->gid = $request->gid;
         $personsubm->subm = $request->subm;
         $personsubm->save();
         return $personsubm;

@@ -17,7 +17,7 @@ class CitationController extends Controller
         $query = Citation::query();
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
+            $columnsToSearch = ['name', 'description', 'date','is_active','volume','page','confidence','source_id'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -71,7 +71,7 @@ class CitationController extends Controller
         $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'repository_id' => 'required',
+            'date' => 'required',
             'volume' => 'required',
             'page' => 'required',
             'is_active' => 'required',
@@ -82,7 +82,7 @@ class CitationController extends Controller
         return Citation::create([
             'name' => $request->name,
             'description' => $request->description,
-            'repository_id' => $request->repository_id,
+            'date' => $request->date,
             'volume' => $request->volume,
             'page' => $request->page,
             'is_active' => $request->is_active,
@@ -125,7 +125,7 @@ class CitationController extends Controller
         $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'repository_id' => 'required',
+            'date' => 'required',
             'volume' => 'required',
             'page' => 'required',
             'is_active' => 'required',
@@ -136,7 +136,7 @@ class CitationController extends Controller
         $citation = Citation::find($id);
         $citation->name = $request->name;
         $citation->description = $request->description;
-        $citation->repository_id = $request->repository_id;
+        $citation->date = $request->date;
         $citation->volume = $request->volume;
         $citation->page = $request->page;
         $citation->is_active = $request->is_active;

@@ -21,7 +21,7 @@ class FamilyEventController extends Controller
         $query = FamilyEvent::query()->with(['family','place']);
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
+            $columnsToSearch = ['family_id', 'places_id', 'date','title', 'description', 'year','month', 'day', 'type','plac', 'phon', 'caus','age', 'agnc', 'husb','wife','converted_date','addr_id'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -97,8 +97,12 @@ class FamilyEventController extends Controller
             'phon' => 'required',
             'caus' => 'required',
             'age' => 'required',
+            'agnc' => 'required',
             'husb' => 'required',
-            'wife' => 'required'
+            'wife' => 'required',
+            'converted_date' => 'required',
+            'addr_id' => 'required'
+
         ]);
 
         return FamilyEvent::create([
@@ -115,8 +119,11 @@ class FamilyEventController extends Controller
             'phon' => $request->phon,
             'caus' => $request->caus,
             'age' => $request->age,
+            'agnc' => $request->agnc,
             'husb' => $request->husb,
-            'wife' => $request->wife
+            'wife' => $request->wife,
+            'converted_date' => $request->converted_date,
+            'addr_id' => $request->addr_id
         ]);
     }
 
@@ -165,8 +172,12 @@ class FamilyEventController extends Controller
             'phon' => 'required',
             'caus' => 'required',
             'age' => 'required',
+            'agnc' => 'required',
             'husb' => 'required',
-            'wife' => 'required'
+            'wife' => 'required',
+            'converted_date' => 'required',
+            'addr_id' => 'required'
+
         ]);
 
         $familyevent = FamilyEvent::find($id);
@@ -183,8 +194,11 @@ class FamilyEventController extends Controller
         $familyevent->phon = $request->phon;
         $familyevent->caus = $request->caus;
         $familyevent->age = $request->age;
+        $familyevent->agnc = $request->agnc;
         $familyevent->husb = $request->husb;
         $familyevent->wife = $request->wife;
+        $familyevent->converted_date = $request->converted_date;
+        $familyevent->addr_id = $request->addr_id;
         $familyevent->save();
         return $familyevent;
     }

@@ -69,13 +69,7 @@ class SubnController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'subm' => 'required',
-            'famf' => 'required',
-            'temp' => 'required',
-            'ance' => 'required',
-            'desc' => 'required',
-            'ordi' => 'required',
-            'rin' => 'required'
+            'desc' => 'required'
         ]);
 
         return Subn::create([
@@ -121,13 +115,8 @@ class SubnController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'subm' => 'required',
-            'famf' => 'required',
-            'temp' => 'required',
-            'ance' => 'required',
-            'desc' => 'required',
-            'ordi' => 'required',
-            'rin' => 'required'
+            'desc' => 'required'
+
         ]);
 
         $subn = Subn::find($id);

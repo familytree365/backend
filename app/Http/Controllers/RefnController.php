@@ -69,10 +69,7 @@ class RefnController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'group' => 'required',
-            'refn' => 'required',
-            'type' => 'required'
-        ]);
+            'refn' => 'required'        ]);
 
         return Refn::create([
             'group' => $request->group,
@@ -113,9 +110,7 @@ class RefnController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'group' => 'required',
-            'refn' => 'required',
-            'type' => 'required'
+            'refn' => 'required'
         ]);
 
         $refn = Refn::find($id);

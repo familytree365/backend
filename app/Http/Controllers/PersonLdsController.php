@@ -18,7 +18,7 @@ class PersonLdsController extends Controller
         $query = PersonLds::query();
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
+            $columnsToSearch = ['group', 'type', 'stat','date', 'plac', 'temp','slac_famc'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -71,7 +71,6 @@ class PersonLdsController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'type' => 'required',
             'stat' => 'required',
             'date' => 'required',
@@ -82,7 +81,6 @@ class PersonLdsController extends Controller
 
         return PersonLds::create([
             'group' => $request->group,
-            'gid' => $request->gid,
             'type' => $request->type,
             'stat' => $request->stat,
             'date' => $request->date,
@@ -125,7 +123,6 @@ class PersonLdsController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'gid' => 'required',
             'type' => 'required',
             'stat' => 'required',
             'date' => 'required',
@@ -136,7 +133,6 @@ class PersonLdsController extends Controller
 
         $personlds = PersonLds::find($id);
         $personlds->group = $request->group;
-        $personlds->gid = $request->gid;
         $personlds->type = $request->type;
         $personlds->date = $request->date;
         $personlds->plac = $request->plac;

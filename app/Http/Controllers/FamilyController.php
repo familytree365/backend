@@ -19,7 +19,7 @@ class FamilyController extends Controller
         $query = Family::query()->with(['husband','wife']);
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
+            $columnsToSearch = ['description', 'is_active', 'husband_id','wife_id','type_id','chan','nchi','rin'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';

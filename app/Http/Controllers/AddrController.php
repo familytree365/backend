@@ -70,12 +70,10 @@ class AddrController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'adr1' => 'required',
-            'adr2' => 'required',
+
             'city' => 'required',
-            'stae' => 'required',
-            'post' => 'required',
-            'ctry' => 'required'
+            'stae' => 'required'
+
         ]);
 
         return Addr::create([
@@ -120,12 +118,8 @@ class AddrController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'adr1' => 'required',
-            'adr2' => 'required',
             'city' => 'required',
-            'stae' => 'required',
-            'post' => 'required',
-            'ctry' => 'required'
+            'stae' => 'required'
         ]);
 
         $addr = Addr::find($id);

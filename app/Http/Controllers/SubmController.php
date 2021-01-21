@@ -70,16 +70,7 @@ class SubmController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'group' => 'required',
-            'name' => 'required',
-            'addr_id' => 'required',
-            'rin' => 'required',
-            'rfn' => 'required',
-            'lang' => 'required',
-            'phon' => 'required',
-            'email' => 'required',
-            'fax' => 'required',
-            'www' => 'required'
+            'name' => 'required'
         ]);
 
         return Subm::create([
@@ -128,16 +119,7 @@ class SubmController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'group' => 'required',
-            'name' => 'required',
-            'addr_id' => 'required',
-            'rin' => 'required',
-            'rfn' => 'required',
-            'lang' => 'required',
-            'phon' => 'required',
-            'email' => 'required',
-            'fax' => 'required',
-            'www' => 'required'
+            'name' => 'required'
         ]);
 
         $subm = Subm::find($id);

@@ -17,7 +17,7 @@ class FamilySlgsController extends Controller
         $query = FamilySlgs::query()->with('family');
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
+            $columnsToSearch = ['family_id', 'stat', 'date','plac','temp'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
