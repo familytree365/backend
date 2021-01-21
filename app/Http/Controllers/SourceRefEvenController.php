@@ -75,9 +75,9 @@ class SourceRefEvenController extends Controller
         ]);
 
         return SourceRefEven::create([
-            'group' => $request->name,
-            'even' => $request->name,
-            'role' => $request->name
+            'group' => $request->group,
+            'even' => $request->even,
+            'role' => $request->role
         ]);
     }
 

@@ -71,32 +71,7 @@ class PersonController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required',
             'name' => 'required',
-            'appellative' => 'required',
-            'uid' => 'required',
-            'email' => 'required',
-            'phone' => 'required',
-            'birthday' => 'required',
-            'deathday' => 'required',
-            'bank' => 'required',
-            'bank_account' => 'required',
-            'obs' => 'required',
-            'givn' => 'required',
-            'surn' => 'required',
-            'type' => 'required',
-            'npfx' => 'required',
-            'nick' => 'required',
-            'spfx' => 'required',
-            'nsfx' => 'required',
-            'sex' => 'required',
-            'description' => 'required',
-            'child_in_family_id' => 'required',
-            'chan' => 'required',
-            'rin' => 'required',
-            'resn' => 'required',
-            'rfn' => 'required',
-            'afn' => 'required'
         ]);
 
         return Person::create([
