@@ -36,7 +36,7 @@ class Subm extends Model
 
     public function addr()
     {
-       return $this->hasMany(Addr::class,'id','addr_id');
+       return $this->belongsTo(Addr::class);
     }
 
 

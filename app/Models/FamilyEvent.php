@@ -34,7 +34,7 @@ class FamilyEvent extends Event
         'caus',
         'age',
         'husb',
-        'wife',
+        'wife'
     ];
 
     public static function boot()

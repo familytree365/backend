@@ -21,7 +21,7 @@ class FamilyEventController extends Controller
         $query = FamilyEvent::query()->with(['family','place']);
 
         if($request->has('searchTerm')) {
-            $columnsToSearch = ['family_id', 'places_id', 'date','title', 'description', 'year','month', 'day', 'type','plac', 'phon', 'caus','age', 'agnc', 'husb','wife','converted_date','addr_id'];
+            $columnsToSearch = ['family_id','places_id','date','title','description','year','month','day','type','plac','phon','caus','age','agnc','husb','wife','converted_date','addr_id'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if(!empty($search_term)) {
                 $searchQuery = '%' . $search_term . '%';
@@ -61,16 +61,11 @@ class FamilyEventController extends Controller
      */
     public function create()
     {
-        // return "hellooooo";
         //
-
-        // $placesid = Place::all('id');
-
     }
     function get()
     {
-        // $family = Family::get();
-        // return $family;
+
         $company = Company::all()->count();
         return $company;
     }
@@ -97,11 +92,11 @@ class FamilyEventController extends Controller
             'phon' => 'required',
             'caus' => 'required',
             'age' => 'required',
-            'agnc' => 'required',
+            // 'agnc' => 'required',
             'husb' => 'required',
-            'wife' => 'required',
-            'converted_date' => 'required',
-            'addr_id' => 'required'
+            'wife' => 'required'
+            // 'converted_date' => 'required',
+            // 'addr_id' => 'required'
 
         ]);
 
@@ -119,11 +114,11 @@ class FamilyEventController extends Controller
             'phon' => $request->phon,
             'caus' => $request->caus,
             'age' => $request->age,
-            'agnc' => $request->agnc,
+            // 'agnc' => $request->agnc,
             'husb' => $request->husb,
-            'wife' => $request->wife,
-            'converted_date' => $request->converted_date,
-            'addr_id' => $request->addr_id
+            'wife' => $request->wife
+            // 'converted_date' => $request->converted_date,
+            // 'addr_id' => $request->addr_id
         ]);
     }
 
@@ -172,11 +167,11 @@ class FamilyEventController extends Controller
             'phon' => 'required',
             'caus' => 'required',
             'age' => 'required',
-            'agnc' => 'required',
+            // 'agnc' => 'required',
             'husb' => 'required',
-            'wife' => 'required',
-            'converted_date' => 'required',
-            'addr_id' => 'required'
+            'wife' => 'required'
+            // 'converted_date' => 'required',
+            // 'addr_id' => 'required'
 
         ]);
 
