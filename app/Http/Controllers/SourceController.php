@@ -72,22 +72,22 @@ class SourceController extends Controller
     {
         $request->validate([
             'sour' => 'required',
-            'titl' => 'required',
+            // 'titl' => 'required',
             'auth' => 'required',
-            'data' => 'required',
-            'text' => 'required',
-            'publ' => 'required',
-            'abbr' => 'required',
+            // 'data' => 'required',
+            // 'text' => 'required',
+            // 'publ' => 'required',
+            // 'abbr' => 'required',
             'name' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
             'repository_id' => 'required',
             'author_id' => 'required',
             'publication_id' => 'required',
             'type_id' => 'required',
-            'is_active' => 'required',
-            'group' => 'required',
-            'quay' => 'required',
-            'page' => 'required'
+            'is_active' => 'required'
+            // 'group' => 'required',
+            // 'quay' => 'required',
+            // 'page' => 'required'
         ]);
 
         return Source::create([
@@ -144,22 +144,22 @@ class SourceController extends Controller
     {
         $request->validate([
             'sour' => 'required',
-            'titl' => 'required',
+            // 'titl' => 'required',
             'auth' => 'required',
-            'data' => 'required',
-            'text' => 'required',
-            'publ' => 'required',
-            'abbr' => 'required',
+            // 'data' => 'required',
+            // 'text' => 'required',
+            // 'publ' => 'required',
+            // 'abbr' => 'required',
             'name' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
             'repository_id' => 'required',
             'author_id' => 'required',
             'publication_id' => 'required',
             'type_id' => 'required',
-            'is_active' => 'required',
-            'group' => 'required',
-            'quay' => 'required',
-            'page' => 'required'
+            'is_active' => 'required'
+            // 'group' => 'required',
+            // 'quay' => 'required',
+            // 'page' => 'required'
         ]);
 
         $source = Source::find($id);

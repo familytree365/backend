@@ -70,12 +70,13 @@ class RepositoryController extends Controller
         $request->validate([
             'repo' => 'required',
             'addr_id' => 'required',
-            'rin' => 'required',
+            // 'rin' => 'required',
             'phon' => 'required',
             'email' => 'required',
-            'fax' => 'required',
-            'www' => 'required',
+            // 'fax' => 'required',
+            // 'www' => 'required',
             'name' => 'required',
+            'is_active' => 'required',
             'description' => 'required'
         ]);
 
@@ -88,6 +89,7 @@ class RepositoryController extends Controller
             'fax' => $request->fax,
             'www' => $request->www,
             'name' => $request->name,
+            'is_active' => $request->is_active,
             'description' => $request->description,
         ]);
     }
@@ -126,12 +128,13 @@ class RepositoryController extends Controller
         $request->validate([
             'repo' => 'required',
             'addr_id' => 'required',
-            'rin' => 'required',
+            // 'rin' => 'required',
             'phon' => 'required',
             'email' => 'required',
-            'fax' => 'required',
-            'www' => 'required',
+            // 'fax' => 'required',
+            // 'www' => 'required',
             'name' => 'required',
+            'is_active' => 'required',
             'description' => 'required'
         ]);
 
@@ -144,6 +147,7 @@ class RepositoryController extends Controller
         $repository->fax = $request->fax;
         $repository->www = $request->www;
         $repository->name = $request->name;
+        $repository->is_active = $request->is_active;
         $repository->description = $request->description;
         $repository->save();
         return $repository;
