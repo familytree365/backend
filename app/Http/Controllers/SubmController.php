@@ -31,10 +31,14 @@ class SubmController extends Controller
         if($request->has('columnFilters')) {
 
             $filters = get_object_vars(json_decode($request->columnFilters));
-
+            $relationship_column = array('addr.adr2');
             foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+                
+                if(!in_array($key, $relationship_column))
+                {
+                    if(!empty($value)) {
+                        $query->orWhere($key, 'like', '%' . $value . '%');
+                    }
                 }
             }
         }
