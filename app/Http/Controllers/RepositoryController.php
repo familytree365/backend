@@ -73,14 +73,11 @@ class RepositoryController extends Controller
         $request->validate([
             'repo' => 'required',
             'addr_id' => 'required',
-            // 'rin' => 'required',
             'phon' => 'required',
             'email' => 'required',
-            // 'fax' => 'required',
-            // 'www' => 'required',
             'name' => 'required',
-            'is_active' => 'required',
-            'description' => 'required'
+            'type_id' => 'required',
+            'is_active' => 'required'
         ]);
 
         return Repository::create([
@@ -131,14 +128,11 @@ class RepositoryController extends Controller
         $request->validate([
             'repo' => 'required',
             'addr_id' => 'required',
-            // 'rin' => 'required',
             'phon' => 'required',
             'email' => 'required',
-            // 'fax' => 'required',
-            // 'www' => 'required',
             'name' => 'required',
-            'is_active' => 'required',
-            'description' => 'required'
+            'type_id' => 'required',
+            'is_active' => 'required'
         ]);
 
         $repository = Repository::find($id);

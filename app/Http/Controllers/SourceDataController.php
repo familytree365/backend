@@ -70,9 +70,7 @@ class SourceDataController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'date' => 'required',
-            'text' => 'required',
-            'agnc' => 'required'
+            'date' => 'required'
         ]);
 
         return SourceData::create([
@@ -116,9 +114,7 @@ class SourceDataController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'date' => 'required',
-            'text' => 'required',
-            'agnc' => 'required'
+            'date' => 'required'
         ]);
 
         $sourcedata = SourceData::find($id);
