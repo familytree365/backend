@@ -86,9 +86,9 @@ class PersonEventController extends Controller
             // 'places_id' => 'required',
             // 'description' => 'required',
             // 'adop_famc' => 'required',
-            'year' => 'required',
-            'month' => 'required',
-            'day' => 'required'
+            // 'year' => 'required',
+            // 'month' => 'required',
+            // 'day' => 'required'
         ]);
 
         return PersonEvent::create([
@@ -161,9 +161,9 @@ class PersonEventController extends Controller
             // 'places_id' => 'required',
             // 'description' => 'required',
             // 'adop_famc' => 'required',
-            'year' => 'required',
-            'month' => 'required',
-            'day' => 'required'
+            // 'year' => 'required',
+            // 'month' => 'required',
+            // 'day' => 'required'
         ]);
 
         $personevent = PersonEvent::find($id);
