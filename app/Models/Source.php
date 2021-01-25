@@ -21,7 +21,7 @@ class Source extends Model
 
     public function repositories()
     {
-        return $this->hasMany(Repository::class,'id','repository_id');
+        return $this->belongsTo(Repository::class);
     }
 
     public function citations()
@@ -31,17 +31,17 @@ class Source extends Model
 
     public function publication()
     {
-        return $this->hasMany(Publication::class,'id','publication_id');
+        return $this->belongsTo(Publication::class);
     }
 
     public function type()
     {
-        return $this->hasMany(Type::class,'id','type_id');
+        return $this->belongsTo(Type::class);
     }
 
     public function author()
     {
-        return $this->hasMany(Author::class,'id','author_id');
+        return $this->belongsTo(Author::class);
     }
 
     public function getCitationListAttribute()
