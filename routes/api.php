@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Cashier\Http\Middleware\VerifyWebhookSignature;
-
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,10 +13,10 @@ use Laravel\Cashier\Http\Middleware\VerifyWebhookSignature;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-*/
+ */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+	return $request->user();
 });
 
 Route::post('/register', 'RegisterController@register');
@@ -40,17 +40,20 @@ Route::get('getrolepermission/{id}', 'RoleController@getRolePermission')->middle
 Route::get('getroles', 'RoleController@getRole')->middleware(['auth:sanctum']);
 Route::get('permissions', 'PermissionController@index')->middleware(['auth:sanctum']);
 Route::get('getpermissions', 'PermissionController@getPermission')->middleware(['auth:sanctum']);
-
-Route::middleware('tenant')->group(function() {
-    Route::resource('addr', 'AddrController');
+Route::get('email/verify')->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}',function (EmailVerificationRequest $request) {
+    $request->fulfill();
+})->middleware(['signed'])->name('verification.verify');
+Route::middleware('tenant')->group(function () {
+	Route::resource('addr', 'AddrController');
 	Route::resource('author', 'AuthorController');
 	Route::resource('chan', 'ChanController');
 	Route::resource('citation', 'CitationController');
 	Route::resource('dashboard', 'DashboardController');
 	Route::get('trial', 'DashboardController@trial');
 	Route::get('get_companies', 'DashboardController@getCompany');
-    Route::get('get_tree', 'DashboardController@getTree');
-    Route::post('changedb', 'DashboardController@changedb');
+	Route::get('get_tree', 'DashboardController@getTree');
+	Route::post('changedb', 'DashboardController@changedb');
 	Route::resource('event', 'EventController');
 	Route::resource('family', 'FamilyController');
 	Route::resource('familyevent', 'FamilyEventController');
@@ -84,25 +87,21 @@ Route::middleware('tenant')->group(function() {
 	Route::resource('subm', 'SubmController');
 	Route::resource('subn', 'SubnController');
 	Route::resource('dnaupload', 'DnaController');
-    Route::resource('dnamatching', 'DnaMatchingController');
-    Route::resource('company', 'CompanyController');
-    Route::resource('tree', 'TreeController');
-    Route::resource('chats', 'ChatController');
-    Route::resource('chatmessages', 'ChatMessageController');
-    Route::resource('forumcategory', 'ForumCategoryController');
-    Route::resource('forumtopic', 'ForumTopicController');
-    Route::resource('forumpost', 'ForumPostController');
-    Route::resource('calendar_event', 'CalendarEventController');
-    Route::get('allfamily', 'FamilyEventController@get');
-    Route::get('allplaces', 'PlaceController@get');
-    Route::get('addrname', 'AddrController@get');
-    Route::get('allrepository', 'RepositoryController@get');
-    Route::get('allauthor', 'AuthorController@get');
-    Route::get('alltype', 'SourceController@get');
+	Route::resource('dnamatching', 'DnaMatchingController');
+	Route::resource('company', 'CompanyController');
+	Route::resource('tree', 'TreeController');
+	Route::resource('chats', 'ChatController');
+	Route::resource('chatmessages', 'ChatMessageController');
+	Route::resource('forumcategory', 'ForumCategoryController');
+	Route::resource('forumtopic', 'ForumTopicController');
+	Route::resource('forumpost', 'ForumPostController');
+	Route::resource('calendar_event', 'CalendarEventController');
+	Route::get('allfamily', 'FamilyEventController@get');
+	Route::get('allplaces', 'PlaceController@get');
+	Route::get('addrname', 'AddrController@get');
+	Route::get('allrepository', 'RepositoryController@get');
+	Route::get('allauthor', 'AuthorController@get');
+	Route::get('alltype', 'SourceController@get');
 	Route::get('allpublication', 'SourceController@getdata');
-
-
-
-
 
 });
