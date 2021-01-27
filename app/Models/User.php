@@ -70,9 +70,9 @@ class User extends Authenticatable implements MustVerifyEmail {
 	}
 	public function Company() {
 		return $this->belongsToMany(Company::class, 'user_company');
-    }
-    public function sendEmailVerificationNotification()
-    {
+	}
+	public function sendEmailVerificationNotification() {
         $this->notify(new VerifyNotification());
     }
+
 }
