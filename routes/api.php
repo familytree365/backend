@@ -40,10 +40,7 @@ Route::get('getrolepermission/{id}', 'RoleController@getRolePermission')->middle
 Route::get('getroles', 'RoleController@getRole')->middleware(['auth:sanctum']);
 Route::get('permissions', 'PermissionController@index')->middleware(['auth:sanctum']);
 Route::get('getpermissions', 'PermissionController@getPermission')->middleware(['auth:sanctum']);
-Route::get('email/verify')->name('verification.notice');
-Route::get('/email/verify/{id}/{hash}',function (EmailVerificationRequest $request) {
-    $request->fulfill();
-})->middleware(['signed'])->name('verification.verify');
+Route::get('/email-verification','verificationcontroller@verify')->name('verification.verify');
 Route::middleware('tenant')->group(function () {
 	Route::resource('addr', 'AddrController');
 	Route::resource('author', 'AuthorController');

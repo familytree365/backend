@@ -18,7 +18,7 @@ class CreateForumPostCommentsTable extends Migration {
             $table->text('content');
             $table->unsignedBigInteger('author');
             $table->foreign('post_id')->references('id')->on('forum_posts')->cascadeOnDelete();
-            $table->foreign('author')->references('id')->on('users');
+            // $table->foreign('author')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();
         });

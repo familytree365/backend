@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Provider;
 use App\Notifications\ResetPassword as ResetPasswordNotification;
+use App\Notifications\VerifyNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -69,6 +70,9 @@ class User extends Authenticatable implements MustVerifyEmail {
 	}
 	public function Company() {
 		return $this->belongsToMany(Company::class, 'user_company');
-	}
-
+    }
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyNotification());
+    }
 }

@@ -23,8 +23,8 @@ class RegisterController extends Controller {
 
 		DB::connection($this->getConnectionName())->beginTransaction();
 
-		// try
-		// {
+		try
+		{
 
 		// $user_id = DB::connection($this->getConnectionName())->table('users')->insertGetId([
 		// 	'first_name' => $request->first_name,
@@ -40,7 +40,7 @@ class RegisterController extends Controller {
 		// ]);
 
 		$user = new User;
-		
+
 		$user->first_name = $request->first_name;
 		$user->last_name = $request->last_name;
 		$user->email = $request->email;
@@ -49,8 +49,9 @@ class RegisterController extends Controller {
 		event(new Registered($user));
 		$user_id = $user->id;
 		$user = User::find($user_id);
-		$user->assignRole('free');
-		
+        $user->assignRole('free');
+        // $user->sendEmailVerificationNotification();
+
 		$random = $this->unique_random('companies', 'name', 5);
 		$company_id = DB::connection($this->getConnectionName())->table('companies')->insertGetId([
 			'name' => 'company' . $random,
@@ -79,9 +80,9 @@ class RegisterController extends Controller {
 		DB::statement('create database tenant' . $tree_id);
 
 		Artisan::call('tenants:artisan "migrate --database=tenant --force"');
-		// } catch (Exception $e) {
-		// 	DB::connection($this->getConnectionName())->rollback();
-		// }
+		} catch (Exception $e) {
+			DB::connection($this->getConnectionName())->rollback();
+		}
 
 		DB::connection($this->getConnectionName())->commit();
 	}

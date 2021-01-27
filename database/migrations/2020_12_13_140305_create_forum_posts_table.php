@@ -19,7 +19,7 @@ class CreateForumPostsTable extends Migration
             $table->text('content');
             $table->unsignedBigInteger('author');
             $table->foreign('topic_id')->references('id')->on('forum_topics')->cascadeOnDelete();
-            $table->foreign('author')->references('id')->on('users');
+            // $table->foreign('author')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();
         });
