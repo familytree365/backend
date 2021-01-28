@@ -49,11 +49,11 @@ class VerificationController extends Controller
      public function resendVerificatonEmail(Request $request)
      {
         $user = User::where('email',$request->email)->firstOrFail();
-        if(!user)
+        if(!$user)
         {
-            return response()-json([
+            return response()->json([
                 "message" => "Failed to send!",
-                "success" => true
+                "success" => false
             ]);
         }
         $user->sendEmailVerificationNotification();

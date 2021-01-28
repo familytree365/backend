@@ -12,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\MediaLibrary\Models\Media;
 
 class User extends Authenticatable implements MustVerifyEmail {
 	use HasFactory, Notifiable, HasApiTokens, Billable, HasRoles;
@@ -70,9 +71,11 @@ class User extends Authenticatable implements MustVerifyEmail {
 	}
 	public function Company() {
 		return $this->belongsToMany(Company::class, 'user_company');
-	}
+    }
+
 	public function sendEmailVerificationNotification() {
-        $this->notify(new VerifyNotification());
+
+         return $this->notify(new VerifyNotification());
     }
 
 }

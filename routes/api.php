@@ -41,13 +41,13 @@ Route::get('getroles', 'RoleController@getRole')->middleware(['auth:sanctum']);
 Route::get('permissions', 'PermissionController@index')->middleware(['auth:sanctum']);
 Route::get('getpermissions', 'PermissionController@getPermission')->middleware(['auth:sanctum']);
 Route::get('/email-verification','VerificationController@verify')->name('verification.verify');
-Route::post('/email/verification-notification','VerificationController@resendVerificationEmail')->name('verification.send');
+Route::post('/email/verification-notification','VerificationController@resendVerificatonEmail')->name('verification.send');
 Route::middleware('tenant')->group(function () {
 	Route::resource('addr', 'AddrController');
 	Route::resource('author', 'AuthorController');
 	Route::resource('chan', 'ChanController');
 	Route::resource('citation', 'CitationController');
-	Route::resource('dashboard', 'DashboardController');
+    Route::resource('dashboard', 'DashboardController');
 	Route::get('trial', 'DashboardController@trial');
 	Route::get('get_companies', 'DashboardController@getCompany');
 	Route::get('get_tree', 'DashboardController@getTree');

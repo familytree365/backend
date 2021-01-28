@@ -8,6 +8,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use App\Models\Tree;
 use App\Models\Company;
+use App\Models\Family;
 
 class DashboardController extends Controller
 {
@@ -21,8 +22,10 @@ class DashboardController extends Controller
         $male = Person::where('sex', 'M')->get()->count();
         $female = Person::where('sex', 'F')->get()->count();
         $unknown = Person::whereNull('sex')->get()->count();
+        $familiesjoined = Family::all()->count();
+        $peoplesattached = Person::all()->count();
         $chart = array($male, $female, $unknown);
-        return ['chart' => $chart];
+        return ['chart' => $chart,'familiesjoined' => $familiesjoined,'peoplesattached' => $peoplesattached];
     }
 
     /**
