@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
+    "name": "familytree365/backend",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "The Laravel 8 backend for a genealogy website.",
     "keywords": [
         "framework",
         "laravel"
