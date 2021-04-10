@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\FamilySlgs;
+use Illuminate\Http\Request;
 
 class FamilySlgsController extends Controller
 {
@@ -16,34 +16,33 @@ class FamilySlgsController extends Controller
     {
         $query = FamilySlgs::query()->with('family');
 
-        if($request->has('searchTerm')) {
-            $columnsToSearch = ['family_id', 'stat', 'date','plac','temp'];
+        if ($request->has('searchTerm')) {
+            $columnsToSearch = ['family_id', 'stat', 'date', 'plac', 'temp'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
 
-            foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+            foreach ($filters as $key => $value) {
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -73,7 +72,7 @@ class FamilySlgsController extends Controller
             'stat' => 'required',
             'date' => 'required',
             'plac' => 'required',
-            'temp' => 'required'
+            'temp' => 'required',
         ]);
 
         return FamilySlgs::create([
@@ -81,7 +80,7 @@ class FamilySlgsController extends Controller
             'stat' => $request->stat,
             'date' => $request->date,
             'plac' => $request->plac,
-            'temp' => $request->temp
+            'temp' => $request->temp,
         ]);
     }
 
@@ -121,7 +120,7 @@ class FamilySlgsController extends Controller
             'stat' => 'required',
             'date' => 'required',
             'plac' => 'required',
-            'temp' => 'required'
+            'temp' => 'required',
         ]);
 
         $familyslgs = FamilySlgs::find($id);
@@ -131,6 +130,7 @@ class FamilySlgsController extends Controller
         $familyslgs->plac = $request->plac;
         $familyslgs->temp = $request->temp;
         $familyslgs->save();
+
         return $familyslgs;
     }
 
@@ -143,10 +143,12 @@ class FamilySlgsController extends Controller
     public function destroy($id)
     {
         $familyslgs = FamilySlgs::find($id);
-        if($familyslgs) {
+        if ($familyslgs) {
             $familyslgs->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 }

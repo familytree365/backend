@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\PersonAsso;
+use Illuminate\Http\Request;
 
 class PersonAssoController extends Controller
 {
@@ -16,34 +16,33 @@ class PersonAssoController extends Controller
     {
         $query = PersonAsso::query();
 
-        if($request->has('searchTerm')) {
-            $columnsToSearch = ['group','indi','rela','import_confirm'];
+        if ($request->has('searchTerm')) {
+            $columnsToSearch = ['group', 'indi', 'rela', 'import_confirm'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
 
-            foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+            foreach ($filters as $key => $value) {
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -70,7 +69,7 @@ class PersonAssoController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'import_confirm' => 'required'
+            'import_confirm' => 'required',
         ]);
 
         return PersonAsso::create([
@@ -114,7 +113,7 @@ class PersonAssoController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'import_confirm' => 'required'
+            'import_confirm' => 'required',
         ]);
 
         $personasso = PersonAsso::find($id);
@@ -123,6 +122,7 @@ class PersonAssoController extends Controller
         $personasso->rela = $request->rela;
         $personasso->import_confirm = $request->import_confirm;
         $personasso->save();
+
         return $personasso;
     }
 
@@ -135,10 +135,12 @@ class PersonAssoController extends Controller
     public function destroy($id)
     {
         $personasso = PersonAsso::find($id);
-        if($personasso) {
+        if ($personasso) {
             $personasso->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Publication;
+use Illuminate\Http\Request;
 
 class PublicationController extends Controller
 {
@@ -16,34 +16,33 @@ class PublicationController extends Controller
     {
         $query = Publication::query();
 
-        if($request->has('searchTerm')) {
+        if ($request->has('searchTerm')) {
             $columnsToSearch = ['name', 'description', 'is_active'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
 
-            foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+            foreach ($filters as $key => $value) {
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -71,13 +70,13 @@ class PublicationController extends Controller
         $request->validate([
             'description' => 'required',
             'is_active' => 'required',
-            'name' => 'required'
+            'name' => 'required',
         ]);
 
         return Publication::create([
             'description' => $request->description,
             'is_active' => $request->is_active,
-            'name' => $request->name
+            'name' => $request->name,
         ]);
     }
 
@@ -115,7 +114,7 @@ class PublicationController extends Controller
         $request->validate([
             'description' => 'required',
             'is_active' => 'required',
-            'name' => 'required'
+            'name' => 'required',
         ]);
 
         $publication = Publication::find($id);
@@ -123,6 +122,7 @@ class PublicationController extends Controller
         $publication->is_active = $request->is_active;
         $publication->name = $request->name;
         $publication->save();
+
         return $publication;
     }
 
@@ -135,10 +135,12 @@ class PublicationController extends Controller
     public function destroy($id)
     {
         $publication = Publication::find($id);
-        if($publication) {
+        if ($publication) {
             $publication->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 }

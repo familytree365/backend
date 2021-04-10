@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\SourceRef;
+use Illuminate\Http\Request;
 
 class SourceRefController extends Controller
 {
@@ -16,34 +16,33 @@ class SourceRefController extends Controller
     {
         $query = SourceRef::query();
 
-        if($request->has('searchTerm')) {
+        if ($request->has('searchTerm')) {
             $columnsToSearch = ['name', 'email', 'phone'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
 
-            foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+            foreach ($filters as $key => $value) {
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -73,7 +72,7 @@ class SourceRefController extends Controller
             'sour_id' => 'required',
             'text' => 'required',
             'quay' => 'required',
-            'page' => 'required'
+            'page' => 'required',
         ]);
 
         return SourceRef::create([
@@ -81,7 +80,7 @@ class SourceRefController extends Controller
             'sour_id' => $request->sour_id,
             'text' => $request->text,
             'quay' => $request->quay,
-            'page' => $request->page
+            'page' => $request->page,
         ]);
     }
 
@@ -121,7 +120,7 @@ class SourceRefController extends Controller
             'sour_id' => 'required',
             'text' => 'required',
             'quay' => 'required',
-            'page' => 'required'
+            'page' => 'required',
         ]);
 
         $sourceref = SourceRef::find($id);
@@ -131,6 +130,7 @@ class SourceRefController extends Controller
         $sourceref->quay = $request->quay;
         $sourceref->page = $request->page;
         $sourceref->save();
+
         return $sourceref;
     }
 
@@ -143,10 +143,12 @@ class SourceRefController extends Controller
     public function destroy($id)
     {
         $sourceref = SourceRef::find($id);
-        if($sourceref) {
+        if ($sourceref) {
             $sourceref->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 }

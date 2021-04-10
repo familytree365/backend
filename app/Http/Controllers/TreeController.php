@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Family;
 use App\Models\Person;
-use Illuminate\Http\Request;
 use App\Models\Tree;
-use App\Models\Company;
 use App\Models\User;
-use DB;
 use Artisan;
+use DB;
+use Illuminate\Http\Request;
 use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
 
 class TreeController extends Controller
@@ -28,47 +28,44 @@ class TreeController extends Controller
      */
     public function index(Request $request)
     {
-
         $query = Tree::query()->with('company');
 
-        if($request->has('searchTerm')) {
+        if ($request->has('searchTerm')) {
             $columnsToSearch = ['name'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
 
-            foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+            foreach ($filters as $key => $value) {
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
 
-        $user =  auth()->user();
+        $user = auth()->user();
         $company = $user->Company()->pluck('companies.id');
-        $query->whereIn('company_id',$company);
+        $query->whereIn('company_id', $company);
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
-        if(!count($request->all())) {
+        if (! count($request->all())) {
             $rows = $query->get()->toArray();
         }
-
 
         return $rows;
     }
@@ -85,28 +82,22 @@ class TreeController extends Controller
         $roles = $user->roles;
         $role = $roles[0]->id;
         if ($role == 7 || $role == 8) {
-            if(Tree::whereIn('company_id', $companies_id)->count() < 1){
+            if (Tree::whereIn('company_id', $companies_id)->count() < 1) {
                 return response()->json(['create_tree' => true]);
             } else {
                 return response()->json(['create_tree' => false]);
             }
-        }
-
-        else if ($role == 5 || $role == 6) {
-            if(Tree::whereIn('company_id', $companies_id)->count() < 10){
-               return response()->json(['create_tree' => true]);
+        } elseif ($role == 5 || $role == 6) {
+            if (Tree::whereIn('company_id', $companies_id)->count() < 10) {
+                return response()->json(['create_tree' => true]);
             } else {
                 return response()->json(['create_tree' => false]);
             }
-        }
-
-        else if ($role == 3 || $role == 4) {
+        } elseif ($role == 3 || $role == 4) {
             return response()->json(['create_tree' => true]);
-        }
-        else {
+        } else {
             return response()->json(['create_tree' => false]);
         }
-
     }
 
     /**
@@ -122,16 +113,16 @@ class TreeController extends Controller
             'company_id' => 'required',
         ]);
         $tree_id = Tree::create([
-                    'name' => $request->name,
-                    'company_id' => $request->company_id,
-                    'current_tenant' => 0,
-                    'description' => $request->description,
-                ])->id;
+            'name' => $request->name,
+            'company_id' => $request->company_id,
+            'current_tenant' => 0,
+            'description' => $request->description,
+        ])->id;
 
         $tenant_id = DB::connection($this->getConnectionName())->table('tenants')->insertGetId([
             'name' => 'tenant'.$tree_id,
             'tree_id' => $tree_id,
-            'database' => 'tenant'.$tree_id
+            'database' => 'tenant'.$tree_id,
         ]);
 
         DB::statement('create database tenant'.$tree_id);
@@ -147,7 +138,6 @@ class TreeController extends Controller
      */
     public function show(Request $request)
     {
-
         $start_id = $request->get('start_id', 3);
         $nest = $request->get('nest', 3);
         $ret = [];
@@ -169,9 +159,8 @@ class TreeController extends Controller
         return $ret;
     }
 
-        private function getGraphData($start_id, $nest = 1)
+    private function getGraphData($start_id, $nest = 1)
     {
-
         $conn = $this->getConnection();
         $db = $this->getDB();
 
@@ -247,7 +236,7 @@ class TreeController extends Controller
         return true;
     }
 
-        private function getGraphDataUpward($start_id, $nest = 0)
+    private function getGraphDataUpward($start_id, $nest = 0)
     {
         $conn = $this->getConnection();
         $db = $this->getDB();
@@ -410,6 +399,7 @@ class TreeController extends Controller
     public function edit($id)
     {
         $tree = Tree::find($id);
+
         return $tree;
     }
 
@@ -431,6 +421,7 @@ class TreeController extends Controller
         $tree->name = $request->name;
         $tree->description = $request->description;
         $tree->save();
+
         return $tree;
     }
 
@@ -443,12 +434,12 @@ class TreeController extends Controller
     public function destroy($id)
     {
         $tree = Tree::find($id);
-        if($tree) {
+        if ($tree) {
             $tree->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
-
-
 }

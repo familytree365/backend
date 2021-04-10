@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Addr;
+use Illuminate\Http\Request;
 
 class AddrController extends Controller
 {
@@ -16,34 +16,33 @@ class AddrController extends Controller
     {
         $query = Addr::query();
 
-        if($request->has('searchTerm')) {
-            $columnsToSearch = ['adr1','adr2','city','stae','post','ctry'];
+        if ($request->has('searchTerm')) {
+            $columnsToSearch = ['adr1', 'adr2', 'city', 'stae', 'post', 'ctry'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
 
-            foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+            foreach ($filters as $key => $value) {
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -58,6 +57,7 @@ class AddrController extends Controller
     public function create()
     {
         $address = Addr::get();
+
         return $address;
     }
 
@@ -72,7 +72,7 @@ class AddrController extends Controller
         $request->validate([
 
             'city' => 'required',
-            'stae' => 'required'
+            'stae' => 'required',
 
         ]);
 
@@ -82,7 +82,7 @@ class AddrController extends Controller
             'city' => $request->city,
             'stae' => $request->stae,
             'post' => $request->post,
-            'ctry' => $request->ctry
+            'ctry' => $request->ctry,
         ]);
     }
 
@@ -119,7 +119,7 @@ class AddrController extends Controller
     {
         $request->validate([
             'city' => 'required',
-            'stae' => 'required'
+            'stae' => 'required',
         ]);
 
         $addr = Addr::find($id);
@@ -130,6 +130,7 @@ class AddrController extends Controller
         $addr->post = $request->post;
         $addr->ctry = $request->ctry;
         $addr->save();
+
         return $addr;
     }
 
@@ -142,16 +143,19 @@ class AddrController extends Controller
     public function destroy($id)
     {
         $addr = Addr::find($id);
-        if($addr) {
+        if ($addr) {
             $addr->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 
-    function get()
+    public function get()
     {
         $address = Addr::all();
+
         return $address;
     }
 }

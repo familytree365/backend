@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Source;
-use Illuminate\Support\Facades\DB;
 use App\Models\Publication;
+use App\Models\Source;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SourceController extends Controller
 {
@@ -16,39 +16,37 @@ class SourceController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Source::query()->with(['publication','repositories','author','type']);
+        $query = Source::query()->with(['publication', 'repositories', 'author', 'type']);
 
-        if($request->has('searchTerm')) {
-            $columnsToSearch = ['titl', 'sour', 'auth','data','text','publ','abbr','name','description','repository_id','author_id','publication_id','type_id','is_active','group','quay','page'];
+        if ($request->has('searchTerm')) {
+            $columnsToSearch = ['titl', 'sour', 'auth', 'data', 'text', 'publ', 'abbr', 'name', 'description', 'repository_id', 'author_id', 'publication_id', 'type_id', 'is_active', 'group', 'quay', 'page'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
-            $relationship_column = array('repositories.name','author.name','publication.name','type.name');
-            foreach($filters as $key => $value) {
-                if(!in_array($key, $relationship_column))
-                {
-                    if(!empty($value)) {
-                        $query->orWhere($key, 'like', '%' . $value . '%');
+            $relationship_column = ['repositories.name', 'author.name', 'publication.name', 'type.name'];
+            foreach ($filters as $key => $value) {
+                if (! in_array($key, $relationship_column)) {
+                    if (! empty($value)) {
+                        $query->orWhere($key, 'like', '%'.$value.'%');
                     }
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -81,7 +79,7 @@ class SourceController extends Controller
             'author_id' => 'required',
             'publication_id' => 'required',
             'type_id' => 'required',
-            'is_active' => 'required'
+            'is_active' => 'required',
 
         ]);
 
@@ -102,7 +100,7 @@ class SourceController extends Controller
             'is_active' => $request->is_active,
             'group' => $request->group,
             'quay' => $request->quay,
-            'page' => $request->page
+            'page' => $request->page,
         ]);
     }
 
@@ -145,7 +143,7 @@ class SourceController extends Controller
             'author_id' => 'required',
             'publication_id' => 'required',
             'type_id' => 'required',
-            'is_active' => 'required'
+            'is_active' => 'required',
 
         ]);
 
@@ -168,6 +166,7 @@ class SourceController extends Controller
         $source->quay = $request->quay;
         $source->page = $request->page;
         $source->save();
+
         return $source;
     }
 
@@ -180,17 +179,19 @@ class SourceController extends Controller
     public function destroy($id)
     {
         $source = Source::find($id);
-        if($source) {
+        if ($source) {
             $source->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 
     public function get()
     {
         $type_data = DB::table('types')->get();
+
         return $type_data;
     }
-
 }

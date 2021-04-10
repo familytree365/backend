@@ -5,21 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\ForumTopic;
 use Illuminate\Http\Request;
 
-class ForumTopicController extends Controller {
-
+class ForumTopicController extends Controller
+{
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $query = ForumTopic::query();
 
         if ($request->has('searchTerm')) {
             $columnsToSearch = ['title', 'email', 'phone'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if (!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
                 foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
@@ -27,12 +28,11 @@ class ForumTopicController extends Controller {
         }
 
         if ($request->has('columnFilters')) {
-
             $filters = get_object_vars(json_decode($request->columnFilters));
 
             foreach ($filters as $key => $value) {
-                if (!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
@@ -42,9 +42,9 @@ class ForumTopicController extends Controller {
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if ($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
-        }else{
+        } else {
             $rows = $query->get();
         }
 
@@ -56,7 +56,8 @@ class ForumTopicController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create()
+    {
         //
     }
 
@@ -66,18 +67,19 @@ class ForumTopicController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $request->validate([
             'category_id' => 'required|integer',
             'title' => 'required',
-            'content' => 'required'
+            'content' => 'required',
         ]);
 
         return ForumTopic::create([
-                    'category_id' => $request->category_id,
-                    'title' => $request->title,
-                    'content' => $request->content,
-                    'created_by' => $request->user()->id,
+            'category_id' => $request->category_id,
+            'title' => $request->title,
+            'content' => $request->content,
+            'created_by' => $request->user()->id,
         ]);
     }
 
@@ -87,8 +89,9 @@ class ForumTopicController extends Controller {
      * @param  \App\Models\ForumTopic  $forumTopic
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
-        return ForumTopic::where('slug',$id)->with('category')->with('posts')->with('author')->first();
+    public function show($id)
+    {
+        return ForumTopic::where('slug', $id)->with('category')->with('posts')->with('author')->first();
     }
 
     /**
@@ -97,7 +100,8 @@ class ForumTopicController extends Controller {
      * @param  \App\Models\ForumTopic  $forumTopic
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
+    public function edit($id)
+    {
         //
     }
 
@@ -108,7 +112,8 @@ class ForumTopicController extends Controller {
      * @param  \App\Models\ForumTopic  $forumTopic
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         $request->validate([
             'category_id' => 'required|integer',
             'title' => 'required',
@@ -128,8 +133,8 @@ class ForumTopicController extends Controller {
      * @param  \App\Models\ForumTopic  $forumTopic
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ForumTopic $forumTopic) {
+    public function destroy(ForumTopic $forumTopic)
+    {
         //
     }
-
 }

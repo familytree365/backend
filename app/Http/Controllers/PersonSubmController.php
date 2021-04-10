@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\PersonSubm;
+use Illuminate\Http\Request;
 
 class PersonSubmController extends Controller
 {
@@ -16,34 +16,33 @@ class PersonSubmController extends Controller
     {
         $query = PersonSubm::query();
 
-        if($request->has('searchTerm')){
-            $columnsToSearch = ['group','subm'];
+        if ($request->has('searchTerm')) {
+            $columnsToSearch = ['group', 'subm'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
 
-            foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+            foreach ($filters as $key => $value) {
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -70,12 +69,12 @@ class PersonSubmController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'subm' => 'required'
+            'subm' => 'required',
         ]);
 
         return PersonSubm::create([
             'group' => $request->group,
-            'subm' => $request->subm
+            'subm' => $request->subm,
         ]);
     }
 
@@ -112,13 +111,14 @@ class PersonSubmController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'subm' => 'required'
+            'subm' => 'required',
         ]);
 
         $personsubm = PersonSubm::find($id);
         $personsubm->group = $request->group;
         $personsubm->subm = $request->subm;
         $personsubm->save();
+
         return $personsubm;
     }
 
@@ -131,10 +131,12 @@ class PersonSubmController extends Controller
     public function destroy($id)
     {
         $personsubm = PersonSubm::find($id);
-        if($personsubm) {
+        if ($personsubm) {
             $personsubm->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 }

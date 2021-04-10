@@ -2,23 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use Stripe;
+use App\Models\User;
 use App\Notifications\SubscribeSuccessfully;
 use App\Notifications\UnsubscribeSuccessfully;
-use App\Models\User;
+use Stripe;
 
 class StripeController extends Controller
 {
     protected $plans;
 
-    public function __construct() {
+    public function __construct()
+    {
         Stripe\Stripe::setApiKey(\Config::get('services.stripe.secret'));
         $this->plans = Stripe\Plan::all();
     }
 
-    public function getPlans() {
-        foreach($this->plans as $plan) {
-            switch($plan->nickname) {
+    public function getPlans()
+    {
+        foreach ($this->plans as $plan) {
+            switch ($plan->nickname) {
                 case 'UTY':
                     $plan->title = '50GBP for unlimited trees yearly';
                 break;
@@ -40,10 +42,12 @@ class StripeController extends Controller
             }
             $plan->subscribed = false;
         }
+
         return $this->plans;
     }
 
-    public function getCurrentSubscription() {
+    public function getCurrentSubscription()
+    {
         $user = auth()->user();
         $data = [];
         $data['has_payment_method'] = $user->hasDefaultPaymentMethod();
@@ -53,49 +57,57 @@ class StripeController extends Controller
         } else {
             $data['subscribed'] = false;
         }
+
         return $data;
     }
 
-    public function getIntent() {
+    public function getIntent()
+    {
         $user = auth()->user();
+
         return ['intent' => $user->createSetupIntent()];
     }
 
-    public function subscribe() {
+    public function subscribe()
+    {
         $user = auth()->user();
         $user->syncRoles('OTY');
         $plan_id = request()->plan_id;
-        if(request()->has('payment_method')) {
+        if (request()->has('payment_method')) {
             $paymentMethod = request()->payment_method;
-            $user->newSubscription('default', $plan_id)->create($paymentMethod,['name' => request()->card_holder_name, "address" => ["country" => 'GB', "state" => 'England', "city" => 'Abberley', "postal_code" => 'WR6', "line1" => 'test', "line2" => ""]]);
+            $user->newSubscription('default', $plan_id)->create($paymentMethod, ['name' => request()->card_holder_name, 'address' => ['country' => 'GB', 'state' => 'England', 'city' => 'Abberley', 'postal_code' => 'WR6', 'line1' => 'test', 'line2' => '']]);
             $user->notify(new SubscribeSuccessfully($plan_id));
-        } else if($user->hasDefaultPaymentMethod()) {
+        } elseif ($user->hasDefaultPaymentMethod()) {
             $paymentMethod = $user->defaultPaymentMethod();
             $user->newSubscription('default', $plan_id)->create($paymentMethod->id);
             $user->notify(new SubscribeSuccessfully($plan_id));
         } else {
             $user->subscription('default')->swap($plan_id);
         }
+
         return ['success' => true];
     }
 
-    public function unsubscribe() {
+    public function unsubscribe()
+    {
         $user = auth()->user();
         $user->subscription('default')->cancel();
         // $user->role_id = 3; //expired role
         $user->save();
         $user->notify(new UnsubscribeSuccessfully($user->subscription()->stripe_plan));
+
         return ['success' => true];
     }
 
-    public function webhook() {
+    public function webhook()
+    {
         $data = request()->all();
         $user = User::where('stripe_id', $data['data']['object']['customer'])->first();
-        if($user) {
+        if ($user) {
             $plan_nickname = $data['data']['object']['items']['data'][0]['plan']['nickname'];
-            foreach($this->plans as $plan) {
-                if($plan->nickname == $plan_nickname) {
-                    switch($plan->nickname) {
+            foreach ($this->plans as $plan) {
+                if ($plan->nickname == $plan_nickname) {
+                    switch ($plan->nickname) {
                         case 'UTY':
                             $user->syncRoles('UTY');
                         break;
@@ -118,7 +130,7 @@ class StripeController extends Controller
                 }
             }
         } else {
-            echo "User not found!";
+            echo 'User not found!';
         }
     }
 }

@@ -34,11 +34,11 @@ class ChatMessageSentEvent implements ShouldBroadcast
         //return new PrivateChannel('channel-name');
         return new Channel('chat-channel');
     }
-    
+
     public function broadcastWith()
     {
         return [
-            'data' => 'key'
+            'data' => 'key',
         ];
     }
 }

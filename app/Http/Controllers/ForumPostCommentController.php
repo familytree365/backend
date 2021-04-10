@@ -19,8 +19,8 @@ class ForumPostCommentController extends Controller
         if ($request->has('searchTerm')) {
             $columnsToSearch = ['name', 'email', 'phone'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if (!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
                 foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
@@ -28,12 +28,11 @@ class ForumPostCommentController extends Controller
         }
 
         if ($request->has('columnFilters')) {
-
             $filters = get_object_vars(json_decode($request->columnFilters));
 
             foreach ($filters as $key => $value) {
-                if (!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
@@ -43,7 +42,7 @@ class ForumPostCommentController extends Controller
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if ($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -71,13 +70,13 @@ class ForumPostCommentController extends Controller
         $request->validate([
             'post_id' => 'required|integer',
             'content' => 'required',
-            'author' => 'required'
+            'author' => 'required',
         ]);
 
         return ForumTopic::create([
-                    'post_id' => $request->topic_id,
-                    'content' => $request->content,
-                    'author' => $request->author,
+            'post_id' => $request->topic_id,
+            'content' => $request->content,
+            'author' => $request->author,
         ]);
     }
 

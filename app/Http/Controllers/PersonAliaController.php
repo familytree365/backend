@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\PersonAlia;
+use Illuminate\Http\Request;
 
 class PersonAliaController extends Controller
 {
@@ -16,34 +16,33 @@ class PersonAliaController extends Controller
     {
         $query = PersonAlia::query();
 
-        if($request->has('searchTerm')) {
-            $columnsToSearch = ['group','alia','import_confirm'];
+        if ($request->has('searchTerm')) {
+            $columnsToSearch = ['group', 'alia', 'import_confirm'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
 
-            foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+            foreach ($filters as $key => $value) {
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -71,13 +70,13 @@ class PersonAliaController extends Controller
         $request->validate([
             'group' => 'required',
             'alia' => 'required',
-            'import_confirm' => 'required'
+            'import_confirm' => 'required',
         ]);
 
         return PersonAlia::create([
             'group' => $request->group,
             'alia' => $request->alia,
-            'import_confirm' => $request->import_confirm
+            'import_confirm' => $request->import_confirm,
         ]);
     }
 
@@ -115,7 +114,7 @@ class PersonAliaController extends Controller
         $request->validate([
             'group' => 'required',
             'alia' => 'required',
-            'import_confirm' => 'required'
+            'import_confirm' => 'required',
         ]);
 
         $personalia = PersonAlia::find($id);
@@ -123,6 +122,7 @@ class PersonAliaController extends Controller
         $personalia->alia = $request->alia;
         $personalia->import_confirm = $request->import_confirm;
         $personalia->save();
+
         return $personalia;
     }
 
@@ -135,10 +135,12 @@ class PersonAliaController extends Controller
     public function destroy($id)
     {
         $personalia = PersonAlia::find($id);
-        if($personalia) {
+        if ($personalia) {
             $personalia->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 }

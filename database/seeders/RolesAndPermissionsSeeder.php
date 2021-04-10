@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\Role;
 use App\Models\Permission;
+use App\Models\Role;
 use DB;
+use Illuminate\Database\Seeder;
 use Spatie\Multitenancy\Models\Tenant;
 
 class RolesAndPermissionsSeeder extends Seeder
@@ -18,14 +18,14 @@ class RolesAndPermissionsSeeder extends Seeder
     public function run()
     {
         $tenants = Tenant::get();
-        foreach($tenants as $tenant) {
+        foreach ($tenants as $tenant) {
             DB::statement("DROP DATABASE $tenant->name");
         }
 
-         // Reset cached roles and permissions
+        // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-		$permissions = [
+        $permissions = [
             ['name' => 'dashboard menu', 'guard_name' => 'web'],
 
             ['name' => 'calendar menu', 'guard_name' => 'web'],
@@ -193,15 +193,15 @@ class RolesAndPermissionsSeeder extends Seeder
             ['name' => 'permissions menu', 'guard_name' => 'web'],
         ];
 
-        foreach($permissions as $permission){
+        foreach ($permissions as $permission) {
             Permission::create($permission);
         }
 
         $role = Role::create(['name' => 'free']);
-		$role = Role::create(['name' => 'expired']);
+        $role = Role::create(['name' => 'expired']);
 
         $role = Role::create(['name' => 'UTY']);
-		$role = Role::create(['name' => 'UTM']);
+        $role = Role::create(['name' => 'UTM']);
 
         $role = Role::create(['name' => 'TTY']);
         $role = Role::create(['name' => 'TTM']);
@@ -218,11 +218,11 @@ class RolesAndPermissionsSeeder extends Seeder
         $free_permission = [
             'dashboard menu',
             'subscription menu',
-            'gedcom import menu'
+            'gedcom import menu',
         ];
-        foreach($free_permission as $link){
+        foreach ($free_permission as $link) {
             $permission = Permission::where('name', $link)->first();
-            if($permission !== null ) {
+            if ($permission !== null) {
                 $permission->roles()->detach($role_id);
                 $permission->roles()->attach($role_id);
             }
@@ -237,9 +237,9 @@ class RolesAndPermissionsSeeder extends Seeder
             'references',
             'trees',
         ];
-        foreach($expired_permissions as $link){
+        foreach ($expired_permissions as $link) {
             $permission = Permission::where('name', $link)->first();
-            if($permission !== null ) {
+            if ($permission !== null) {
                 $permission->roles()->detach($role_id);
                 $permission->roles()->attach($role_id);
             }
@@ -247,11 +247,11 @@ class RolesAndPermissionsSeeder extends Seeder
 
         $roles = Role::whereNotIn('name', ['free', 'expired'])->get();
         $permissions = Permission::where([
-            ['name','not like', '%information%'],
+            ['name', 'not like', '%information%'],
         ])->get();
-        foreach($roles as $role) {
-            foreach($permissions as $permission){
-                if($permission !== null ) {
+        foreach ($roles as $role) {
+            foreach ($permissions as $permission) {
+                if ($permission !== null) {
                     $permission->roles()->detach($role->id);
                     $permission->roles()->attach($role->id);
                 }

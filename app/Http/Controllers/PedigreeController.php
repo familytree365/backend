@@ -2,25 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Family;
 use App\Jobs\ExportGedCom;
+use App\Models\Family;
 use App\Models\Note;
 use App\Models\Person;
 use App\Models\User;
-use LaravelEnso\Core\Models\User as CoreUser;
+use File;
 // use LaravelEnso\Avatars\Models\Avatar;
 // use LaravelEnso\Files\Models\File as UploadFile;
 
 // use App\Traits\ConnectionTrait;
-use File;
+use GenealogiaWebsite\LaravelGedcom\Utils\GedcomGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use GenealogiaWebsite\LaravelGedcom\Utils\GedcomGenerator;
+use LaravelEnso\Core\Models\User as CoreUser;
 use Response;
 
 class PedigreeController extends Controller
 {
-
     private $persons;
     private $unions;
     private $links;
@@ -29,7 +28,6 @@ class PedigreeController extends Controller
     private $family_id;
     private $person_id;
     private $child_id;
-
 
     public function show(Request $request)
     {
@@ -68,7 +66,7 @@ class PedigreeController extends Controller
 
     private function getGraphDataUpward($start_id, $nest = 0)
     {
-            
+
         // $conn = $this->getConnection();
         // $db = $this->getDB();
         if ($this->nest >= $nest) {
@@ -76,7 +74,7 @@ class PedigreeController extends Controller
 
             if ($person) {
                 $user = $person->user;
-                if($user) {
+                if ($user) {
                     $av = Avatar::where('user_id', '=', $user->id)->first();
                     $file = UploadFile::where('attachable_id', '=', $av->id)->where('attachable_type', '=', 'avatar')->first();
 
@@ -87,7 +85,7 @@ class PedigreeController extends Controller
                     }
                 }
             }
-            
+
             // do not process for null
             if ($person == null) {
                 return;
@@ -103,7 +101,6 @@ class PedigreeController extends Controller
                 $_families = Family::where('husband_id', $start_id)->orwhere('wife_id', $start_id)->select('id')->get();
                 $_union_ids = [];
                 foreach ($_families as $item) {
-
                     $_union_ids[] = 'u'.$item->id;
                     // add current family link
                     // $this->links[] = [$start_id, 'u'.$item->id];
@@ -112,19 +109,19 @@ class PedigreeController extends Controller
                 $person->setAttribute('own_unions', $_union_ids);
                 $person->setAttribute('parent_union', 'u'.$person->child_in_family_id);
                 // add to persons
-                $this->persons[$start_id] = $person; 
+                $this->persons[$start_id] = $person;
 
                 // get self's parents data
-                if($person) {
-                if($person->id == 680) {
+                if ($person) {
+                    if ($person->id == 680) {
                         array_unshift($this->person_id, 'first'.$person->id);
                     }
-            }
+                }
                 $p_family_id = $person->child_in_family_id;
                 array_unshift($this->start_id, 'family_in_child_id'.$person->child_in_family_id);
-                if($p_family_id) {
-                        array_unshift($this->family_id, 'first'.$p_family_id);
-                    }
+                if ($p_family_id) {
+                    array_unshift($this->family_id, 'first'.$p_family_id);
+                }
                 if (! empty($p_family_id)) {
                     // add parent family link
                     // $this->links[] = ['u'.$p_family_id,  $start_id] ;
@@ -146,10 +143,10 @@ class PedigreeController extends Controller
                 $family_id = $family->id;
                 $father = Person::find($family->husband_id);
                 $mother = Person::find($family->wife_id);
-                    
-                $user = NULL;//$father->user;
 
-                if($user) {
+                $user = null; //$father->user;
+
+                if ($user) {
                     $av = Avatar::where('user_id', '=', $user->id)->first();
                     $file = UploadFile::where('attachable_id', '=', $av->id)->where('attachable_type', '=', 'avatar')->first();
 
@@ -164,7 +161,7 @@ class PedigreeController extends Controller
                 if ($mother) {
                     $user = $mother->user;
 
-                    if($user) {
+                    if ($user) {
                         $av = Avatar::where('user_id', '=', $user->id)->first();
                         $file = UploadFile::where('attachable_id', '=', $av->id)->where('attachable_type', '=', 'avatar')->first();
 
@@ -195,9 +192,9 @@ class PedigreeController extends Controller
                         array_unshift($this->links, [$father->id, 'u'.$family_id]);
                         // get husband's parents data
                         $p_family_id = $father->child_in_family_id;
-                        if($p_family_id) {
-                        array_unshift($this->family_id, 'father'.$p_family_id);
-                    }
+                        if ($p_family_id) {
+                            array_unshift($this->family_id, 'father'.$p_family_id);
+                        }
                         if (! empty($p_family_id)) {
                             // add parent family link
                             // $this->links[] = ['u'.$p_family_id,  $father->id] ;
@@ -231,9 +228,8 @@ class PedigreeController extends Controller
                         array_unshift($this->links, [$mother->id, 'u'.$family_id]);
                         // get wifee's parents data
                         $p_family_id = $mother->child_in_family_id;
-                        if($p_family_id) {
-                        
-                    }
+                        if ($p_family_id) {
+                        }
                         if (! empty($p_family_id)) {
                             // add parent family link
                             // $this->links[] = ['u'.$p_family_id,  $father->id] ;
@@ -258,8 +254,8 @@ class PedigreeController extends Controller
                 $children = Person::where('child_in_family_id', $family_id)->get();
                 $children_ids = [];
                 foreach ($children as $child) {
-                    $this->getGraphDataUpward($child->id, $nest+1);
-                    if($child->id == 680) {
+                    $this->getGraphDataUpward($child->id, $nest + 1);
+                    if ($child->id == 680) {
                         array_unshift($this->family_id, $child->id);
                     }
                     $child_id = $child->id;
@@ -274,14 +270,14 @@ class PedigreeController extends Controller
                 $this->unions['u'.$family_id] = $union;
             }
             //get brother/sisters
-            $i =0;
+            $i = 0;
             $brothers = Person::where('child_in_family_id', $person->child_in_family_id)
                 ->whereNotNull('child_in_family_id')
                 ->where('id', '<>', $start_id)->get();
 
             foreach ($brothers as $brother) {
                 // if($i < 2) {
-                    $this->getGraphDataUpward($brother->id, $nest+1);
+                $this->getGraphDataUpward($brother->id, $nest + 1);
                 // }
                 $i++;
             }

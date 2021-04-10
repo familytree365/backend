@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\PersonNameRomn;
+use Illuminate\Http\Request;
 
 class PersonNameRomnController extends Controller
 {
@@ -16,34 +16,33 @@ class PersonNameRomnController extends Controller
     {
         $query = PersonNameRomn::query();
 
-        if($request->has('searchTerm')) {
+        if ($request->has('searchTerm')) {
             $columnsToSearch = ['name', 'email', 'phone'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
 
-            foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+            foreach ($filters as $key => $value) {
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -78,7 +77,7 @@ class PersonNameRomnController extends Controller
             'nick' => 'required',
             'spfx' => 'required',
             'surn' => 'required',
-            'nsfx' => 'required'
+            'nsfx' => 'required',
         ]);
 
         return PersonNameRomn::create([
@@ -91,7 +90,7 @@ class PersonNameRomnController extends Controller
             'nick' => $request->nick,
             'spfx' => $request->spfx,
             'surn' => $request->surn,
-            'nsfx' => $request->nsfx
+            'nsfx' => $request->nsfx,
         ]);
     }
 
@@ -136,7 +135,7 @@ class PersonNameRomnController extends Controller
             'nick' => 'required',
             'spfx' => 'required',
             'surn' => 'required',
-            'nsfx' => 'required'
+            'nsfx' => 'required',
         ]);
 
         $personameromn = PersonNameRomn::find($id);
@@ -151,6 +150,7 @@ class PersonNameRomnController extends Controller
         $personameromn->surn = $request->surn;
         $personameromn->nsfx = $request->nsfx;
         $personameromn->save();
+
         return $personameromn;
     }
 
@@ -163,10 +163,12 @@ class PersonNameRomnController extends Controller
     public function destroy($id)
     {
         $personnameromn = PersonNameRomn::find($id);
-        if($personnameromn) {
+        if ($personnameromn) {
             $personnameromn->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 }

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Person;
-use App\Models\User;
-use Carbon\Carbon;
-use App\Models\Tree;
 use App\Models\Company;
 use App\Models\Family;
+use App\Models\Person;
+use App\Models\Tree;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -24,8 +24,9 @@ class DashboardController extends Controller
         $unknown = Person::whereNull('sex')->get()->count();
         $familiesjoined = Family::all()->count();
         $peoplesattached = Person::all()->count();
-        $chart = array($male, $female, $unknown);
-        return ['chart' => $chart,'familiesjoined' => $familiesjoined,'peoplesattached' => $peoplesattached];
+        $chart = [$male, $female, $unknown];
+
+        return ['chart' => $chart, 'familiesjoined' => $familiesjoined, 'peoplesattached' => $peoplesattached];
     }
 
     /**
@@ -37,25 +38,31 @@ class DashboardController extends Controller
     {
         $user = auth()->user();
         $company = $user->Company();
-        $trees =Tree::where('company_id',$company->id)->get();
+        $trees = Tree::where('company_id', $company->id)->get();
+
         return $trees;
     }
 
-    public function getCompany() {
+    public function getCompany()
+    {
         $user = auth()->user();
         $company = $user->Company;
+
         return $company;
     }
 
-    public function getTree() {
-        $trees =Tree::where('company_id',request('company_id'))->get();
+    public function getTree()
+    {
+        $trees = Tree::where('company_id', request('company_id'))->get();
+
         return $trees;
     }
+
     public function changedb(Request $request)
     {
         $company_id = $request->get('company_id');
         $tree_id = $request->get('tree_id');
-        if (!empty($company_id) && !empty($tree_id)) {
+        if (! empty($company_id) && ! empty($tree_id)) {
             $user = auth()->user();
             $companies_id = $user->Company()->pluck('companies.id');
             $company = $user->Company()->update([
@@ -68,9 +75,9 @@ class DashboardController extends Controller
             $tree = Tree::find($tree_id);
             $tree->current_tenant = 1;
             $tree->save();
+
             return response()->json(['changedb' => true]);
-        }
-        else {
+        } else {
             return response()->json(['changedb' => false]);
         }
     }
@@ -115,7 +122,6 @@ class DashboardController extends Controller
      */
     public function update(Request $request, $id)
     {
-
     }
 
     /**
@@ -127,14 +133,16 @@ class DashboardController extends Controller
     public function destroy($id)
     {
     }
+
     public function trial()
     {
         $user = auth()->user();
-        if($user->subscribed('default')) {
+        if ($user->subscribed('default')) {
             $days = Carbon::now()->diffInDays(Carbon::parse($user->subscription('default')->asStripeSubscription()->current_period_end));
         } else {
             $days = Carbon::now()->diffInDays($user->trial_ends_at);
         }
+
         return ['days' => $days];
     }
 }

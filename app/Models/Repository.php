@@ -23,12 +23,14 @@ class Repository extends Model
     {
         return $this->hasMany(Source::class);
     }
+
     public function type()
     {
-        return $this->hasMany(Type::class,'id','type_id');
+        return $this->hasMany(Type::class, 'id', 'type_id');
     }
+
     public function addr()
     {
-        return $this->hasMany(Addr::class,'id','addr_id');
+        return $this->hasMany(Addr::class, 'id', 'addr_id');
     }
 }

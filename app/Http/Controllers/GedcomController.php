@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ImportGedcom;
 use App\Models\ImportJob;
 use Illuminate\Http\Request;
-use App\Jobs\ImportGedcom;
 use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
 
 class GedcomController extends Controller
@@ -21,12 +21,10 @@ class GedcomController extends Controller
     {
         $slug = '';
         if ($request->hasFile('file')) {
-
             if ($request->file('file')->isValid()) {
-
                 try {
-                    $conn= 'tenant';
-                    $currentTenant = app('currentTenant'); 
+                    $conn = 'tenant';
+                    $currentTenant = app('currentTenant');
                     $db = $currentTenant->database;
                     $currentUser = auth()->user();
                     $_name = uniqid().'.ged';
@@ -36,6 +34,7 @@ class GedcomController extends Controller
                     // $parser->parse($request->file('file'), $slug, true);
                     $filename = 'app/gedcom/'.$_name;
                     ImportGedcom::dispatch($filename, $slug, $currentUser->id, $conn, $db);
+
                     return ['File uploaded: conn:-'.$conn.'-'];
                 } catch (\Exception $e) {
                     return ['Not uploaded'];
@@ -65,6 +64,4 @@ class GedcomController extends Controller
 
         return $ret;
     }
-
-
 }

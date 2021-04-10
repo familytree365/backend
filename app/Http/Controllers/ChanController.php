@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Chan;
+use Illuminate\Http\Request;
 
 class ChanController extends Controller
 {
@@ -16,34 +16,33 @@ class ChanController extends Controller
     {
         $query = Chan::query();
 
-        if($request->has('searchTerm')) {
-            $columnsToSearch = ['group','date','time'];
+        if ($request->has('searchTerm')) {
+            $columnsToSearch = ['group', 'date', 'time'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
 
-            foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+            foreach ($filters as $key => $value) {
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -69,13 +68,13 @@ class ChanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'group' => 'required'
+            'group' => 'required',
         ]);
 
         return Chan::create([
             'group' => $request->group,
             'date' => $request->date,
-            'time' => $request->time
+            'time' => $request->time,
         ]);
     }
 
@@ -111,7 +110,7 @@ class ChanController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'group' => 'required'
+            'group' => 'required',
         ]);
 
         $chan = Chan::find($id);
@@ -119,6 +118,7 @@ class ChanController extends Controller
         $chan->date = $request->date;
         $chan->time = $request->time;
         $chan->save();
+
         return $chan;
     }
 
@@ -131,10 +131,12 @@ class ChanController extends Controller
     public function destroy($id)
     {
         $chan = Chan::find($id);
-        if($chan) {
+        if ($chan) {
             $chan->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 }

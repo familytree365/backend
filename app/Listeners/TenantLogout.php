@@ -2,17 +2,18 @@
 
 namespace App\Listeners;
 
+use App\Models\Tree;
+use DB;
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
-use DB;
 use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
-use App\Models\Tree;
 use Spatie\Multitenancy\Models\Tenant;
 
 class TenantLogout
 {
     use UsesLandlordConnection;
+
     /**
      * Create the event listener.
      *

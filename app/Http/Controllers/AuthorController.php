@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Author;
+use Illuminate\Http\Request;
 
 class AuthorController extends Controller
 {
@@ -16,34 +16,33 @@ class AuthorController extends Controller
     {
         $query = Author::query();
 
-        if($request->has('searchTerm')) {
+        if ($request->has('searchTerm')) {
             $columnsToSearch = ['name', 'description', 'is_active'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
 
-            foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+            foreach ($filters as $key => $value) {
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -71,13 +70,13 @@ class AuthorController extends Controller
         $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'is_active' => 'required'
+            'is_active' => 'required',
         ]);
 
         return Author::create([
             'name' => $request->name,
             'description' => $request->description,
-            'is_active' => $request->is_active
+            'is_active' => $request->is_active,
         ]);
     }
 
@@ -115,7 +114,7 @@ class AuthorController extends Controller
         $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'is_active' => 'required'
+            'is_active' => 'required',
         ]);
 
         $author = Author::find($id);
@@ -123,6 +122,7 @@ class AuthorController extends Controller
         $author->description = $request->description;
         $author->is_active = $request->is_active;
         $author->save();
+
         return $author;
     }
 
@@ -135,16 +135,19 @@ class AuthorController extends Controller
     public function destroy($id)
     {
         $author = Author::find($id);
-        if($author) {
+        if ($author) {
             $author->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 
     public function get()
     {
         $author_data = Author::all();
+
         return $author_data;
     }
 }
