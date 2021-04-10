@@ -3,7 +3,7 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/familytree365/backend/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/familytree365/backend/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/familytree365/backend/badges/build.png?b=master)](https://scrutinizer-ci.com/g/familytree365/backend/build-status/master)
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/familytree365/backend/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
-[![StyleCI](https://github.styleci.io/repos/135390590/shield?branch=master)](https://github.styleci.io/repos/135390590)
+[![StyleCI](https://github.styleci.io/repos/316440677/shield?branch=master)](https://github.styleci.io/repos/316440677)
 [![CodeFactor](https://www.codefactor.io/repository/github/familytree365/backend/badge/master)](https://www.codefactor.io/repository/github/familytree365/backend/overview/master)
 [![codebeat badge](https://codebeat.co/badges/911f9e33-212a-4dfa-a860-751cdbbacff7)](https://codebeat.co/projects/github-com-modulargenealogy-genealogy-master)
 [![Build Status](https://travis-ci.org/familytree365/backend.svg?branch=master)](https://travis-ci.org/familytree365/backend)
