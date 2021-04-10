@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Citation;
+use Illuminate\Http\Request;
 
 class CitationController extends Controller
 {
@@ -16,34 +16,33 @@ class CitationController extends Controller
     {
         $query = Citation::query();
 
-        if($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'description', 'date','is_active','volume','page','confidence','source_id'];
+        if ($request->has('searchTerm')) {
+            $columnsToSearch = ['name', 'description', 'date', 'is_active', 'volume', 'page', 'confidence', 'source_id'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
 
-            foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+            foreach ($filters as $key => $value) {
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -75,7 +74,7 @@ class CitationController extends Controller
             'page' => 'required',
             'is_active' => 'required',
             'confidence' => 'required',
-            'source_id' => 'required'
+            'source_id' => 'required',
         ]);
 
         return Citation::create([
@@ -86,7 +85,7 @@ class CitationController extends Controller
             'page' => $request->page,
             'is_active' => $request->is_active,
             'confidence' => $request->confidence,
-            'source_id' => $request->source_id
+            'source_id' => $request->source_id,
         ]);
     }
 
@@ -128,8 +127,8 @@ class CitationController extends Controller
             'page' => 'required',
             'is_active' => 'required',
             'confidence' => 'required',
-            'source_id' => 'required'
-       ]);
+            'source_id' => 'required',
+        ]);
 
         $citation = Citation::find($id);
         $citation->name = $request->name;
@@ -141,6 +140,7 @@ class CitationController extends Controller
         $citation->confidence = $request->confidence;
         $citation->source_id = $request->source_id;
         $citation->save();
+
         return $citation;
     }
 
@@ -153,10 +153,12 @@ class CitationController extends Controller
     public function destroy($id)
     {
         $citation = Citation::find($id);
-        if($citation) {
+        if ($citation) {
             $citation->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 }

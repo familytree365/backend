@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\PersonEvent;
+use Illuminate\Http\Request;
 
 class PersonEventController extends Controller
 {
@@ -16,34 +16,33 @@ class PersonEventController extends Controller
     {
         $query = PersonEvent::query();
 
-        if($request->has('searchTerm')) {
-            $columnsToSearch = ['converted_date', 'year', 'month','day','type','attr','plac','addr_id','phon','caus','age','agnc','adop','adop_famc','person_id','title','date','description','places_id'];
+        if ($request->has('searchTerm')) {
+            $columnsToSearch = ['converted_date', 'year', 'month', 'day', 'type', 'attr', 'plac', 'addr_id', 'phon', 'caus', 'age', 'agnc', 'adop', 'adop_famc', 'person_id', 'title', 'date', 'description', 'places_id'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
 
-            foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+            foreach ($filters as $key => $value) {
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -68,7 +67,6 @@ class PersonEventController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
             // 'converted_date' => 'required',
             'person_id' => 'required',
@@ -109,7 +107,7 @@ class PersonEventController extends Controller
             'adop_famc' => $request->adop_famc,
             'year' => $request->year,
             'month' => $request->month,
-            'day' => $request->day
+            'day' => $request->day,
         ]);
     }
 
@@ -187,6 +185,7 @@ class PersonEventController extends Controller
         $personevent->month = $request->month;
         $personevent->day = $request->day;
         $personevent->save();
+
         return $personevent;
     }
 
@@ -199,10 +198,12 @@ class PersonEventController extends Controller
     public function destroy($id)
     {
         $personevent = PersonEvent::find($id);
-        if($personevent) {
+        if ($personevent) {
             $personevent->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 }

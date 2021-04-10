@@ -5,21 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\ForumCategory;
 use Illuminate\Http\Request;
 
-class ForumCategoryController extends Controller {
-
+class ForumCategoryController extends Controller
+{
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $query = ForumCategory::query();
 
         if ($request->has('searchTerm')) {
             $columnsToSearch = ['name', 'email', 'phone'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if (!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
                 foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
@@ -27,12 +28,11 @@ class ForumCategoryController extends Controller {
         }
 
         if ($request->has('columnFilters')) {
-
             $filters = get_object_vars(json_decode($request->columnFilters));
 
             foreach ($filters as $key => $value) {
-                if (!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
@@ -42,9 +42,9 @@ class ForumCategoryController extends Controller {
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if ($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
-        }else{
+        } else {
             $rows = $query->get();
         }
 
@@ -56,7 +56,8 @@ class ForumCategoryController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create()
+    {
         //
     }
 
@@ -66,13 +67,14 @@ class ForumCategoryController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required',
         ]);
 
         return ForumCategory::create([
-                    'name' => $request->name,
+            'name' => $request->name,
         ]);
     }
 
@@ -82,8 +84,9 @@ class ForumCategoryController extends Controller {
      * @param  \App\Models\ForumCategory  $forumCategory
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
-        return ForumCategory::where('slug',$id)->first();
+    public function show($id)
+    {
+        return ForumCategory::where('slug', $id)->first();
     }
 
     /**
@@ -92,7 +95,8 @@ class ForumCategoryController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
+    public function edit($id)
+    {
         //
     }
 
@@ -103,9 +107,10 @@ class ForumCategoryController extends Controller {
      * @param  integrer  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required',
         ]);
         $category = ForumCategory::find($id);
         if ($category) {
@@ -117,11 +122,11 @@ class ForumCategoryController extends Controller {
     /**
      * Remove the specified resource from storage.
      *
-     * @param  integer  $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         //
     }
-
 }

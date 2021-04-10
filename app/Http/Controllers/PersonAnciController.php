@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\PersonAnci;
+use Illuminate\Http\Request;
 
 class PersonAnciController extends Controller
 {
@@ -16,34 +16,33 @@ class PersonAnciController extends Controller
     {
         $query = PersonAnci::query();
 
-        if($request->has('searchTerm')) {
-            $columnsToSearch = ['group','anci'];
+        if ($request->has('searchTerm')) {
+            $columnsToSearch = ['group', 'anci'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
 
-            foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+            foreach ($filters as $key => $value) {
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -70,12 +69,12 @@ class PersonAnciController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'anci' => 'required'
+            'anci' => 'required',
         ]);
 
         return PersonAnci::create([
             'group' => $request->group,
-            'anci' => $request->anci
+            'anci' => $request->anci,
         ]);
     }
 
@@ -112,13 +111,14 @@ class PersonAnciController extends Controller
     {
         $request->validate([
             'group' => 'required',
-            'anci' => 'required'
+            'anci' => 'required',
         ]);
 
         $personanci = PersonAnci::find($id);
         $personanci->group = $request->group;
         $personanci->anci = $request->anci;
         $personanci->save();
+
         return $personanci;
     }
 
@@ -131,10 +131,12 @@ class PersonAnciController extends Controller
     public function destroy($id)
     {
         $personanci = PersonAnci::find($id);
-        if($personanci) {
+        if ($personanci) {
             $personanci->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 }

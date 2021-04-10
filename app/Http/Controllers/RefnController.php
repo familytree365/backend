@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Refn;
+use Illuminate\Http\Request;
 
 class RefnController extends Controller
 {
@@ -16,34 +16,33 @@ class RefnController extends Controller
     {
         $query = Refn::query();
 
-        if($request->has('searchTerm')) {
-            $columnsToSearch = ['group','refn','type'];
+        if ($request->has('searchTerm')) {
+            $columnsToSearch = ['group', 'refn', 'type'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
 
-            foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+            foreach ($filters as $key => $value) {
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -69,13 +68,13 @@ class RefnController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'refn' => 'required'
-           ]);
+            'refn' => 'required',
+        ]);
 
         return Refn::create([
             'group' => $request->group,
             'refn' => $request->refn,
-            'type' => $request->type
+            'type' => $request->type,
         ]);
     }
 
@@ -111,7 +110,7 @@ class RefnController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'refn' => 'required'
+            'refn' => 'required',
         ]);
 
         $refn = Refn::find($id);
@@ -119,6 +118,7 @@ class RefnController extends Controller
         $refn->refn = $request->refn;
         $refn->type = $request->type;
         $refn->save();
+
         return $refn;
     }
 
@@ -131,10 +131,12 @@ class RefnController extends Controller
     public function destroy($id)
     {
         $refn = Refn::find($id);
-        if($refn) {
+        if ($refn) {
             $refn->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 }

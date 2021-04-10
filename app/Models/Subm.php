@@ -36,10 +36,6 @@ class Subm extends Model
 
     public function addr()
     {
-       return $this->belongsTo(Addr::class);
+        return $this->belongsTo(Addr::class);
     }
-
-
-
-
 }

@@ -5,21 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\ForumPost;
 use Illuminate\Http\Request;
 
-class ForumPostController extends Controller {
-
+class ForumPostController extends Controller
+{
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $query = ForumPost::query();
 
         if ($request->has('searchTerm')) {
             $columnsToSearch = ['name', 'email', 'phone'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if (!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
                 foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
@@ -27,12 +28,11 @@ class ForumPostController extends Controller {
         }
 
         if ($request->has('columnFilters')) {
-
             $filters = get_object_vars(json_decode($request->columnFilters));
 
             foreach ($filters as $key => $value) {
-                if (!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
@@ -42,7 +42,7 @@ class ForumPostController extends Controller {
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if ($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -54,7 +54,8 @@ class ForumPostController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create()
+    {
         //
     }
 
@@ -64,26 +65,28 @@ class ForumPostController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $request->validate([
             'topic_id' => 'required|integer',
-            'content' => 'required'
+            'content' => 'required',
         ]);
 
         return ForumPost::create([
-                    'topic_id' => $request->topic_id,
-                    'content' => $request->content,
-                    'author' => $request->user()->id,
+            'topic_id' => $request->topic_id,
+            'content' => $request->content,
+            'author' => $request->user()->id,
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  integer  $forumPost
+     * @param  int  $forumPost
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
+    public function show($id)
+    {
         return ForumPost::find($id);
     }
 
@@ -93,7 +96,8 @@ class ForumPostController extends Controller {
      * @param  \App\Models\ForumPost  $forumPost
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
+    public function edit($id)
+    {
         //
     }
 
@@ -104,10 +108,11 @@ class ForumPostController extends Controller {
      * @param  \App\Models\ForumPost  $forumPost
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         $request->validate([
             'topic_id' => 'required|integer',
-            'content' => 'required'
+            'content' => 'required',
         ]);
         $post = ForumPost::find($id);
         if ($post) {
@@ -121,11 +126,11 @@ class ForumPostController extends Controller {
     /**
      * Remove the specified resource from storage.
      *
-     * @param  integer  $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         //
     }
-
 }

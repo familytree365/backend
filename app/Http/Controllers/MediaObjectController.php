@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MediaObject;
 use App\Models\MediaObjectFile;
 use Illuminate\Http\Request;
-use App\Models\MediaObject;
 
 class MediaObjectController extends Controller
 {
@@ -17,34 +17,33 @@ class MediaObjectController extends Controller
     {
         $query = MediaObject::query();
 
-        if($request->has('searchTerm')) {
-            $columnsToSearch = ['group','titl','obje_id','rin'];
+        if ($request->has('searchTerm')) {
+            $columnsToSearch = ['group', 'titl', 'obje_id', 'rin'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
 
-            foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+            foreach ($filters as $key => $value) {
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -77,7 +76,7 @@ class MediaObjectController extends Controller
             'group' => $request->group,
             'titl' => $request->titl,
             'obje_id' => $request->obje_id,
-            'rin' => $request->rin
+            'rin' => $request->rin,
         ]);
     }
 
@@ -122,6 +121,7 @@ class MediaObjectController extends Controller
         $mediaobject->obje_id = $request->obje_id;
         $mediaobject->rin = $request->rin;
         $mediaobject->save();
+
         return $mediaobject;
     }
 
@@ -134,10 +134,12 @@ class MediaObjectController extends Controller
     public function destroy($id)
     {
         $mediaobject = MediaObject::find($id);
-        if($mediaobject) {
+        if ($mediaobject) {
             $mediaobject->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 }
