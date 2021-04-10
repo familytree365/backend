@@ -2,18 +2,19 @@
 
 namespace App\Listeners;
 
-use Illuminate\Auth\Events\Authenticated;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-use Spatie\Multitenancy\Models\Tenant;
-use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
 use App\Models\Company;
 use App\Models\Tree;
 use DB;
+use Illuminate\Auth\Events\Authenticated;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
+use Spatie\Multitenancy\Models\Tenant;
 
 class TenantAuthenticated
 {
     use UsesLandlordConnection;
+
     /**
      * Create the event listener.
      *

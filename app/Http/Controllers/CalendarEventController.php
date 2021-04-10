@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\CalendarEvent;
+use Illuminate\Http\Request;
 
 class CalendarEventController extends Controller
 {
@@ -15,6 +15,7 @@ class CalendarEventController extends Controller
     public function index(Request $request)
     {
         $calender_event = CalendarEvent::get();
+
         return $calender_event;
     }
 
@@ -49,7 +50,6 @@ class CalendarEventController extends Controller
      */
     public function show($id)
     {
-
     }
 
     /**

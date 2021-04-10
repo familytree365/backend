@@ -15,7 +15,9 @@ class DnaMatching implements ShouldQueue, TenantAware
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $current_user, $var_name, $file_name;
+    protected $current_user;
+    protected $var_name;
+    protected $file_name;
 
     /**
      * Create a new job instance.
@@ -41,19 +43,19 @@ class DnaMatching implements ShouldQueue, TenantAware
         foreach ($dnas as $dna) {
 //            system('/usr/bin/python3 /home/genealogia/public_html/dna.py ' . $this->var_name . ' ' . $dna->variable_name . ' ' . '/home/genealogia/public_html/storage/app/dna/'. $this->file_name . ' ' . '/home/genealogia/public_html/storage/app/dna/'. $dna->file_name);
             chdir('/var/www/api.familytree365.com/app');
-	        exec('python3 dna.py ' . $this->var_name . ' ' . $dna->variable_name . ' ' . $this->file_name . ' ' .  $dna->file_name);
+            exec('python3 dna.py '.$this->var_name.' '.$dna->variable_name.' '.$this->file_name.' '.$dna->file_name);
             $dm = new DM();
             $dm->user_id = $user->id;
-            $dm->image = 'shared_dna_' . $this->var_name . '_' . $dna->variable_name . '.png';
-            $dm->file1 = 'discordant_snps_' . $this->var_name . '_' . $dna->variable_name . '_GRCh37.csv';
-            $dm->file2 = 'shared_dna_one_chrom_' . $this->var_name . '_' . $dna->variable_name . '_GRCh37.csv';
+            $dm->image = 'shared_dna_'.$this->var_name.'_'.$dna->variable_name.'.png';
+            $dm->file1 = 'discordant_snps_'.$this->var_name.'_'.$dna->variable_name.'_GRCh37.csv';
+            $dm->file2 = 'shared_dna_one_chrom_'.$this->var_name.'_'.$dna->variable_name.'_GRCh37.csv';
             $dm->save();
 
-            $data = readCSV(storage_path('app' . DIRECTORY_SEPARATOR . 'dna' . DIRECTORY_SEPARATOR . 'output' . DIRECTORY_SEPARATOR . $dm->file1), ',');
+            $data = readCSV(storage_path('app'.DIRECTORY_SEPARATOR.'dna'.DIRECTORY_SEPARATOR.'output'.DIRECTORY_SEPARATOR.$dm->file1), ',');
             array_shift($data);
-            $data = writeCSV(storage_path('app' . DIRECTORY_SEPARATOR . 'dna' . DIRECTORY_SEPARATOR . 'output' . DIRECTORY_SEPARATOR . $dm->file1), $data);
+            $data = writeCSV(storage_path('app'.DIRECTORY_SEPARATOR.'dna'.DIRECTORY_SEPARATOR.'output'.DIRECTORY_SEPARATOR.$dm->file1), $data);
 
-            $data = readCSV(storage_path('app' . DIRECTORY_SEPARATOR . 'dna' . DIRECTORY_SEPARATOR . 'output' . DIRECTORY_SEPARATOR . $dm->file2), ',');
+            $data = readCSV(storage_path('app'.DIRECTORY_SEPARATOR.'dna'.DIRECTORY_SEPARATOR.'output'.DIRECTORY_SEPARATOR.$dm->file2), ',');
             array_shift($data);
 
             $temp_data = $data;
@@ -72,8 +74,7 @@ class DnaMatching implements ShouldQueue, TenantAware
             $dm->largest_cm_segment = round($largest_cm, 2);
             $dm->save();
 
-            $data = writeCSV(storage_path('app' . DIRECTORY_SEPARATOR . 'dna' . DIRECTORY_SEPARATOR . 'output' . DIRECTORY_SEPARATOR . $dm->file2), $data);
-
+            $data = writeCSV(storage_path('app'.DIRECTORY_SEPARATOR.'dna'.DIRECTORY_SEPARATOR.'output'.DIRECTORY_SEPARATOR.$dm->file2), $data);
         }
     }
 }

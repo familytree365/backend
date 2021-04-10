@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Family;
-use Illuminate\Http\Request;
 use App\Models\FamilyEvent;
 use App\Models\Place;
-use App\Models\Company;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class FamilyEventController extends Controller
@@ -18,36 +18,35 @@ class FamilyEventController extends Controller
      */
     public function index(Request $request)
     {
-        $query = FamilyEvent::query()->with(['family','place']);
+        $query = FamilyEvent::query()->with(['family', 'place']);
 
-        if($request->has('searchTerm')) {
-            $columnsToSearch = ['family_id','places_id','date','title','description','year','month','day','type','plac','phon','caus','age','agnc','husb','wife','converted_date','addr_id'];
+        if ($request->has('searchTerm')) {
+            $columnsToSearch = ['family_id', 'places_id', 'date', 'title', 'description', 'year', 'month', 'day', 'type', 'plac', 'phon', 'caus', 'age', 'agnc', 'husb', 'wife', 'converted_date', 'addr_id'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
 
-            foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+            foreach ($filters as $key => $value) {
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -63,10 +62,11 @@ class FamilyEventController extends Controller
     {
         //
     }
-    function get()
-    {
 
+    public function get()
+    {
         $company = Company::all()->count();
+
         return $company;
     }
 
@@ -94,7 +94,7 @@ class FamilyEventController extends Controller
             'age' => 'required',
             // 'agnc' => 'required',
             'husb' => 'required',
-            'wife' => 'required'
+            'wife' => 'required',
             // 'converted_date' => 'required',
             // 'addr_id' => 'required'
 
@@ -116,7 +116,7 @@ class FamilyEventController extends Controller
             'age' => $request->age,
             // 'agnc' => $request->agnc,
             'husb' => $request->husb,
-            'wife' => $request->wife
+            'wife' => $request->wife,
             // 'converted_date' => $request->converted_date,
             // 'addr_id' => $request->addr_id
         ]);
@@ -169,7 +169,7 @@ class FamilyEventController extends Controller
             'age' => 'required',
             // 'agnc' => 'required',
             'husb' => 'required',
-            'wife' => 'required'
+            'wife' => 'required',
             // 'converted_date' => 'required',
             // 'addr_id' => 'required'
 
@@ -195,6 +195,7 @@ class FamilyEventController extends Controller
         $familyevent->converted_date = $request->converted_date;
         $familyevent->addr_id = $request->addr_id;
         $familyevent->save();
+
         return $familyevent;
     }
 
@@ -207,10 +208,12 @@ class FamilyEventController extends Controller
     public function destroy($id)
     {
         $familyevent = FamilyEvent::find($id);
-        if($familyevent) {
+        if ($familyevent) {
             $familyevent->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 }

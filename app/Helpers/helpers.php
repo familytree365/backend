@@ -1,10 +1,11 @@
 <?php
+
 use Illuminate\Support\Str;
-if (!function_exists('unique_random')) {
+
+if (! function_exists('unique_random')) {
     /**
-     *
      * Generate a unique random string of characters
-     * uses str_random() helper for generating the random string
+     * uses str_random() helper for generating the random string.
      *
      * @param     $table - name of the table
      * @param     $col - name of the column that needs to be tested
@@ -14,7 +15,6 @@ if (!function_exists('unique_random')) {
      */
     function unique_random($table, $col, $chars = 16)
     {
-
         $unique = false;
 
         // Store tested results in array to not test them again
@@ -47,15 +47,13 @@ if (!function_exists('unique_random')) {
             // If unique is still false at this point
             // it will just repeat all the steps until
             // it has generated a random string of characters
-
-        } while (!$unique);
+        } while (! $unique);
 
         return $random;
     }
-
 }
 
-if (!function_exists('readCSV')) {
+if (! function_exists('readCSV')) {
     function readCSV($filename = '', $delimiter = ',')
     {
         // Read the file
@@ -67,11 +65,12 @@ if (!function_exists('readCSV')) {
             $data[] = $line;
         }
         fclose($file);
+
         return $data;
     }
 }
 
-if (!function_exists('writeCSV')) {
+if (! function_exists('writeCSV')) {
     function writeCSV($filename = '', $data = [])
     {
         $file = fopen($filename, 'w');

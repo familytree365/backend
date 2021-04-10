@@ -34,7 +34,7 @@ class FamilyEvent extends Event
         'caus',
         'age',
         'husb',
-        'wife'
+        'wife',
     ];
 
     public static function boot()
@@ -48,8 +48,9 @@ class FamilyEvent extends Event
     {
         return $this->hasMany(Family::class, 'id', 'family_id');
     }
+
     public function place()
     {
-        return $this->hasMany(Place::class,'id','places_id');
+        return $this->hasMany(Place::class, 'id', 'places_id');
     }
 }

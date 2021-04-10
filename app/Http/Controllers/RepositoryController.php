@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
+
 use App\Models\Repository;
+use Illuminate\Http\Request;
 
 class RepositoryController extends Controller
 {
@@ -13,39 +14,37 @@ class RepositoryController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Repository::query()->with(['type','addr']);
+        $query = Repository::query()->with(['type', 'addr']);
 
-        if($request->has('searchTerm')) {
-            $columnsToSearch = ['repo','name','addr_id','rin','email','phon','fax','www','description','type_id','is_active'];
+        if ($request->has('searchTerm')) {
+            $columnsToSearch = ['repo', 'name', 'addr_id', 'rin', 'email', 'phon', 'fax', 'www', 'description', 'type_id', 'is_active'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
-            $relationship_column = array('addr.adr1','type.name');
-            foreach($filters as $key => $value) {
-                if(!in_array($key, $relationship_column))
-                {
-                    if(!empty($value)) {
-                        $query->orWhere($key, 'like', '%' . $value . '%');
+            $relationship_column = ['addr.adr1', 'type.name'];
+            foreach ($filters as $key => $value) {
+                if (! in_array($key, $relationship_column)) {
+                    if (! empty($value)) {
+                        $query->orWhere($key, 'like', '%'.$value.'%');
                     }
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -77,7 +76,7 @@ class RepositoryController extends Controller
             'email' => 'required',
             'name' => 'required',
             'type_id' => 'required',
-            'is_active' => 'required'
+            'is_active' => 'required',
         ]);
 
         return Repository::create([
@@ -132,7 +131,7 @@ class RepositoryController extends Controller
             'email' => 'required',
             'name' => 'required',
             'type_id' => 'required',
-            'is_active' => 'required'
+            'is_active' => 'required',
         ]);
 
         $repository = Repository::find($id);
@@ -147,6 +146,7 @@ class RepositoryController extends Controller
         $repository->is_active = $request->is_active;
         $repository->description = $request->description;
         $repository->save();
+
         return $repository;
     }
 
@@ -159,16 +159,19 @@ class RepositoryController extends Controller
     public function destroy($id)
     {
         $repository = Repository::find($id);
-        if($repository) {
+        if ($repository) {
             $repository->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 
     public function get()
     {
         $repo_data = Repository::all();
+
         return $repo_data;
     }
 }

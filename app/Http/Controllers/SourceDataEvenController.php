@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\SourceDataEven;
+use Illuminate\Http\Request;
 
 class SourceDataEvenController extends Controller
 {
@@ -16,34 +16,33 @@ class SourceDataEvenController extends Controller
     {
         $query = SourceDataEven::query();
 
-        if($request->has('searchTerm')) {
+        if ($request->has('searchTerm')) {
             $columnsToSearch = ['group', 'date', 'plac'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
 
-            foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+            foreach ($filters as $key => $value) {
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -71,7 +70,7 @@ class SourceDataEvenController extends Controller
         $request->validate([
             'group' => 'required',
             'date' => 'required',
-            'plac' => 'required'
+            'plac' => 'required',
         ]);
 
         return SourceDataEven::create([
@@ -115,7 +114,7 @@ class SourceDataEvenController extends Controller
         $request->validate([
             'group' => 'required',
             'date' => 'required',
-            'plac' => 'required'
+            'plac' => 'required',
         ]);
 
         $sourcedataeven = SourceDataEven::find($id);
@@ -123,6 +122,7 @@ class SourceDataEvenController extends Controller
         $sourcedataeven->date = $request->date;
         $sourcedataeven->plac = $request->plac;
         $sourcedataeven->save();
+
         return $sourcedataeven;
     }
 
@@ -135,10 +135,12 @@ class SourceDataEvenController extends Controller
     public function destroy($id)
     {
         $sourcedataeven = SourceDataEven::find($id);
-        if($sourcedataeven) {
+        if ($sourcedataeven) {
             $sourcedataeven->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 }

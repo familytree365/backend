@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\SourceRepo;
+use Illuminate\Http\Request;
 
 class SourceRepoController extends Controller
 {
@@ -16,34 +16,33 @@ class SourceRepoController extends Controller
     {
         $query = SourceRepo::query();
 
-        if($request->has('searchTerm')) {
+        if ($request->has('searchTerm')) {
             $columnsToSearch = ['group', 'repo_id', 'caln'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
 
-            foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+            foreach ($filters as $key => $value) {
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -71,14 +70,14 @@ class SourceRepoController extends Controller
         $request->validate([
             'group' => 'required',
             'repo_id' => 'required',
-            'caln' => 'required'
+            'caln' => 'required',
 
         ]);
 
         return SourceRepo::create([
             'group' => $request->group,
             'repo_id' => $request->repo_id,
-            'caln' => $request->caln
+            'caln' => $request->caln,
         ]);
     }
 
@@ -116,7 +115,7 @@ class SourceRepoController extends Controller
         $request->validate([
             'group' => 'required',
             'repo_id' => 'required',
-            'caln' => 'required'
+            'caln' => 'required',
         ]);
 
         $sourcerepo = SourceRepo::find($id);
@@ -124,6 +123,7 @@ class SourceRepoController extends Controller
         $sourcerepo->repo_id = $request->repo_id;
         $sourcerepo->caln = $request->caln;
         $sourcerepo->save();
+
         return $sourcerepo;
     }
 
@@ -136,10 +136,12 @@ class SourceRepoController extends Controller
     public function destroy($id)
     {
         $sourcerepo = SourceRepo::find($id);
-        if($sourcerepo) {
+        if ($sourcerepo) {
             $sourcerepo->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 }

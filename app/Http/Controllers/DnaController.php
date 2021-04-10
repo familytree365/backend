@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\DnaMatching;
-use Illuminate\Http\Request;
 use App\Models\Dna;
 use Auth;
+use Illuminate\Http\Request;
 
 class DnaController extends Controller
 {
@@ -18,34 +18,33 @@ class DnaController extends Controller
     {
         $query = Dna::query();
 
-        if($request->has('searchTerm')) {
+        if ($request->has('searchTerm')) {
             $columnsToSearch = ['name'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
 
-            foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%'); 
+            foreach ($filters as $key => $value) {
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -74,20 +73,21 @@ class DnaController extends Controller
             if ($request->file('file')->isValid()) {
                 try {
                     $currentUser = Auth::user();
-                    $file_name = 'dna_' . $request->file('file')->getClientOriginalName() . uniqid() . '.' . $request->file('file')->extension();
+                    $file_name = 'dna_'.$request->file('file')->getClientOriginalName().uniqid().'.'.$request->file('file')->extension();
                     $request->file->storeAs('dna', $file_name);
                     define('STDIN', fopen('php://stdin', 'r'));
                     $random_string = unique_random('dnas', 'variable_name', 5);
-                    $var_name = 'var_' . $random_string;
-                    $filename = 'app/dna/' . $file_name;
+                    $var_name = 'var_'.$random_string;
+                    $filename = 'app/dna/'.$file_name;
                     $user_id = $currentUser->id;
                     $dna = new Dna();
-                    $dna->name = 'DNA Kit for user ' . $user_id;
+                    $dna->name = 'DNA Kit for user '.$user_id;
                     $dna->user_id = $user_id;
                     $dna->variable_name = $var_name;
                     $dna->file_name = $file_name;
                     $dna->save();
                     DnaMatching::dispatch($currentUser, $var_name, $file_name);
+
                     return [
                         'message' => __('The dna was successfully created'),
                         'redirect' => 'dna.edit',
@@ -97,8 +97,10 @@ class DnaController extends Controller
                     return $e->getMessage();
                 }
             }
+
             return ['File corrupted'];
         }
+
         return response()->json(['Not uploaded'], 422);
     }
 
@@ -133,7 +135,6 @@ class DnaController extends Controller
      */
     public function update(Request $request, $id)
     {
-
     }
 
     /**
@@ -148,13 +149,12 @@ class DnaController extends Controller
         $dna = Dna::find($id);
         if ($user->id == $dna->user_id) {
             $dna->delete();
+
             return [
                 'message' => __('The dna was successfully deleted'),
                 'redirect' => 'dna.index',
             ];
-        }
-        else 
-        {
+        } else {
             return [
                 'message' => __('The dna could not be deleted'),
                 'redirect' => 'dna.index',

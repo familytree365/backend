@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Family;
 use App\Models\Person;
 use DB;
+use Illuminate\Http\Request;
 
 class FamilyController extends Controller
 {
@@ -16,39 +16,38 @@ class FamilyController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Family::query()->with(['husband','wife']);
+        $query = Family::query()->with(['husband', 'wife']);
 
-        if($request->has('searchTerm')) {
-            $columnsToSearch = ['description', 'is_active', 'husband_id','wife_id','type_id','chan','nchi','rin'];
+        if ($request->has('searchTerm')) {
+            $columnsToSearch = ['description', 'is_active', 'husband_id', 'wife_id', 'type_id', 'chan', 'nchi', 'rin'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
 
-            foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+            foreach ($filters as $key => $value) {
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
-        if(!count($request->all())) {
+        if (! count($request->all())) {
             $rows = $query->get();
         }
 
@@ -62,10 +61,11 @@ class FamilyController extends Controller
      */
     public function create()
     {
-        $male = Person::where('sex','M')->get();
-        $female = Person::where('sex','F')->get();
+        $male = Person::where('sex', 'M')->get();
+        $female = Person::where('sex', 'F')->get();
         $types = DB::table('types')->get();
-        return response()->json(['male' => $male, 'female' => $female , 'types' => $types]);
+
+        return response()->json(['male' => $male, 'female' => $female, 'types' => $types]);
     }
 
     /**
@@ -84,7 +84,7 @@ class FamilyController extends Controller
             'type_id' => 'required',
             'chan' => 'required',
             'nchi' => 'required',
-            'rin' => 'required'
+            'rin' => 'required',
         ]);
 
         return Family::create([
@@ -95,7 +95,7 @@ class FamilyController extends Controller
             'type_id' => $request->type_id,
             'chan' => $request->chan,
             'nchi' => $request->nchi,
-            'rin' => $request->rin
+            'rin' => $request->rin,
         ]);
     }
 
@@ -138,7 +138,7 @@ class FamilyController extends Controller
             'type_id' => 'required',
             'chan' => 'required',
             'nchi' => 'required',
-            'rin' => 'required'
+            'rin' => 'required',
         ]);
 
         $family = Family::find($id);
@@ -151,6 +151,7 @@ class FamilyController extends Controller
         $family->nchi = $request->nchi;
         $family->rin = $request->rin;
         $family->save();
+
         return $family;
     }
 
@@ -163,10 +164,12 @@ class FamilyController extends Controller
     public function destroy($id)
     {
         $family = Family::find($id);
-        if($family) {
+        if ($family) {
             $family->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 }

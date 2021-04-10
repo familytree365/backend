@@ -2,28 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+use Illuminate\Foundation\Validation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Validation;
 use Illuminate\Validation\ValidationException;
-use DB;
 
 class LoginController extends Controller
 {
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => ['required'],
+            'password' => ['required'],
+        ]);
 
-    public function login(Request $request) {
-    	$request->validate([
-    		"email" => ["required"],
-    		"password" => ["required"]
-    	]);
+        if (Auth::attempt($request->only(['email', 'password']))) {
+            return response()->json(auth()->user(), 200);
+        }
 
-    	if(Auth::attempt($request->only(["email", "password"]))) {
-    		return response()->json(auth()->user(), 200);
-    	}
-
-    	throw ValidationException::withMessages([
-    		'email' => ['The provided credentials are incorrect.']
-    	]);
+        throw ValidationException::withMessages([
+            'email' => ['The provided credentials are incorrect.'],
+        ]);
     }
 
     /**
@@ -35,7 +35,7 @@ class LoginController extends Controller
     public function redirectToProvider($provider)
     {
         $validated = $this->validateProvider($provider);
-        if (!is_null($validated)) {
+        if (! is_null($validated)) {
             return $validated;
         }
 
@@ -51,7 +51,7 @@ class LoginController extends Controller
     public function handleProviderCallback($provider)
     {
         $validated = $this->validateProvider($provider);
-        if (!is_null($validated)) {
+        if (! is_null($validated)) {
             return $validated;
         }
         try {
@@ -62,7 +62,7 @@ class LoginController extends Controller
 
         $userCreated = User::firstOrCreate(
             [
-                'email' => $user->getEmail()
+                'email' => $user->getEmail(),
             ],
             [
                 'email_verified_at' => now(),
@@ -76,7 +76,7 @@ class LoginController extends Controller
                 'provider_id' => $user->getId(),
             ],
             [
-                'avatar' => $user->getAvatar()
+                'avatar' => $user->getAvatar(),
             ]
         );
         $token = $userCreated->createToken('token-name')->plainTextToken;
@@ -90,12 +90,13 @@ class LoginController extends Controller
      */
     protected function validateProvider($provider)
     {
-        if (!in_array($provider, ['facebook', 'google'])) {
+        if (! in_array($provider, ['facebook', 'google'])) {
             return response()->json(['error' => 'Please login using facebook or google'], 422);
         }
     }
 
-    public function logout(Request $request) {
-    	Auth::logout();
+    public function logout(Request $request)
+    {
+        Auth::logout();
     }
 }

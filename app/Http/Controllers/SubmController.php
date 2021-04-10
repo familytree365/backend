@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Subm;
 use App\Models\Addr;
+use App\Models\Subm;
+use Illuminate\Http\Request;
 
 class SubmController extends Controller
 {
@@ -17,38 +17,35 @@ class SubmController extends Controller
     {
         $query = Subm::query()->with('addr');
 
-        if($request->has('searchTerm')) {
-            $columnsToSearch = ['group','name','addr_id','rin','rfn','lang','email','phon','fax','www'];
+        if ($request->has('searchTerm')) {
+            $columnsToSearch = ['group', 'name', 'addr_id', 'rin', 'rfn', 'lang', 'email', 'phon', 'fax', 'www'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
-            $relationship_column = array('addr.adr2');
-            foreach($filters as $key => $value) {
-                
-                if(!in_array($key, $relationship_column))
-                {
-                    if(!empty($value)) {
-                        $query->orWhere($key, 'like', '%' . $value . '%');
+            $relationship_column = ['addr.adr2'];
+            foreach ($filters as $key => $value) {
+                if (! in_array($key, $relationship_column)) {
+                    if (! empty($value)) {
+                        $query->orWhere($key, 'like', '%'.$value.'%');
                     }
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -74,7 +71,7 @@ class SubmController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required',
         ]);
 
         return Subm::create([
@@ -87,7 +84,7 @@ class SubmController extends Controller
             'phon' => $request->phon,
             'email' => $request->email,
             'fax' => $request->fax,
-            'www' => $request->www
+            'www' => $request->www,
         ]);
     }
 
@@ -123,7 +120,7 @@ class SubmController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required',
         ]);
 
         $subm = Subm::find($id);
@@ -138,6 +135,7 @@ class SubmController extends Controller
         $subm->fax = $request->fax;
         $subm->www = $request->www;
         $subm->save();
+
         return $subm;
     }
 
@@ -150,10 +148,12 @@ class SubmController extends Controller
     public function destroy($id)
     {
         $subm = Subm::find($id);
-        if($subm) {
+        if ($subm) {
             $subm->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 }

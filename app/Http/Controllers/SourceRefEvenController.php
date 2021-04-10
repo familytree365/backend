@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\SourceRefEven;
+use Illuminate\Http\Request;
 
 class SourceRefEvenController extends Controller
 {
@@ -16,34 +16,33 @@ class SourceRefEvenController extends Controller
     {
         $query = SourceRefEven::query();
 
-        if($request->has('searchTerm')) {
-            $columnsToSearch = ['group','even','role'];
+        if ($request->has('searchTerm')) {
+            $columnsToSearch = ['group', 'even', 'role'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
-            if(!empty($search_term)) {
-                $searchQuery = '%' . $search_term . '%';
-                foreach($columnsToSearch as $column) {
+            if (! empty($search_term)) {
+                $searchQuery = '%'.$search_term.'%';
+                foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
             }
         }
 
-        if($request->has('columnFilters')) {
-
+        if ($request->has('columnFilters')) {
             $filters = get_object_vars(json_decode($request->columnFilters));
 
-            foreach($filters as $key => $value) {
-                if(!empty($value)) {
-                    $query->orWhere($key, 'like', '%' . $value . '%');
+            foreach ($filters as $key => $value) {
+                if (! empty($value)) {
+                    $query->orWhere($key, 'like', '%'.$value.'%');
                 }
             }
         }
 
-        if($request->has('sort.0')) {
+        if ($request->has('sort.0')) {
             $sort = json_decode($request->sort[0]);
             $query->orderBy($sort->field, $sort->type);
         }
 
-        if($request->has("perPage")) {
+        if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
 
@@ -71,13 +70,13 @@ class SourceRefEvenController extends Controller
         $request->validate([
             'group' => 'required',
             'even' => 'required',
-            'role' => 'required'
+            'role' => 'required',
         ]);
 
         return SourceRefEven::create([
             'group' => $request->group,
             'even' => $request->even,
-            'role' => $request->role
+            'role' => $request->role,
         ]);
     }
 
@@ -115,7 +114,7 @@ class SourceRefEvenController extends Controller
         $request->validate([
             'group' => 'required',
             'even' => 'required',
-            'role' => 'required'
+            'role' => 'required',
         ]);
 
         $sourcerefeven = SourceRefEven::find($id);
@@ -123,6 +122,7 @@ class SourceRefEvenController extends Controller
         $sourcerefeven->even = $request->even;
         $sourcerefeven->role = $request->role;
         $sourcerefeven->save();
+
         return $sourcerefeven;
     }
 
@@ -135,10 +135,12 @@ class SourceRefEvenController extends Controller
     public function destroy($id)
     {
         $sourcerefeven = SourceRefEven::find($id);
-        if($sourcerefeven) {
+        if ($sourcerefeven) {
             $sourcerefeven->delete();
-            return "true";
+
+            return 'true';
         }
-        return "false";
+
+        return 'false';
     }
 }

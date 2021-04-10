@@ -4,15 +4,15 @@ namespace App\Jobs;
 
 use App\Events\GedComProgressSent;
 use App\ImportJob;
+use GenealogiaWebsite\LaravelGedcom\Utils\GedcomParser;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Http\Request;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\File;
-use GenealogiaWebsite\LaravelGedcom\Utils\GedcomParser;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 use Spatie\Multitenancy\Jobs\TenantAware;
 
 class ImportGedcom implements ShouldQueue, TenantAware
@@ -54,8 +54,7 @@ class ImportGedcom implements ShouldQueue, TenantAware
         $user_id = $this->user_id;
         $status = 'queue';
 
-
-        if($this->conn === 'tenant') {
+        if ($this->conn === 'tenant') {
             $key = 'database.connections.tenant.database';
             $value = $this->db;
             config([$key => $value]);
@@ -66,7 +65,6 @@ class ImportGedcom implements ShouldQueue, TenantAware
         $parser = new \GenealogiaWebsite\LaravelGedcom\Utils\GedcomParser();
         $parser->parse($this->conn, storage_path($this->filename), $slug, true);
         File::delete(storage_path($this->filename));
-
 
         // update import job
         $status = 'complete';
