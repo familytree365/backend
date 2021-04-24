@@ -15,7 +15,8 @@ jobs:
           MYSQL_DATABASE: landlord
           MYSQL_USER: root
           MYSQL_PASSWORD: password  
-steps:
+          
+    steps:
       - checkout
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
