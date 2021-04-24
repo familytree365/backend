@@ -29,6 +29,8 @@ jobs:
 
       - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
       - run: sudo docker-php-ext-install zip
+      - run: cp .env.example .env
+      - run: php artisan key:generate
       - run: composer install -n --prefer-dist
 
       - save_cache:
