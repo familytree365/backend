@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       - image: circleci/php:8.0-node-browsers
-      - image: circleci/mysql:10-ram
+      - image: circleci/mysql:8-ram
         environment:
           - MYSQL_ROOT_PASSWORD=password
 
