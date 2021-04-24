@@ -1,69 +1,52 @@
+# PHP CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-php/ for more details
+#
 version: 2
 jobs:
   build:
     docker:
-      - image: circleci/php:8.0-apache-node-browsers # The primary container where steps are run
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-      - image: circleci/mysql:8.0.4
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+      - image: circleci/php:8.0-node-browsers
+      - image: circleci/mysql:10-ram
         environment:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: landlord
-          MYSQL_USER: root
-          MYSQL_PASSWORD: password  
-          
+          - MYSQL_ROOT_PASSWORD=password
+
     steps:
       - checkout
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # Using the RAM variation mitigates I/O contention
-      # for database intensive operations.
-      # - image: circleci/mysql:5.7-ram
-      #
-      # - image: redis:2.8.19
 
       - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
-      - run: sudo docker-php-ext-install zip
+      - run: sudo docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd
+      - run: sudo docker-php-ext-install zip bcmath pdo_mysql
+      - run: sudo apt-get install mysql-client
       - run: cp .env.example .env
       - run: composer install -n --prefer-dist
       - run: php artisan key:generate
 
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "composer.lock" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run: composer install -n --prefer-dist
+
       - save_cache:
-          key: v1-dependencies-{{ checksum "composer.json" }}
+          key: v1-dependencies-{{ checksum "composer.lock" }}
           paths:
             - ./vendor
+      - restore_cache:
+          keys:
+            - node-v1-{{ checksum "package-lock.json" }}
+            - node-v1-
+      - run: npm install
+      - save_cache:
+          key: node-v1-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
 
       # prepare the database
-      - run:
-      # Our primary container isn't MYSQL so run a sleep command until it's ready.
-          name: Waiting for MySQL to be ready
-          command: |
-            for i in `seq 1 10`;
-            do
-              nc -z 127.0.0.1 3306 && echo Success && exit 0
-              echo -n .
-              sleep 1
-            done
-            echo Failed waiting for MySQL && exit 1
-      - run:
-          name: Install MySQL CLI; Import dummy data; run an example query
-          command: |
-            sudo apt-get install default-mysql-client
-            mysql -h 127.0.0.1 -u user -p -e 'create database landlord'
-              # Specify the version you desire here
-   #   - run: php artisan migrate --env=testing --database=sqlite_testing --force
+      - run: mysqladmin create landlord --host="127.0.0.1" --user="root" --password="password"
       - run: php artisan migrate --path=database/migrations/landlord --database=landlord --force
-      # run tests with phpunit or codecept
-      #- run: ./vendor/bin/phpunit
-      #- run: ./vendor/bin/codecept build
-      #- run: ./vendor/bin/codecept run
-workflows:
-  version: 2
-  build-deploy:
-    jobs:
-      - build
+
+      # run tests
+ #     - run: ./vendor/bin/phpunit
