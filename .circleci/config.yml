@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       - image: circleci/php:8.0-node-browsers
-      - image: circleci/mariadb-latest
+      - image: circleci/mariadb:latest
         environment:
           - MYSQL_ROOT_PASSWORD=password
 
