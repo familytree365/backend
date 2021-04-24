@@ -1,12 +1,40 @@
-# PHP CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-php/ for more details
-#
 version: 2
 jobs:
   build:
     docker:
-      # Specify the version you desire here
+      - image: circleci/php:8.0-apache-node-browsers # The primary container where steps are run
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+      - image: circleci/mysql:8.0.4
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+        environment:
+          MYSQL_ROOT_PASSWORD: 
+          MYSQL_DATABASE: landlord
+          MYSQL_USER: root
+          MYSQL_PASSWORD: 
+
+    steps:
+      - checkout
+      - run:
+      # Our primary container isn't MYSQL so run a sleep command until it's ready.
+          name: Waiting for MySQL to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z 127.0.0.1 3306 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for MySQL && exit 1
+      - run:
+          name: Install MySQL CLI; Import dummy data; run an example query
+          command: |
+            sudo apt-get install default-mysql-client
+            mysql -h 127.0.0.1 -u user -p -e 'create database landlord'
+              # Specify the version you desire here
       - image: circleci/php:8.0-node-browsers
 
       # Specify service dependencies here if necessary
@@ -50,9 +78,15 @@ jobs:
 
       # prepare the database
       - run: touch storage/testing.sqlite
+      - run: 
    #   - run: php artisan migrate --env=testing --database=sqlite_testing --force
       - run: php artisan migrate --path=database/migrations/landlord --database=landlord --force
       # run tests with phpunit or codecept
       #- run: ./vendor/bin/phpunit
       #- run: ./vendor/bin/codecept build
       #- run: ./vendor/bin/codecept run
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
