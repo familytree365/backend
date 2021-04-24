@@ -16,7 +16,8 @@ jobs:
           MYSQL_USER: root
           MYSQL_PASSWORD: 
 
-    steps:
+      steps:
+      - checkout
       - run:
       # Our primary container isn't MYSQL so run a sleep command until it's ready.
           name: Waiting for MySQL to be ready
@@ -44,9 +45,6 @@ jobs:
       # - image: circleci/mysql:5.7-ram
       #
       # - image: redis:2.8.19
-
-    steps:
-      - checkout
 
       - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
       - run: sudo docker-php-ext-install zip
