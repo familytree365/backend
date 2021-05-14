@@ -20,6 +20,7 @@ $ php artisan migrate --path=database/migrations/landlord --database=landlord
 
 # serve with hot reload at localhost:8000
 $ php artisan serve
+```
 
 ## Description
 
@@ -31,7 +32,7 @@ smart matching with other servers. This is the Laravel 8 backend, see the fronte
 ## Demo
 
 https://www.familytree365.ml - register a free account
-```
+
 
 <!--h-->
 
