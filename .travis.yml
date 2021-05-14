@@ -26,9 +26,4 @@ before_script:
   - php artisan key:generate
   - php artisan migrate --path=database/migrations/landlord --database=landlord --force
 
-# script: vendor/bin/phpunit
-
-#after_success:
-#  - curl -s $DEPLOY_WEBHOOK
-
 sudo: required
