@@ -28,5 +28,5 @@ before_script:
 
 script:
   - echo "Skipping tests"
-  -
+
 sudo: required
