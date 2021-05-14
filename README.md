@@ -31,7 +31,7 @@ smart matching with other servers. This is the Laravel 8 backend, see the fronte
 
 ## Demo
 
-https://www.familytree365.ml - register a free account
+https://www.familytree365.com - register a free account
 
 
 <!--h-->
