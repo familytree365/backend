@@ -58,6 +58,9 @@ Route::middleware('tenant')->group(function () {
     Route::resource('familyevent', 'FamilyEventController');
     Route::resource('familyslgs', 'FamilySlgsController');
     Route::resource('gedcom', 'GedcomController');
+    Route::post('gedcom-export', 'GedcomController@gedcomExport');
+//    Route::get('gedcom-download', 'GedcomController@gedcomDownload');
+    Route::post('check-gedcom-export', 'GedcomController@checkGedcomExport');
     Route::resource('mediaobject', 'MediaObjectController');
     Route::resource('mediaobjectfile', 'MediaObjectFileController');
     Route::resource('note', 'NoteController');

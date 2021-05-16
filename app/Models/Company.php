@@ -15,6 +15,6 @@ class Company extends Model
 
     public function trees()
     {
-        return $this->hasMany(App\Model\Tree::class);
+        return $this->hasMany(Tree::class);
     }
 }

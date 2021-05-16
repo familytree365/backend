@@ -47,7 +47,7 @@ class RegisterController extends Controller
             $user->email = $request->email;
             $user->password = bcrypt($request->password);
             $user->save();
-            event(new Registered($user));
+//            event(new Registered($user));
             $user_id = $user->id;
             $user = User::find($user_id);
             $user->assignRole('free');

@@ -68,7 +68,10 @@ class ImportGedcom implements ShouldQueue, TenantAware
 
         // update import job
         $status = 'complete';
-        ImportJob::on($this->conn)->where('slug', $slug)->where('user_id', $user_id)->update(compact('status'));
+        ImportJob::on($this->conn)
+            ->where('slug', $slug)
+            ->where('user_id', $user_id)
+            ->update(compact('status'));
 
         return 0;
     }
