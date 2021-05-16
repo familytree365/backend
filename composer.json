@@ -14,6 +14,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "genealogiawebsite/laravel-gedcom": "^2.3",
         "guzzlehttp/guzzle": "^7.0.1",
+        "illuminate/support": "^8.41",
         "laravel/cashier": "^12.6",
         "laravel/framework": "^8.12",
         "laravel/sanctum": "^2.8",
