@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Jobs\SyncWithGeneanum;
+use App\Console\Commands\SyncWithGeneanum;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        SyncWithGeneanum::class,
     ];
 
     /**
@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule
-            ->job(new SyncWithGeneanum)
+            ->command('geneanum:sync')
             ->weekly();
     }
 
