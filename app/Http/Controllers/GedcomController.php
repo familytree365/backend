@@ -72,7 +72,7 @@ class GedcomController extends Controller
     /**
      * Generate gedcom file
      */
-    public function gedcomExport()
+    public function gedcomExport($request)
     {
 
         //TODO need data for testing
