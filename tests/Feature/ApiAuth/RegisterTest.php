@@ -76,8 +76,8 @@ class RegisterTest extends ApiAuthTestCase
     public function passwordMustBeAtLeast8Characters()
     {
         $this->attemptToRegisterAndExpectFail([
-            'password' => 'shortshort',
-            'password_confirmation' => 'shortshort',
+            'password' => 'short',
+            'password_confirmation' => 'short',
         ], [
             'password' => Lang::get('validation.min.string', ['attribute' => 'password']),
         ]);
