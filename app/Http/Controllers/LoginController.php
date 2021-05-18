@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Artisan;
 use DB;
+use GuzzleHttp\Exception\ClientException;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,7 +38,6 @@ class LoginController extends Controller
                 ]);
             }
         }
-
         $request->validate([
             'email' => ['required'],
             'password' => ['required'],
