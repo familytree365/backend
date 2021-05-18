@@ -20,11 +20,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/register', 'RegisterController@register');
+Route::post('/register', [ 'as' => 'register', 'uses' => 'RegisterController@register']);
 Route::post('password/email', 'ForgotPasswordController@forgot');
 Route::post('password/reset', 'ForgotPasswordController@reset')->name('password.reset');
 Route::get('login/{provider}', 'LoginController@redirectToProvider');
 Route::get('login/{provider}/callback', 'LoginController@handleProviderCallback');
+Route::post('login', [ 'as' => 'login', 'uses' => 'LoginController@login']);
+Route::post('logout', [ 'as' => 'logout', 'uses' => 'LoginController@logout']);
 Route::post('password/change', 'ProfileController@changePassword');
 Route::post('profile/update', 'ProfileController@changeProfile');
 //Cashier Routes
@@ -41,7 +43,7 @@ Route::get('getrolepermission/{id}', 'RoleController@getRolePermission')->middle
 Route::get('getroles', 'RoleController@getRole')->middleware(['auth:sanctum']);
 Route::get('permissions', 'PermissionController@index')->middleware(['auth:sanctum']);
 Route::get('getpermissions', 'PermissionController@getPermission')->middleware(['auth:sanctum']);
-Route::get('/email-verification', 'VerificationController@verify')->name('verification.verify');
+Route::get('/email-verification',  'VerificationController@verify')->name('verification.verify');
 Route::post('/email/verification-notification', 'VerificationController@resendVerificatonEmail')->name('verification.send');
 Route::middleware('tenant')->group(function () {
     Route::resource('addr', 'AddrController');

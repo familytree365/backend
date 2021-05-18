@@ -13,22 +13,12 @@ class Geneanum extends Model
 
     protected $fillable = [
         'remote_id',
-        'date',
-        'name',
-        'first_name',
-        'sex',
-        'father_first_name',
-        'father_is_dead',
-        'mother_name',
-        'mother_first_name',
-        'mother_is_dead',
-        'observation1',
-        'observation2',
-        'observation3',
-        'observation4',
-        'officer',
-        'parish',
-        'source',
-        'update',
+        'data',
+        'area',
+        'db_name',
+    ];
+
+    protected $casts = [
+        'data' => 'array',
     ];
 }

@@ -16,4 +16,9 @@ class CreateLandlordTenantsTable extends Migration
             $table->timestamps();
         });
     }
+
+    public function down()
+    {
+        Schema::dropIfExists('tenants');
+    }
 }
