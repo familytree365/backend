@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Artisan;
-use DB;
+use Exception;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
@@ -22,6 +24,8 @@ class RegisterController extends Controller
             'email' => ['required', 'email', 'unique:landlord.users'],
             'password' => ['required', 'min:8', 'confirmed'],
         ]);
+
+
 
         DB::connection($this->getConnectionName())->beginTransaction();
 
@@ -46,11 +50,19 @@ class RegisterController extends Controller
             $user->last_name = $request->last_name;
             $user->email = $request->email;
             $user->password = bcrypt($request->password);
+
             $user->save();
             event(new Registered($user));
+
             $user_id = $user->id;
-            $user = User::find($user_id);
+
+            // This line is useless
+            // $user = User::find($user_id);
+
             $user->assignRole('free');
+
+
+
             // $user->sendEmailVerificationNotification();
 
             $random = $this->unique_random('companies', 'name', 5);

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Artisan;
 use DB;
+use GuzzleHttp\Exception\ClientException;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +31,7 @@ class LoginController extends Controller
                     'email' => ['The provided credentials are incorrect.'],
                 ]);
             }
-        } 
+        }
         $request->validate([
             'email' => ['required'],
             'password' => ['required'],
@@ -124,7 +125,7 @@ class LoginController extends Controller
 
                 DB::connection($this->getConnectionName())->commit();
                 return view('callback', $output);
-                
+
             } catch (Exception $e) {
                 DB::connection($this->getConnectionName())->rollback();
             }
