@@ -76,23 +76,23 @@ class GedcomController extends Controller
     {
 
         //TODO need data for testing
-//        $conn = 'tenant';
-//        $p_id = 1;
-//        $f_id = 1;
-//        $up_nest = 0;
-//        $down_nest = 0;
-//        $_name = uniqid() . '.ged';
+        $conn = 'tenant';
+        $p_id = 1;
+        $f_id = 1;
+        $up_nest = 0;
+        $down_nest = 0;
+        $_name = uniqid() . '.ged';
 
-//        $parser = new GedcomWriter();
-//        $parser->parse($request->file('file'), $slug, true);
-//        $writer = new GedcomGenerator($p_id, $f_id, $up_nest, $down_nest);
-//        $content = $parser->parse($_name, '', true);
+        $parser = new GedcomWriter();
+        // $parser->parse($request->file('file'), $slug, true);
+        $writer = new GedcomGenerator($p_id, $f_id, $up_nest, $down_nest);
+        $content = $parser->parse($_name, '', true);
 //        dd($content);
-//        $content = $writer->getGedcomPerson();
-//        ExportGedCom::dispatch();
+        $content = $writer->getGedcomPerson();
+        ExportGedCom::dispatch();
 
-//        sleep(5);
-        $file = uniqid() . '.GED';
+        sleep(5);
+        $file = uniqid() . '.ged';
         $path = public_path($file);
         file_put_contents($path, '');
 
@@ -115,7 +115,7 @@ class GedcomController extends Controller
         header('Pragma: public');
         header('Content-Length: ' . filesize($request->file));
         flush(); // Flush system output buffer
-       return response()->download($request->file);
+        return response()->download($request->file);
     }
 
     /**
