@@ -83,13 +83,13 @@ class GedcomController extends Controller
         $down_nest = 0;
         $_name = uniqid() . '.ged';
 
-        $parser = new GedcomWriter();
+//        $parser = new GedcomWriter();
         // $parser->parse($request->file('file'), $slug, true);
         $writer = new GedcomGenerator($p_id, $f_id, $up_nest, $down_nest);
-        $content = $parser->parse($_name, '', true);
+//        $content = $parser->parse($_name, '', true);
 //        dd($content);
         $content = $writer->getGedcomPerson();
-        ExportGedCom::dispatch();
+        ExportGedCom::dispatch($request);
 
         sleep(5);
         $file = uniqid() . '.ged';

@@ -23,10 +23,10 @@ class ExportGedCom implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($family_id, Request $request)
+    public function __construct(Request $request)
     {
         //
-        $this->family_id = $family_id;
+        $this->family_id = 0;
     }
 
     /**
