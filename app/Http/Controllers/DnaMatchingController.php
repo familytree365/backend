@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DnaMatching;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DnaMatchingController extends Controller
 {
@@ -12,19 +13,16 @@ class DnaMatchingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, DnaMatching $dnaMatching)
     {
-        $query = DnaMatching::query();
+        $query = $dnaMatching->query();
 
-        if ($request->has('searchTerm')) {
-            $columnsToSearch = ['name'];
-            $search_term = json_decode($request->searchTerm)->searchTerm;
-            if (! empty($search_term)) {
-                $searchQuery = '%'.$search_term.'%';
-                foreach ($columnsToSearch as $column) {
-                    $query->orWhere($column, 'LIKE', $searchQuery);
-                }
-            }
+        if ($searchTerm = $request->searchTerm) {
+            $columnsToSearch = collect($dnaMatching->getFillable());
+
+            $columnsToSearch->each(function ($column) use ($query, $searchTerm) {
+                $query->orWhere($column, 'like', "%$searchTerm%");
+            });
         }
 
         if ($request->has('columnFilters')) {
@@ -45,6 +43,12 @@ class DnaMatchingController extends Controller
         if ($request->has('perPage')) {
             $rows = $query->paginate($request->perPage);
         }
+
+        $rows->through(function($item) {
+          $item->image = Storage::disk('public')->url("dna_match/{$item->image}");
+
+          return $item;
+        });
 
         return $rows;
     }
@@ -112,6 +116,6 @@ class DnaMatchingController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return DnaMatching::whereId($id)->delete();
     }
 }
