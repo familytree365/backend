@@ -18,11 +18,17 @@ use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
 class LoginController extends Controller
 {
     use UsesLandlordConnection;
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws ValidationException
+     */
     public function login(Request $request)
     {
         if($request->has('isSocialLogin') && $request->isSocialLogin == true) {
-            $email = $request->email;
             $find = User::where('email', $request->email)->first();
+
             if($find) {
                 Auth::loginUsingId($find->id);
                 return response()->json(auth()->user(), 200);
@@ -149,6 +155,9 @@ class LoginController extends Controller
         Auth::logout();
     }
 
+    /**
+     * @param $user
+     */
     public function updateProviderUser($user)
     {
         event(new Registered($user));

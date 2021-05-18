@@ -16,6 +16,9 @@ class RegisterController extends Controller
 {
     use UsesLandlordConnection;
 
+    /**
+     * @param Request $request
+     */
     public function register(Request $request)
     {
         $request->validate([
@@ -30,7 +33,6 @@ class RegisterController extends Controller
         DB::connection($this->getConnectionName())->beginTransaction();
 
         try {
-
         // $user_id = DB::connection($this->getConnectionName())->table('users')->insertGetId([
             // 	'first_name' => $request->first_name,
             // 	'last_name' => $request->last_name,
@@ -45,14 +47,15 @@ class RegisterController extends Controller
             // ]);
 
             $user = new User;
-
             $user->first_name = $request->first_name;
             $user->last_name = $request->last_name;
             $user->email = $request->email;
             $user->password = bcrypt($request->password);
 
             $user->save();
-            event(new Registered($user));
+
+            // moved that down to make sure user receives verification notification after he is really registered
+            // event(new Registered($user));
 
             $user_id = $user->id;
 
@@ -60,7 +63,6 @@ class RegisterController extends Controller
             // $user = User::find($user_id);
 
             $user->assignRole('free');
-
 
 
             // $user->sendEmailVerificationNotification();
@@ -98,8 +100,15 @@ class RegisterController extends Controller
         }
 
         DB::connection($this->getConnectionName())->commit();
+        event(new Registered($user));
     }
 
+    /**
+     * @param $table
+     * @param $col
+     * @param int $chars
+     * @return string
+     */
     public function unique_random($table, $col, $chars = 16)
     {
         $unique = false;
@@ -108,7 +117,6 @@ class RegisterController extends Controller
         $tested = [];
 
         do {
-
             // Generate random string of characters
             $random = Str::random($chars);
 
