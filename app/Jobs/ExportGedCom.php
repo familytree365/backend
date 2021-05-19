@@ -17,6 +17,7 @@ class ExportGedCom implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $family_id;
+    protected $file;
 
     /**
      * Create a new job instance.
@@ -49,8 +50,7 @@ class ExportGedCom implements ShouldQueue
         if (! is_dir($destinationPath)) {
             mkdir($destinationPath, 0777, true);
         }
-        $file = $this->file;
-        File::put($destinationPath.$file, $content);
+        File::put($destinationPath.$this->file, $content);
 
         return 0;
     }
