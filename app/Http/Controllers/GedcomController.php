@@ -77,8 +77,9 @@ class GedcomController extends Controller
 
         $ts = microtime(true);
         $file = env('APP_NAME').date('_Ymd_').$ts.'.ged';
-        $file = trim($file);
         $file = str_replace(' ', '', $file);
+        $file = str_replace("'", '', $file);
+        $url = url('/').'/upload/'.$file;
 
         //TODO need data for testing
         $conn = 'tenant';
@@ -102,7 +103,7 @@ class GedcomController extends Controller
 //        file_put_contents($path, '');
 
         return response()->json([
-            'file' => url($file)
+            'file' => url($url)
         ]);
     }
 
