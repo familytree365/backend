@@ -50,7 +50,7 @@ class ExportGedCom implements ShouldQueue
         if (! is_dir($destinationPath)) {
             mkdir($destinationPath, 0777, true);
         }
-        File::put($destinationPath .'/' . $file, $content);
+        File::put($destinationPath .'/' . $this->file, $content);
 
         return 0;
     }
