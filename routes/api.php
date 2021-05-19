@@ -107,4 +107,5 @@ Route::middleware('tenant')->group(function () {
     Route::get('allauthor', 'AuthorController@get');
     Route::get('alltype', 'SourceController@get');
     Route::get('allpublication', 'SourceController@getdata');
+    Route::get('/scraper/openArch', 'ScrapingController@scrapOpenArch');
 });
