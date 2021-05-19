@@ -77,6 +77,8 @@ class GedcomController extends Controller
 
         $ts = microtime(true);
         $file = env('APP_NAME').date('_Ymd_').$ts.'.ged';
+        $file = trim($this->file);
+        $file = str_replace(' ', '', $file);
 
         //TODO need data for testing
         $conn = 'tenant';
