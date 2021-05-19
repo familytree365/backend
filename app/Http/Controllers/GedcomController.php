@@ -72,7 +72,7 @@ class GedcomController extends Controller
     /**
      * Generate gedcom file
      */
-    public function gedcomExport($request)
+    public function gedcomExport()
     {
 
         $ts = microtime(true);
