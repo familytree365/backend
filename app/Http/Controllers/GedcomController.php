@@ -75,6 +75,9 @@ class GedcomController extends Controller
     public function gedcomExport($request)
     {
 
+        $ts = microtime(true);
+        $file = env('APP_NAME').date('_Ymd_').$ts.'.ged';
+
         //TODO need data for testing
         $conn = 'tenant';
         $p_id = 1;
@@ -89,12 +92,12 @@ class GedcomController extends Controller
 //        $content = $parser->parse($_name, '', true);
 //        dd($content);
         $content = $writer->getGedcomPerson();
-        ExportGedCom::dispatch($request);
+        ExportGedCom::dispatch($request,$file);
 
         sleep(5);
-        $file = uniqid() . '.ged';
-        $path = public_path($file);
-        file_put_contents($path, '');
+//        $file = uniqid() . '.ged';
+//        $path = public_path($file);
+//        file_put_contents($path, '');
 
         return response()->json([
             'file' => url($file)

@@ -23,10 +23,12 @@ class ExportGedCom implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request, File $file)
     {
         //
         $this->family_id = 0;
+        $this->file = $file;
+        $this->request = $request;
     }
 
     /**
@@ -43,12 +45,11 @@ class ExportGedCom implements ShouldQueue
         $writer = new GedcomGenerator($p_id, $f_id, $up_nest, $down_nest);
         $content = $writer->getGedcomPerson();
         // $user_id = Auth::user()->id;
-        $ts = microtime(true);
-        $file = env('APP_NAME').date('_Ymd_').$ts.'.GED';
         $destinationPath = public_path().'/upload/';
         if (! is_dir($destinationPath)) {
             mkdir($destinationPath, 0777, true);
         }
+        $file = $this->file;
         File::put($destinationPath.$file, $content);
 
         return 0;
