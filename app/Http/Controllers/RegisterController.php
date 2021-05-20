@@ -24,6 +24,7 @@ class RegisterController extends Controller
             'last_name' => ['required'],
             'email' => ['required', 'email', 'unique:landlord.users'],
             'password' => ['required', 'min:8', 'confirmed'],
+            'conditions_terms' => ['required', 'accepted'],
         ]);
 
         DB::connection($this->getConnectionName())->beginTransaction();
