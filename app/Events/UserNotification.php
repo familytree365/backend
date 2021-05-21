@@ -43,7 +43,7 @@ class UserNotification implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new Channel("user");
+        return new Channel("user.{$this->user->id}");
     }
 
     /**
