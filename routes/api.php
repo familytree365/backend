@@ -20,6 +20,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/notify', function () {
+  broadcast(new \App\Events\UserNotification(\App\Models\User::find(5)));
+});
+
 Route::post('/register', [ 'as' => 'register', 'uses' => 'RegisterController@register']);
 Route::post('password/email', 'ForgotPasswordController@forgot');
 Route::post('password/reset', 'ForgotPasswordController@reset')->name('password.reset');

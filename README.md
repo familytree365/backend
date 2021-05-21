@@ -1,5 +1,5 @@
 ## Family Tree 365 - Open Source Family Tree Software - Laravel 8 Backend API
- ![Latest Stable Version](https://img.shields.io/github/release/familytree365/backend.svg) 
+ ![Latest Stable Version](https://img.shields.io/github/release/familytree365/backend.svg)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/familytree365/backend/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/familytree365/backend/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/familytree365/backend/badges/build.png?b=master)](https://scrutinizer-ci.com/g/familytree365/backend/build-status/master)
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/familytree365/backend/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
@@ -21,6 +21,23 @@ $ php artisan migrate --path=database/migrations/landlord --database=landlord
 # serve with hot reload at localhost:8000
 $ php artisan serve
 ```
+
+## Broadcasting Setup
+
+```bash
+# install dependencies
+$ npm install -g laravel-echo-server
+
+$ laravel-echo-server configure
+$ nano .env
+
+  BROADCAST_DRIVER=redis
+  REDIS_PREFIX=
+
+$ laravel-echo-server start
+```
+
+If you want to keep it in background proccess you should install pm2 or supervisor
 
 ## Description
 
@@ -48,7 +65,7 @@ are welcome. Pull requests are great, but issues are good too.
 
 ## Contributors
 
-This project exists thanks to all the people who contribute. 
+This project exists thanks to all the people who contribute.
 <a href="graphs/contributors"><img src="https://opencollective.com/genealogy/contributors.svg?width=890&button=false" /></a>
 
 
