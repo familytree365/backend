@@ -3,25 +3,71 @@
 namespace Tests\Feature\ApiAuth;
 
 use App\Models\User;
-use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\URL;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Support\Facades\Hash;
 
 class EmailVerificationTest extends ApiAuthTestCase
 {
+    protected function attemptToRegister(array $params = [])
+    {
+        return $this->postJson($this->registerRoute, array_merge([
+            'first_name' => 'John',
+            'last_name' => 'Smith',
+            'email' => $this->validEmail,
+            'password' => $this->validPassword,
+            'password_confirmation' => $this->validPassword,
+        ], $params));
+    }
+
+    protected function verificationNoticeRoute() {
+        return route('verification.verify');
+    }
+
+    /**
+     * @test
+     * A guest cannot verify his email -> return not found status 404
+     * @return void
+     */
+    public function testGuestCannotSeeTheVerificationNotice() {
+        $response = $this->get($this->verificationNoticeRoute());
+        $response->assertStatus(404);
+    }
+
+    /**
+     * @test
+     * A user can verified if he is not verified
+     *
+     * @return void
+     */
+    public function testUserSeesTheVerificationNoticeWhenNotVerified() {
+        $user = User::factory()->create([
+            'email_verified_at' => null
+        ]);
+        $response = $this->actingAs($user)->get($this->verificationNoticeRoute());
+        $response->assertStatus(200);
+    }
+
     /** @test */
     public function canVerify()
     {
         $user = User::factory()->create([
-            'email_verified_at' => null,
+            'first_name' => 'Jane',
+            'last_name' => 'Smith',
+            'email' => $this->validEmail,
+            'password' => Hash::make($this->validPassword)
         ]);
-        $this->assertFalse($user->hasVerifiedEmail());
-        $this->actingAs($user);
 
-        $response = $this->getJson($this->verifyRoute($user));
-        $response->assertStatus(204);
+        $this->assertFalse($user->hasVerifiedEmail());
+        $url = $this->verifyRoute($user);
+
+        $response = $this->actingAs($user)->getJson($url);
+        $response->assertStatus(200);
+        dd($user->email_verified_at);
         $this->assertTrue($user->hasVerifiedEmail());
     }
 
@@ -131,6 +177,7 @@ class EmailVerificationTest extends ApiAuthTestCase
 
     protected function verifyRoute(User $user)
     {
+
         return URL::temporarySignedRoute('verification.verify', Carbon::now()
             ->addMinutes(Config::get('auth.verification.expire', 60)), [
             'id' => $user->getKey(), // i.e. $user->id

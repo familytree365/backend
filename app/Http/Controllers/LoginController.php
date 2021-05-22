@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\User;
-use Artisan;
 use DB;
-use GuzzleHttp\Exception\ClientException;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Artisan;
+use App\Models\User;
 use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Cookie;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Validation\ValidationException;
 use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
 
 class LoginController extends Controller
@@ -37,10 +37,14 @@ class LoginController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($request->only(['email', 'password']))) {
+        $remember = $request->get("remember") ? true : false;
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $remember)) {
+
+        }
+        if (Auth::attempt($request->only(['email', 'password']), $remember)) {
             return response()->json(auth()->user(), 200);
         }
-
+        dd("Salut");
         throw ValidationException::withMessages([
             'email' => ['The provided credentials are incorrect.'],
         ]);

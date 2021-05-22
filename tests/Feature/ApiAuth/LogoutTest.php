@@ -3,19 +3,17 @@
 namespace Tests\Feature\ApiAuth;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class LogoutTest extends ApiAuthTestCase
 {
     /** @test */
     public function userCanLogout()
     {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-        $this->assertAuthenticatedAs($user);
-
+        $this->be(User::factory()->create());
         $response = $this->postJson($this->logoutRoute);
-
-        $response->assertStatus(204);
+        $this->assertNull(Auth::user());
         $this->assertGuest();
     }
 }

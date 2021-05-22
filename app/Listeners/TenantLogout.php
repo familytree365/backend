@@ -33,10 +33,19 @@ class TenantLogout
     public function handle(Logout $event)
     {
         $user = auth()->user();
-        $company = DB::connection($this->getConnectionName())->table('user_company')->where('user_id', $user->id)->select('company_id')->first();
-        $tree = Tree::where('company_id', $company->company_id)->first();
-        $tenant = Tenant::where('tree_id', $tree->id)->first();
-        session()->flush();
-        $tenant->forgetCurrent();
+        if($user) {
+            $company = DB::connection($this->getConnectionName())
+                ->table('user_company')
+                ->where('user_id', $user->id)
+                ->select('company_id')
+                ->first();
+            if($company) {
+                $tree = Tree::where('company_id', $company->company_id)->first();
+                $tenant = Tenant::where('tree_id', $tree->id)->first();
+                session()->flush();
+                $tenant->forgetCurrent();
+            }
+
+        }
     }
 }
