@@ -40,9 +40,10 @@ class TenantAuthenticated
                         ->where('user_id', $user->id)
                         ->select('company_id')
                         ->first();
-
-        $tree = Tree::where('company_id', $company->company_id)->first();
-        $tenant = Tenant::where('tree_id', $tree->id)->first();
-        $tenant->makeCurrent();
+        if($company) {
+            $tree = Tree::where('company_id', $company->company_id)->first();
+            $tenant = Tenant::where('tree_id', $tree->id)->first();
+            $tenant->makeCurrent();
+        }
     }
 }

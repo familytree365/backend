@@ -38,12 +38,14 @@ class LoginTest extends ApiAuthTestCase
             'remember' => 'on',
         ]);
 
+        dd($response->headers);
+
         $response->assertCookie(Auth::guard()
             ->getRecallerName(), "{$response->user->id}|{$response->user->getRememberToken()}|{$response->user->getAuthPassword()}");
     }
 
     /** @test */
-    public function emailFieldIsRequired()
+    public function theEmailFieldIsRequired()
     {
         $this->attemptLoginAndExpectFail([
             'email' => '',
@@ -53,9 +55,15 @@ class LoginTest extends ApiAuthTestCase
     /** @test */
     public function guestCanLoginWithCorrectCredentials()
     {
-        $response = $this->attemptLogin([
+        $user = User::factory()->create([
             'email' => $this->validEmail,
-            'password' => $this->validPassword,
+            'password' => Hash::make($this->validPassword),
+            'first_name' => 'Paul',
+            'last_name' => 'Doe'
+        ]);
+        $response = $this->post($this->loginRoute,[
+            'email' => $this->validEmail,
+            'password' => $this->validPassword
         ]);
 
         $response->assertStatus(204);
@@ -143,7 +151,6 @@ class LoginTest extends ApiAuthTestCase
     protected function attemptLoginAndExpectFail(array $params, string $fieldWithError, int $status = 422)
     {
         $response = $this->attemptLogin($params);
-
         $response->assertStatus($status);
         $response->assertJsonValidationErrors($fieldWithError);
         $this->assertGuest();

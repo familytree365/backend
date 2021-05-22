@@ -17,7 +17,8 @@ class ForgotPasswordTest extends ApiAuthTestCase
             'email' => '',
         ]);
 
-        $response->assertStatus(422);
+        $response->assertStatus(405);
+        dd($response);
         $response->assertJsonValidationErrors('email');
 
         Notification::assertNothingSent();
