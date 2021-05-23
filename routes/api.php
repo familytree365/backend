@@ -44,6 +44,9 @@ Route::post('webhook', 'StripeController@webhook')->middleware([VerifyWebhookSig
 Route::resource('roles', 'RoleController')->middleware(['auth:sanctum']);
 Route::get('getrolepermission/{id}', 'RoleController@getRolePermission')->middleware(['auth:sanctum']);
 
+// Wikitree
+Route::get('wikitree/get-authcode', 'WikitreeController@getAuthCode');
+
 Route::get('getroles', 'RoleController@getRole')->middleware(['auth:sanctum']);
 Route::get('permissions', 'PermissionController@index')->middleware(['auth:sanctum']);
 Route::get('getpermissions', 'PermissionController@getPermission')->middleware(['auth:sanctum']);

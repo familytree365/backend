@@ -48,4 +48,7 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'wikitree' => [
+        'api' => env('WIKITREE_API')
+    ],
 ];
