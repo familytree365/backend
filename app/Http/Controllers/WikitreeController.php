@@ -6,13 +6,19 @@ use Illuminate\Http\Request;
 
 class WikitreeController extends Controller
 {
+    private $wikitreeApi;
+
+    public function __construct()
+    {
+        $this->wikitreeApi = config('services.wikitree.api');
+    }
+
     public function getAuthCode(Request $request)
     {
         $authCode = $request->authcode;
-        $endpoint = "https://api.wikitree.com/api.php";
         $client = new \GuzzleHttp\Client();
 
-        $response = $client->request('POST', $endpoint, ['query' => [
+        $response = $client->request('POST', $this->wikitreeApi, ['query' => [
             'authcode' => $authCode, 
             'action' => 'clientLogin',
             'format' => 'json'
