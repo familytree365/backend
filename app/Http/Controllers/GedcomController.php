@@ -41,7 +41,8 @@ class GedcomController extends Controller
 
                     return ['File uploaded: conn:-' . $conn . '-'];
                 } catch (\Exception $e) {
-                    return ['Not uploaded'];
+                    $error = sprintf('[%s],[%d] ERROR:[%s]', __METHOD__, __LINE__, json_encode($e->getMessage(), true));
+                    return \Log::error($error);
                 }
             }
 
