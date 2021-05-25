@@ -12,7 +12,7 @@
         "doctrine/dbal": "^3.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
-        "genealogiawebsite/laravel-gedcom": "^3.0",
+        "familytree365/laravel-gedcom": "^3.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "illuminate/support": "^8.41",
         "laravel/cashier": "^12.6",
