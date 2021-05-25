@@ -63,7 +63,16 @@ class ImportGedcom implements ShouldQueue, TenantAware
         ImportJob::on($this->conn)->create(compact('user_id', 'slug', 'status'));
 
         $parser = new \GenealogiaWebsite\LaravelGedcom\Utils\GedcomParser();
-        $parser->parse($this->conn, storage_path($this->filename), $slug, true);
+        $parser->parse(
+            $this->conn,
+            storage_path($this->filename),
+            $slug,
+            true,
+            [
+                'name' => "user.{$this->user_id}",
+                "eventName" => 'gedcomProgress',
+            ]
+        );
         File::delete(storage_path($this->filename));
 
         // update import job
