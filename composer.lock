@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "686a4ffdd53052334aca034efe522095",
+    "content-hash": "be02b23fe4b1639dac970556e0899784",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -120,16 +120,16 @@
         },
         {
             "name": "composer/package-versions-deprecated",
-            "version": "1.11.99.1",
+            "version": "1.11.99.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/package-versions-deprecated.git",
-                "reference": "7413f0b55a051e89485c5cb9f765fe24bb02a7b6"
+                "reference": "c6522afe5540d5fc46675043d3ed5a45a740b27c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/package-versions-deprecated/zipball/7413f0b55a051e89485c5cb9f765fe24bb02a7b6",
-                "reference": "7413f0b55a051e89485c5cb9f765fe24bb02a7b6",
+                "url": "https://api.github.com/repos/composer/package-versions-deprecated/zipball/c6522afe5540d5fc46675043d3ed5a45a740b27c",
+                "reference": "c6522afe5540d5fc46675043d3ed5a45a740b27c",
                 "shasum": ""
             },
             "require": {
@@ -173,7 +173,7 @@
             "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
             "support": {
                 "issues": "https://github.com/composer/package-versions-deprecated/issues",
-                "source": "https://github.com/composer/package-versions-deprecated/tree/1.11.99.1"
+                "source": "https://github.com/composer/package-versions-deprecated/tree/1.11.99.2"
             },
             "funding": [
                 {
@@ -189,20 +189,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-11-11T10:22:58+00:00"
+            "time": "2021-05-24T07:46:03+00:00"
         },
         {
             "name": "doctrine/cache",
-            "version": "1.11.0",
+            "version": "1.11.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "a9c1b59eba5a08ca2770a76eddb88922f504e8e0"
+                "reference": "3bb5588cec00a0268829cc4a518490df6741af9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/a9c1b59eba5a08ca2770a76eddb88922f504e8e0",
-                "reference": "a9c1b59eba5a08ca2770a76eddb88922f504e8e0",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/3bb5588cec00a0268829cc4a518490df6741af9d",
+                "reference": "3bb5588cec00a0268829cc4a518490df6741af9d",
                 "shasum": ""
             },
             "require": {
@@ -272,7 +272,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/cache/issues",
-                "source": "https://github.com/doctrine/cache/tree/1.11.0"
+                "source": "https://github.com/doctrine/cache/tree/1.11.3"
             },
             "funding": [
                 {
@@ -288,7 +288,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-04-13T14:46:17+00:00"
+            "time": "2021-05-25T09:01:55+00:00"
         },
         {
             "name": "doctrine/dbal",
@@ -981,6 +981,54 @@
             "time": "2020-12-29T14:50:06+00:00"
         },
         {
+            "name": "familytree365/laravel-gedcom",
+            "version": "v3.0.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/familytree365/laravel-gedcom.git",
+                "reference": "5818f5d99a5fe1ddd6cba1a12e484329f0ae4cf4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/familytree365/laravel-gedcom/zipball/5818f5d99a5fe1ddd6cba1a12e484329f0ae4cf4",
+                "reference": "5818f5d99a5fe1ddd6cba1a12e484329f0ae4cf4",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": "^3.0",
+                "genealogiawebsite/php-gedcom": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "GenealogiaWebsite\\LaravelGedcom\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GenealogiaWebsite\\LaravelGedcom\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A package that converts gedcom files to Eloquent models",
+            "support": {
+                "issues": "https://github.com/familytree365/laravel-gedcom/issues",
+                "source": "https://github.com/familytree365/laravel-gedcom/tree/v3.0.8"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/genealogiawebsite",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-05-25T21:31:05+00:00"
+        },
+        {
             "name": "fideloper/proxy",
             "version": "4.4.1",
             "source": {
@@ -1116,64 +1164,17 @@
             "time": "2021-04-26T11:24:25+00:00"
         },
         {
-            "name": "genealogiawebsite/laravel-gedcom",
-            "version": "v2.3.18",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/familytree365/laravel-gedcom.git",
-                "reference": "d51375ac31d3bd1b058c396095bbebcb06997e99"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/familytree365/laravel-gedcom/zipball/d51375ac31d3bd1b058c396095bbebcb06997e99",
-                "reference": "d51375ac31d3bd1b058c396095bbebcb06997e99",
-                "shasum": ""
-            },
-            "require": {
-                "genealogiawebsite/php-gedcom": "^1.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "GenealogiaWebsite\\LaravelGedcom\\ServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "GenealogiaWebsite\\LaravelGedcom\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "A package that converts gedcom files to Eloquent models",
-            "support": {
-                "issues": "https://github.com/familytree365/laravel-gedcom/issues",
-                "source": "https://github.com/familytree365/laravel-gedcom/tree/v2.3.18"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/genealogiawebsite",
-                    "type": "github"
-                }
-            ],
-            "time": "2021-05-13T16:04:31+00:00"
-        },
-        {
             "name": "genealogiawebsite/php-gedcom",
-            "version": "v1.2.3",
+            "version": "v1.2.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/genealogiawebsite/php-gedcom.git",
-                "reference": "c6bc5aa3f554c048a1a34312d15d0700f7f5410e"
+                "url": "https://github.com/familytree365/php-gedcom.git",
+                "reference": "22971cf79241e991858a1bfd1badd661830eefde"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/genealogiawebsite/php-gedcom/zipball/c6bc5aa3f554c048a1a34312d15d0700f7f5410e",
-                "reference": "c6bc5aa3f554c048a1a34312d15d0700f7f5410e",
+                "url": "https://api.github.com/repos/familytree365/php-gedcom/zipball/22971cf79241e991858a1bfd1badd661830eefde",
+                "reference": "22971cf79241e991858a1bfd1badd661830eefde",
                 "shasum": ""
             },
             "require": {
@@ -1193,23 +1194,23 @@
             "license": [
                 "MIT"
             ],
-            "description": "A GEDCOM file parser (read + write) for PHP 5.3+",
-            "homepage": "http://github.com/modularsoftware/php-gedcom",
+            "description": "A GEDCOM file parser (read + write) for PHP 7.3+",
+            "homepage": "http://github.com/genealogiawebsite/php-gedcom",
             "keywords": [
                 "gedcom",
                 "parser"
             ],
             "support": {
-                "issues": "https://github.com/genealogiawebsite/php-gedcom/issues",
-                "source": "https://github.com/genealogiawebsite/php-gedcom/tree/v1.2.3"
+                "issues": "https://github.com/familytree365/php-gedcom/issues",
+                "source": "https://github.com/familytree365/php-gedcom/tree/v1.2.4"
             },
             "funding": [
                 {
-                    "url": "https://opencollective.com/genealogy",
-                    "type": "open_collective"
+                    "url": "https://github.com/genealogiawebsite",
+                    "type": "github"
                 }
             ],
-            "time": "2020-09-17T02:40:32+00:00"
+            "time": "2021-05-21T13:21:41+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -1590,16 +1591,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.42.1",
+            "version": "v8.43.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "41ec4897a70eb8729cf0ff34a8354413c54e42a6"
+                "reference": "3ec63771a07e251f4fb6c7ef2411a79a314bba65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/41ec4897a70eb8729cf0ff34a8354413c54e42a6",
-                "reference": "41ec4897a70eb8729cf0ff34a8354413c54e42a6",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/3ec63771a07e251f4fb6c7ef2411a79a314bba65",
+                "reference": "3ec63771a07e251f4fb6c7ef2411a79a314bba65",
                 "shasum": ""
             },
             "require": {
@@ -1754,7 +1755,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2021-05-19T13:03:18+00:00"
+            "time": "2021-05-25T13:06:44+00:00"
         },
         {
             "name": "laravel/sanctum",
@@ -8732,7 +8733,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.3|^8.0"
+        "php": "^7.4|^8.0"
     },
     "platform-dev": [],
     "plugin-api-version": "2.0.0"
