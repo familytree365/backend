@@ -40,8 +40,10 @@ class GedcomController extends Controller
                     ImportGedcom::dispatch($filename, $slug, $currentUser->id, $conn, $db);
 
                     return ['File uploaded: conn:-' . $conn . '-'];
-                } catch (\Exception $e) {
-                    return ['Not uploaded'];
+                }
+                catch(Exception $e){
+                    $error = sprintf('[%s],[%d] ERROR:[%s]', __METHOD__, __LINE__, json_encode($e->getMessage(), true));
+                    return \Log::error($error);
                 }
             }
 

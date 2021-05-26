@@ -8,11 +8,11 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^7.4|^8.0",
         "doctrine/dbal": "^3.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
-        "genealogiawebsite/laravel-gedcom": "^2.3",
+        "familytree365/laravel-gedcom": "^3.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "illuminate/support": "^8.41",
         "laravel/cashier": "^12.6",
