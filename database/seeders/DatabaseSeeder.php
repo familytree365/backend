@@ -27,6 +27,12 @@ class DatabaseSeeder extends Seeder
     public function runLandlordSpecificSeeders()
     {
         // run landlord specific seeders
-        $this->call(RolesAndPermissionsSeeder::class);
+        // $this->call(RolesAndPermissionsSeeder::class);
+        // $this->call(UserSeeder::class);
+        // $this->call(CompanySeeder::class);
+        // $this->call(UserCompanySeeder::class);
+        // $this->call(TreeSeeder::class);
+        // $this->call(TenantSeeder::class);
+        $this->call(GeneanumSeeder::class);
     }
 }
