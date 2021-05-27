@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -21,7 +22,7 @@ class SourceRefEven extends Model
      * @var string
      */
     protected $table = 'sourceref_even';
-
+    use HasFactory;
     /**
      * The "type" of the auto-incrementing ID.
      *
