@@ -26,12 +26,13 @@ class SubmFactory extends Factory
             'group' => $this->faker->word(),
             'gid' =>  $this->faker->randomElement('1', '2'),
             'name' => $this->faker->word(),
-            'addr_id' => $this->faker->randomElement('1', '2'),
+            'addr_id' => Addr::factory(),
             'rin' => $this->faker->word(),
             'rfn' => $this->faker->word(),
-            'lang' => $this->faker->languageCode, '
-            phon' => $this->faker->phoneNumber(),
-            'email' => $this->faker->email(), 'fax' => $this->faker->word(), 'www' => $this->faker->url(), 'created_at' => $this->faker->date(), 'updated_at'
+            'lang' => $this->faker->languageCode,
+            'phon' => $this->faker->phoneNumber(),
+            'email' => $this->faker->email(), 'fax' => $this->faker->word(), 'www' => $this->faker->url(),
+            'created_at' => $this->faker->date(), 'updated_at'
         ];
     }
 }
