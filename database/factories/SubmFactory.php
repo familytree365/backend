@@ -29,7 +29,7 @@ class SubmFactory extends Factory
             'addr_id' => Addr::factory(),
             'rin' => $this->faker->word(),
             'rfn' => $this->faker->word(),
-            'lang' => $this->faker->languageCode,
+            'lang' => $this->faker->languageCode(),
             'phon' => $this->faker->phoneNumber(),
             'email' => $this->faker->email(), 'fax' => $this->faker->word(), 'www' => $this->faker->url(),
             'created_at' => $this->faker->date(), 'updated_at'
