@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Repository extends Model
@@ -11,6 +12,7 @@ class Repository extends Model
      *
      * @var string
      */
+    use HasFactory;
     protected $keyType = 'integer';
 
     protected $fillable = ['repo', 'name', 'addr_id', 'rin', 'phon', 'email', 'fax', 'www', 'name', 'description', 'type_id', 'is_active'];
