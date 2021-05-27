@@ -982,33 +982,33 @@
         },
         {
             "name": "familytree365/laravel-gedcom",
-            "version": "v3.0.8",
+            "version": "v3.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/familytree365/laravel-gedcom.git",
-                "reference": "5818f5d99a5fe1ddd6cba1a12e484329f0ae4cf4"
+                "reference": "fafe8ea56fbdc3df6f0210e0effda6a17b3ec90c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/familytree365/laravel-gedcom/zipball/5818f5d99a5fe1ddd6cba1a12e484329f0ae4cf4",
-                "reference": "5818f5d99a5fe1ddd6cba1a12e484329f0ae4cf4",
+                "url": "https://api.github.com/repos/familytree365/laravel-gedcom/zipball/fafe8ea56fbdc3df6f0210e0effda6a17b3ec90c",
+                "reference": "fafe8ea56fbdc3df6f0210e0effda6a17b3ec90c",
                 "shasum": ""
             },
             "require": {
                 "doctrine/dbal": "^3.0",
-                "genealogiawebsite/php-gedcom": "^1.0"
+                "familytree365/php-gedcom": "^1.0"
             },
             "type": "library",
             "extra": {
                 "laravel": {
                     "providers": [
-                        "GenealogiaWebsite\\LaravelGedcom\\ServiceProvider"
+                        "FamilyTree365\\LaravelGedcom\\ServiceProvider"
                     ]
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "GenealogiaWebsite\\LaravelGedcom\\": "src"
+                    "FamilyTree365\\LaravelGedcom\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1018,7 +1018,7 @@
             "description": "A package that converts gedcom files to Eloquent models",
             "support": {
                 "issues": "https://github.com/familytree365/laravel-gedcom/issues",
-                "source": "https://github.com/familytree365/laravel-gedcom/tree/v3.0.8"
+                "source": "https://github.com/familytree365/laravel-gedcom/tree/v3.0.9"
             },
             "funding": [
                 {
@@ -1026,7 +1026,56 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-05-25T21:31:05+00:00"
+            "time": "2021-05-27T04:07:25+00:00"
+        },
+        {
+            "name": "familytree365/php-gedcom",
+            "version": "v1.2.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/familytree365/php-gedcom.git",
+                "reference": "63882da57dae52c0698bd46c0a6294d38be97928"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/familytree365/php-gedcom/zipball/63882da57dae52c0698bd46c0a6294d38be97928",
+                "reference": "63882da57dae52c0698bd46c0a6294d38be97928",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "5.7.*",
+                "squizlabs/php_codesniffer": "3.5.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PhpGedcom\\": "library/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A GEDCOM file parser (read + write) for PHP 7.3+",
+            "homepage": "http://github.com/familytree365/php-gedcom",
+            "keywords": [
+                "gedcom",
+                "parser"
+            ],
+            "support": {
+                "issues": "https://github.com/familytree365/php-gedcom/issues",
+                "source": "https://github.com/familytree365/php-gedcom/tree/v1.2.5"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/genealogiawebsite",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-05-27T04:09:04+00:00"
         },
         {
             "name": "fideloper/proxy",
@@ -1162,55 +1211,6 @@
                 }
             ],
             "time": "2021-04-26T11:24:25+00:00"
-        },
-        {
-            "name": "genealogiawebsite/php-gedcom",
-            "version": "v1.2.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/familytree365/php-gedcom.git",
-                "reference": "22971cf79241e991858a1bfd1badd661830eefde"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/familytree365/php-gedcom/zipball/22971cf79241e991858a1bfd1badd661830eefde",
-                "reference": "22971cf79241e991858a1bfd1badd661830eefde",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "5.7.*",
-                "squizlabs/php_codesniffer": "3.5.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "PhpGedcom\\": "library/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "A GEDCOM file parser (read + write) for PHP 7.3+",
-            "homepage": "http://github.com/genealogiawebsite/php-gedcom",
-            "keywords": [
-                "gedcom",
-                "parser"
-            ],
-            "support": {
-                "issues": "https://github.com/familytree365/php-gedcom/issues",
-                "source": "https://github.com/familytree365/php-gedcom/tree/v1.2.4"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/genealogiawebsite",
-                    "type": "github"
-                }
-            ],
-            "time": "2021-05-21T13:21:41+00:00"
         },
         {
             "name": "graham-campbell/result-type",
