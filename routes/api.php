@@ -45,7 +45,10 @@ Route::resource('roles', 'RoleController')->middleware(['auth:sanctum']);
 Route::get('getrolepermission/{id}', 'RoleController@getRolePermission')->middleware(['auth:sanctum']);
 
 // Wikitree
+
 Route::get('wikitree/get-authcode', 'WikitreeController@getAuthCode');
+Route::get('wikitree/clientLoginResponse', 'WikitreeController@getAuthCodeCallBack');
+Route::get('wikitree/search-person', 'WikitreeController@searchPerson');
 
 Route::get('getroles', 'RoleController@getRole')->middleware(['auth:sanctum']);
 Route::get('permissions', 'PermissionController@index')->middleware(['auth:sanctum']);
