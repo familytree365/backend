@@ -8,6 +8,7 @@ use Auth;
 use Carbon\Carbon;
 use DB;
 use Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
@@ -22,8 +23,12 @@ class ForgotPasswordController extends Controller
         $credentials = request()->validate(['email' => 'required|email']);
         $user = User::where('email', $request->email)->first();
         if (! $user) {
-            return response()->json(['error' => '404', 'error_msg' => 'Email not exits in record']);
+            return response()->json([
+                'email' => 'Email not exits in record',
+                'error' => '404',
+                'error_msg' => 'Email not exits in record'],405);
         }
+                dd($request->get('email'));
         $token = $this->generateToken();
         DB::connection($this->getConnectionName())->table('password_resets')->insert([
             'email' => $request->email,

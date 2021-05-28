@@ -51,7 +51,7 @@ class ApiAuthTestCase extends TestCase
         parent::setUp();
         $this->loginRoute = route('login');
         $this->logoutRoute = route('logout');
-        $this->passwordEmailRoute = route('verification.verify');
+        $this->passwordEmailRoute = route('password.forgot');
         $this->passwordResetRoute = route('password.reset');
         $this->registerRoute = route('register');
         $this->resendVerificationEmailRoute = route('verification.send');

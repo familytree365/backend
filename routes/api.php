@@ -25,7 +25,7 @@ Route::get('/notify', function () {
 });
 
 Route::post('/register', [ 'as' => 'register', 'uses' => 'RegisterController@register']);
-Route::post('password/email', 'ForgotPasswordController@forgot');
+Route::post('password/email', 'ForgotPasswordController@forgot')->name('password.forgot');
 Route::post('password/reset', 'ForgotPasswordController@reset')->name('password.reset');
 Route::get('login/{provider}', 'LoginController@redirectToProvider');
 Route::get('login/{provider}/callback', 'LoginController@handleProviderCallback');

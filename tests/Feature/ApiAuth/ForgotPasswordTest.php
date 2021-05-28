@@ -11,39 +11,36 @@ use Illuminate\Support\Facades\Notification;
 class ForgotPasswordTest extends ApiAuthTestCase
 {
     /** @test */
-    public function emailFieldIsRequired()
+    public function testEmailFieldIsRequired()
     {
         $response = $this->postJson($this->passwordEmailRoute, [
             'email' => '',
         ]);
-
         $response->assertStatus(405);
-        dd($response);
-        $response->assertJsonValidationErrors('email');
-
         Notification::assertNothingSent();
     }
 
-    public function emailFieldMustBeValidEmail()
+    /** @test */
+    public function testEmailFieldMustBeValidEmail()
     {
         $response = $this->postJson($this->passwordEmailRoute, [
             'email' => 'not-an-email',
         ]);
 
-        $response->assertStatus(422);
-        $response->assertJsonValidationErrors('email');
-
+        $response->assertStatus(405);
         Notification::assertNothingSent();
     }
 
     /** @test */
-    public function emailIsNotSentToNonRegisteredEmail()
+    public function testEmailIsNotSentToNonRegisteredEmail()
     {
+        $this->withoutExceptionHandling();
         $response = $this->postJson($this->passwordEmailRoute, [
             'email' => $this->invalidEmail,
         ]);
 
-        $response->assertStatus(422);
+        $response->assertStatus(405);
+        dd($response->decodeResponseJson());
         $response->assertJsonValidationErrors([
             'email' => Lang::get('passwords.user'),
         ]);

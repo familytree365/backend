@@ -37,7 +37,6 @@ class VerificationController extends Controller
             event(new Verified($user));
         }
 
-
         return response()->json([
             'message' => 'Email verified successfully!',
             'success' => true,
