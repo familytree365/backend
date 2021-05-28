@@ -40,6 +40,7 @@ class WikitreeController extends Controller
 
     public function searchPerson(Request $request)
     {
+
         $authCode = $request->authcode;
         $client = new \GuzzleHttp\Client();
 
