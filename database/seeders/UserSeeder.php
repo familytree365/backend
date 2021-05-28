@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
         $user = new User();
         $user->first_name = 'John';
         $user->last_name = 'Doe';
-        $user->email = 'admin@backend.com';
+        $user->email = 'admin@familytree365.com';
         $user->password = Hash::make('password');
         $user->save();
         for ($i = 0; $i < 10; $i++) {

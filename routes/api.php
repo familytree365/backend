@@ -25,7 +25,7 @@ Route::get('/notify', function () {
 });
 
 Route::post('/register', [ 'as' => 'register', 'uses' => 'RegisterController@register']);
-Route::post('password/email', 'ForgotPasswordController@forgot');
+Route::post('password/email', 'ForgotPasswordController@forgot')->name('password.forgot');
 Route::post('password/reset', 'ForgotPasswordController@reset')->name('password.reset');
 Route::get('login/{provider}', 'LoginController@redirectToProvider');
 Route::get('login/{provider}/callback', 'LoginController@handleProviderCallback');
@@ -45,7 +45,10 @@ Route::resource('roles', 'RoleController')->middleware(['auth:sanctum']);
 Route::get('getrolepermission/{id}', 'RoleController@getRolePermission')->middleware(['auth:sanctum']);
 
 // Wikitree
+
 Route::get('wikitree/get-authcode', 'WikitreeController@getAuthCode');
+Route::get('wikitree/clientLoginResponse', 'WikitreeController@getAuthCodeCallBack');
+Route::get('wikitree/search-person', 'WikitreeController@searchPerson');
 
 Route::get('getroles', 'RoleController@getRole')->middleware(['auth:sanctum']);
 Route::get('permissions', 'PermissionController@index')->middleware(['auth:sanctum']);
