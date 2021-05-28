@@ -28,11 +28,11 @@ class DatabaseSeeder extends Seeder
     {
         // run landlord specific seeders
         $this->call(RolesAndPermissionsSeeder::class);
-        $this->call(UserSeeder::class);
-        $this->call(CompanySeeder::class);
-        $this->call(UserCompanySeeder::class);
-        $this->call(TreeSeeder::class);
-        $this->call(TenantSeeder::class);
-        $this->call(GeneanumSeeder::class);
+        // $this->call(UserSeeder::class);
+        // $this->call(CompanySeeder::class);
+        // $this->call(UserCompanySeeder::class);
+        // $this->call(TreeSeeder::class);
+        // $this->call(TenantSeeder::class);
+        // $this->call(GeneanumSeeder::class);
     }
 }
