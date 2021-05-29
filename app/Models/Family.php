@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Family extends Model
@@ -11,7 +12,8 @@ class Family extends Model
     protected $attributes = ['is_active' => false];
 
     protected $casts = ['is_active' => 'boolean'];
-
+    use HasFactory;
+    
     public function events()
     {
         return $this->hasMany(FamilyEvent::class);

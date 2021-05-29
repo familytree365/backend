@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\SourceData;
+use App\Models\Note;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class SourceDataFactory extends Factory
+class NoteFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = SourceData::class;
+    protected $model = Note::class;
 
     /**
      * Define the model's default state.
@@ -23,9 +23,8 @@ class SourceDataFactory extends Factory
     {
         return [
             'group' => $this->faker->word(), 'gid' => $this->faker->randomElement('1', '2'),
-            'date' => $this->faker->date(),
-             'text' => $this->faker->text(),
-            'agnc' => $this->faker->word(), 'created_at', 'updated_at'
+            'note' => $this->faker->text(), 'rin' => $this->faker->word(), 'name' => $this->faker->word(),
+            'description' => $this->faker->text(), 'is_active', 'type_id'
         ];
     }
 }

@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\SourceData;
+use App\Models\SourceDataEven;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class SourceDataFactory extends Factory
+class SourceDataEvenFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = SourceData::class;
+    protected $model = SourceDataEven::class;
 
     /**
      * Define the model's default state.
@@ -23,9 +23,7 @@ class SourceDataFactory extends Factory
     {
         return [
             'group' => $this->faker->word(), 'gid' => $this->faker->randomElement('1', '2'),
-            'date' => $this->faker->date(),
-             'text' => $this->faker->text(),
-            'agnc' => $this->faker->word(), 'created_at', 'updated_at'
+            'date' => $this->faker->date(), 'plac' => $this->faker->word(), 'created_at', 'updated_at'
         ];
     }
 }
