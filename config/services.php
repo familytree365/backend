@@ -51,4 +51,10 @@ return [
     'wikitree' => [
         'api' => env('WIKITREE_API')
     ],
+
+    'openarch' => [
+        'api' => [
+            'records' => "https://api.openarch.nl/1.0/records"
+        ]
+    ]
 ];
