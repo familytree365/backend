@@ -45,10 +45,21 @@ class ChatController extends Controller
      */
     public function store(Request $request)
     {
-        $event = new ChatMessageSentEvent();
-        broadcast($event);
+        // $event = new ChatMessageSentEvent();
+        // broadcast($event);
+        $request->validate([
+            'chat_type' => 'required',
+            'chat_with' => 'required|integer|exists:App\Models\Chat,id',
+        ]); 
 
-        return $request->all();
+        $chat = Chat::create([
+            'chat_type' => $request->chat_type,            
+            'chat_name' => $request->chat_name ?? null
+        ]);
+
+        $chat->chatMembers()->attach([$request->user()->id, $request->chat_with]);
+
+        return $chat->with('chatMembers');
     }
 
     /**
@@ -59,7 +70,7 @@ class ChatController extends Controller
      */
     public function show(Chat $chat)
     {
-        //
+        return $chat->with('chatMessages');
     }
 
     /**

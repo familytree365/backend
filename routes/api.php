@@ -4,6 +4,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Cashier\Http\Middleware\VerifyWebhookSignature;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,9 @@ use Laravel\Cashier\Http\Middleware\VerifyWebhookSignature;
  */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    $user = User::where('id', $request->user()->id)->with('userChats')->first();
+    //dd($request->user());
+    return $user;
 });
 
 Route::get('/notify', function () {
