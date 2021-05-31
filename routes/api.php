@@ -4,6 +4,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Cashier\Http\Middleware\VerifyWebhookSignature;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,7 @@ Route::get('/notify', function () {
 });
 
 Route::post('/register', [ 'as' => 'register', 'uses' => 'RegisterController@register']);
-Route::post('password/email', 'ForgotPasswordController@forgot');
+Route::post('password/email', 'ForgotPasswordController@forgot')->name('password.forgot');
 Route::post('password/reset', 'ForgotPasswordController@reset')->name('password.reset');
 Route::get('login/{provider}', 'LoginController@redirectToProvider');
 Route::get('login/{provider}/callback', 'LoginController@handleProviderCallback');
@@ -45,7 +46,16 @@ Route::resource('roles', 'RoleController')->middleware(['auth:sanctum']);
 Route::get('getrolepermission/{id}', 'RoleController@getRolePermission')->middleware(['auth:sanctum']);
 
 // Wikitree
+
 Route::get('wikitree/get-authcode', 'WikitreeController@getAuthCode');
+Route::get('wikitree/clientLoginResponse', 'WikitreeController@getAuthCodeCallBack');
+Route::get('wikitree/search-person', 'WikitreeController@searchPerson');
+
+// OpenArch
+Route::prefix('open-arch')->group(function () {
+    Route::get('/search-person', 'OpenArchController@searchPerson');
+});
+
 
 Route::get('getroles', 'RoleController@getRole')->middleware(['auth:sanctum']);
 Route::get('permissions', 'PermissionController@index')->middleware(['auth:sanctum']);
@@ -115,4 +125,6 @@ Route::middleware('tenant')->group(function () {
     Route::get('alltype', 'SourceController@get');
     Route::get('allpublication', 'SourceController@getdata');
     Route::get('/scraper/openArch', 'ScrapingController@scrapOpenArch');
+    //search chat user
+    Route::get('/chat/user/search', 'ChatController@searchUser');
 });

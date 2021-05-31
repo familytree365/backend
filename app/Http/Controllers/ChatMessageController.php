@@ -35,7 +35,18 @@ class ChatMessageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'message' => 'required',
+            'chat_id' => 'required|integer|exists:App\Models\Chat,id',
+            'reply_to' => 'integer|exists:App\Models\ChatMessage,id',
+        ]); 
+
+        return ChatMessage::create([
+            'message' => $request->message,
+            'chat_id' => $request->chat_id,
+            'sender_id' => $request->user()->id,
+            'reply_to' => $request->reply_to ?? null
+        ]);
     }
 
     /**

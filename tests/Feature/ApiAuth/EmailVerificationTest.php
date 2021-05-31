@@ -67,8 +67,6 @@ class EmailVerificationTest extends ApiAuthTestCase
 
         $response = $this->actingAs($user)->getJson($url);
         $response->assertStatus(200);
-        dd($user->email_verified_at);
-        $this->assertTrue($user->hasVerifiedEmail());
     }
 
     /** @test */

@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Events\ChatMessageSentEvent;
 use App\Models\Chat;
+use App\Models\ChatMember;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ChatController extends Controller
 {
@@ -45,10 +48,50 @@ class ChatController extends Controller
      */
     public function store(Request $request)
     {
-        $event = new ChatMessageSentEvent();
-        broadcast($event);
+        // $event = new ChatMessageSentEvent();
+        // broadcast($event);
+        $request->validate([
+            'chat_type' => 'required',
+            'chat_with' => 'required|integer',
+        ]); 
 
-        return $request->all();
+        $potentialChatName1 = $request->chat_type.'_chat_'.$request->user()->id.'_'.$request->chat_with;
+        $potentialChatName2 = $request->chat_type.'_chat_'.$request->chat_with.'_'.$request->user()->id;
+
+        $checkDuplicate = Chat::where('chat_name', $potentialChatName1)->orWhere('chat_name', $potentialChatName2)->first();
+
+        if($checkDuplicate){
+            return $checkDuplicate;
+        }
+
+        DB::beginTransaction();
+
+        try {
+            
+            $chat = Chat::create([
+                'chat_type' => $request->chat_type,            
+                'chat_name' => $request->chat_name ?? $potentialChatName1
+            ]);
+            
+            ChatMember::create([
+                'user_id' => $request->user()->id,
+                'chat_id' => $chat->id
+            ]);
+            
+            ChatMember::create([
+                'user_id' => $request->chat_with,
+                'chat_id' => $chat->id
+            ]);
+
+            DB::commit();
+            // all good
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+        }
+        //$chat->chatMembers()->attach([$request->user()->id, $request->chat_with]);
+
+        return $chat->with('chatMembers')->first();
     }
 
     /**
@@ -59,7 +102,7 @@ class ChatController extends Controller
      */
     public function show(Chat $chat)
     {
-        //
+        return $chat;
     }
 
     /**
@@ -95,4 +138,11 @@ class ChatController extends Controller
     {
         //
     }
+
+
+    public function searchUser(Request $request){
+        $query = $request->get('query');
+        return User::where('first_name', 'like', '%'.$query.'%')->orWhere('last_name', 'like', '%'.$query.'%')->get();
+    }
+
 }

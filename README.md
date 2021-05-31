@@ -11,10 +11,16 @@
 
 ## Build Setup
 
+Run following commands
 ```bash
 # install dependencies
 $ composer install
+$ cp .env.example .env
+```
 
+Set the database information in .env [DB_DATABASE, DB_USERNAME, DB_PASSWORD], then run following commands
+
+```bash
 $ php artisan key:generate
 $ php artisan migrate --path=database/migrations/landlord --database=landlord
 
