@@ -11,6 +11,7 @@ class Chat extends Model
 
     protected $fillable = ['chat_name', 'chat_type'];
     protected $dates = ['created_at', 'updated_at'];
+    protected $with = ['chatMessages'];
 
     public function chatMessages()
     {
@@ -18,14 +19,29 @@ class Chat extends Model
     }
 
     public function chatMembers()
-    {
-        $chatModelObject = new Chat();    
-        return $this->belongsToMany(User::class, $chatModelObject->getConnection()->getDatabaseName().'.chat_members', 'chat_id', 'user_id');
+    {        
+        return $this->hasMany(ChatMember::class);
+    }
+
+    public function getChatsByUser($userId){
+        $chats = $this->whereHas('chatMembers', function ($query) use($userId){            
+            $query->where('user_id', $userId);
+        })->with('chatMembers')->get();
+        //return $chats[0]->lastMessage();
+        foreach($chats as $chat){
+            if($chat->chat_type == 'private'){
+                $chat->withUser = $chat->chatMembers[0]->user_id == $userId ? $chat->chatMembers[1]->user : $chat->chatMembers[0]->user;
+            }
+            $chat->chatLabel = $chat->chat_type == 'private' ? $chat->withUser->first_name : $chat->chat_name;
+            
+            $chat->lastMessage = $chat->lastMessage();
+        }
+        return $chats;
     }
 
     public function lastMessage()
     {
-        return $this->chatMessages()->orderBy('created_at', 'DESC')->firrst();
+        return $this->chatMessages()->orderBy('created_at', 'DESC')->first();
     }
 
     // public function firstUser()

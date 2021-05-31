@@ -18,9 +18,7 @@ use App\Models\User;
  */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    $user = User::where('id', $request->user()->id)->with('userChats')->first();
-    //dd($request->user());
-    return $user;
+    return $request->user();
 });
 
 Route::get('/notify', function () {
@@ -127,4 +125,6 @@ Route::middleware('tenant')->group(function () {
     Route::get('alltype', 'SourceController@get');
     Route::get('allpublication', 'SourceController@getdata');
     Route::get('/scraper/openArch', 'ScrapingController@scrapOpenArch');
+    //search chat user
+    Route::get('/chat/user/search', 'ChatController@searchUser');
 });

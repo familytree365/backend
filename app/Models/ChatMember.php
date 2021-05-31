@@ -9,8 +9,15 @@ class ChatMember extends Model
 {
     use HasFactory;
 
+    protected $with = ['user'];
+
     protected $fillable = ['user_id', 'chat_id'];
     protected $dates = ['created_at', 'updated_at'];
+
+    public function user()
+    {        
+        return $this->belongsTo(User::class);
+    }
 
     
 }

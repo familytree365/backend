@@ -76,7 +76,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         //return $this->userStartedChats->merge($this->userNotStartedChats);
         $chatModelObject = new Chat();        
-        return $this->belongsToMany(Chat::class, $chatModelObject->getConnection()->getDatabaseName().'.chat_members', 'user_id', 'chat_id');
+        //return $this->belongsToMany(Chat::class, 'tenant1.chat_members', 'user_id', 'chat_id');        
+        return $chatModelObject->getChatsByUser($this->id);
     }
 
     public function Company()
