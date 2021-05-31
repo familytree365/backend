@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -27,6 +28,7 @@ class Subm extends Model
      *
      * @var string
      */
+    use HasFactory;
     protected $keyType = 'integer';
 
     /**
