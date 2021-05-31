@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\ChatMessage;
 use Illuminate\Http\Request;
 
+use App\Events\ChatMessageSentEvent;
+use App\Models\User;
+
 class ChatMessageController extends Controller
 {
     /**
@@ -41,12 +44,20 @@ class ChatMessageController extends Controller
             'reply_to' => 'integer|exists:App\Models\ChatMessage,id',
         ]); 
 
-        return ChatMessage::create([
+        $createdChatMessage = ChatMessage::create([
             'message' => $request->message,
             'chat_id' => $request->chat_id,
             'sender_id' => $request->user()->id,
             'reply_to' => $request->reply_to ?? null
         ]);
+
+        // broadcast message to the chat channel
+        if($createdChatMessage){
+            $createdChatMessage->sender = User::find($createdChatMessage->sender_id);
+            event(new ChatMessageSentEvent($createdChatMessage));
+        }
+        
+        return $createdChatMessage;
     }
 
     /**
