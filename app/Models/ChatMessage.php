@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class ChatMessage extends Model
 {
     use HasFactory;
+
+    protected $connection = 'landlord';
+    
     protected $fillable = ['message', 'sender_id', 'chat_id', 'reply_to'];
     protected $dates = ['created_at', 'updated_at'];
     protected $with = ['sender'];

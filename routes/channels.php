@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Broadcast;
+use App\Models\Chat;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,9 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+Broadcast::channel('chats.{id}', function ($user, $chatId) {
+    return Chat::find($chatId)->isMember($user->id);
+    // if (Chat::find($chatId)->isMember($user->id)) {
+    //     return ['id' => $user->id, 'name' => $user->first_name];
+    // }
 });

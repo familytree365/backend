@@ -1,10 +1,12 @@
 {
-	"authHost": "http://localhost",
+	"authHost": "http://127.0.0.1:8000",
 	"authEndpoint": "/broadcasting/auth",
 	"clients": [],
 	"database": "redis",
 	"databaseConfig": {
-		"redis": {},
+		"redis": {
+			
+		},
 		"sqlite": {
 			"databasePath": "/database/laravel-echo-server.sqlite"
 		}

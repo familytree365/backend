@@ -9,6 +9,8 @@ class ChatMember extends Model
 {
     use HasFactory;
 
+    protected $connection = 'landlord';
+
     protected $with = ['user'];
 
     protected $fillable = ['user_id', 'chat_id'];
