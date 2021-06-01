@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.4|^8.0",
         "algolia/algoliasearch-client-php": "^3.0",
+        "algolia/scout-extended": "^1.18",
         "doctrine/dbal": "^3.0",
         "familytree365/laravel-gedcom": "^3.0",
         "fideloper/proxy": "^4.4",
