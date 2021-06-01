@@ -20,37 +20,57 @@ class Chat extends Model
         return $this->hasMany(ChatMessage::class);
     }
 
-    public function chatMembers()
+    public function users()
     {        
         return $this->belongsToMany(User::class, ChatMember::class, 'chat_id', 'user_id');  
     }
 
     public function getChatsByUser($userId){
-        $chats = $this->whereHas('chatMembers', function ($query) use($userId){            
+        $chats = $this->whereHas('users', function ($query) use($userId){            
             $query->where('user_id', $userId);
-        })->with('chatMembers')->get();
-        //return $chats[0]->chatMembers[1];
+        })->get();
+        //return $chats[0]->users;
         foreach($chats as $chat){
             if($chat->chat_type == 'private'){
-                $chat->withUser = $chat->chatMembers[0]->pivot->user_id == $userId ? User::find($chat->chatMembers[1]->pivot->user_id) : User::find($chat->chatMembers[0]->pivot->user_id);
+                $chat->withUser = $chat->users[0]->pivot->user_id == $userId ? User::find($chat->users[1]->pivot->user_id) : User::find($chat->users[0]->pivot->user_id);
             }
 
             $chat->chatLabel = $chat->chat_type == 'private' ? $chat->withUser->first_name : $chat->chat_name;
             
             $chat->lastMessage = $chat->lastMessage();
             $chat->is_member = $chat->isMember($userId);
+            $chatUsers = [];
+            //$chat->users = [];
+            foreach($chat->users as $chatUser){
+                $chatUsers[] = $chatUser->chatFormat();
+            }
+            $chat->formattedUsers = $chatUsers;
         }
         return $chats;
     }
 
     public function lastMessage()
     {
-        return $this->chatMessages()->orderBy('created_at', 'DESC')->first();
+        $formattedMessage = null;
+        $lastMessage = $this->chatMessages()->orderBy('created_at', 'DESC')->first();
+        if($lastMessage ){
+            $formattedMessage  = [
+                "content" => $lastMessage->message,
+                "senderId" => $lastMessage->sender_id,
+                "username" => $lastMessage->sender->first_name,
+                "timestamp" => $lastMessage->created_at,
+                "saved" => true,
+                "distributed" => true,
+                "seen" => true,
+                "new" => false                
+            ];
+        }
+        return $formattedMessage;
     }
 
     public function isMember($userId)
     {
-        return $this->chatMembers->contains($userId);
+        return $this->users->contains($userId);
     }
 
     // public function firstUser()
