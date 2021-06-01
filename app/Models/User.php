@@ -89,4 +89,22 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->notify(new VerifyNotification());
     }
+
+    public function chatFormat(){
+        return [
+            "_id" => $this->id,
+            "username" => $this->userName(),
+            "avatar" => '',
+            "status" => [
+                "state" => 'online',
+                //"lastChanged" => '',
+            ],
+            
+        ];
+    }
+
+    public function userName(){
+        return $this->first_name;
+    }
+
 }
