@@ -9,19 +9,37 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use App\Models\ChatMessage;
 
 class ChatMessageSentEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
+     * The order instance.
+     *
+     * @var \App\Models\ChatMessage
+     */
+    public $chatMessage;
+
+    /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($chatMessage = null)
     {
-        //
+        $this->chatMessage = $chatMessage;
+    }
+
+    /**
+     * The event's broadcast name.
+     *
+     * @return string
+     */
+    public function broadcastAs()
+    {
+        return 'NewMessage';
     }
 
     /**
@@ -31,14 +49,14 @@ class ChatMessageSentEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        //return new PrivateChannel('channel-name');
-        return new Channel('chat-channel');
+        return new PrivateChannel('chats.'.$this->chatMessage->chat_id);
+        //return new PresenceChannel('chats.'.$this->chat->id);
     }
 
     public function broadcastWith()
     {
         return [
-            'data' => 'key',
+            'message' => $this->chatMessage,
         ];
     }
 }

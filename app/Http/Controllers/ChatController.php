@@ -19,8 +19,9 @@ class ChatController extends Controller
     public function index(Request $request)
     {
         $requester = $request->user();
+        $chatObject = new Chat();
 
-        return $requester->userChats();
+        return $chatObject->getChatsByUser($requester->id);
     }
 
     /**
@@ -72,16 +73,18 @@ class ChatController extends Controller
                 'chat_type' => $request->chat_type,            
                 'chat_name' => $request->chat_name ?? $potentialChatName1
             ]);
+
+            $chat->chatMembers()->attach([$request->user()->id, $request->chat_with]);
             
-            ChatMember::create([
-                'user_id' => $request->user()->id,
-                'chat_id' => $chat->id
-            ]);
+            // ChatMember::create([
+            //     'user_id' => $request->user()->id,
+            //     'chat_id' => $chat->id
+            // ]);
             
-            ChatMember::create([
-                'user_id' => $request->chat_with,
-                'chat_id' => $chat->id
-            ]);
+            // ChatMember::create([
+            //     'user_id' => $request->chat_with,
+            //     'chat_id' => $chat->id
+            // ]);
 
             DB::commit();
             // all good
@@ -89,7 +92,7 @@ class ChatController extends Controller
             DB::rollback();
             // something went wrong
         }
-        //$chat->chatMembers()->attach([$request->user()->id, $request->chat_with]);
+        
 
         return $chat->with('chatMembers')->first();
     }
