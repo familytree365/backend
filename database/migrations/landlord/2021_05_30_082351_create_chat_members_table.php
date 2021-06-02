@@ -17,7 +17,9 @@ class CreateChatMembersTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('chat_id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('latest_read_msg')->default(0);
             $table->foreign('chat_id')->references('id')->on('chats');
+            //$table->foreign('latest_read_msg')->references('id')->on('chat_messages');
             $table->timestamps();
         });
     }

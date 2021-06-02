@@ -126,5 +126,6 @@ Route::middleware('tenant')->group(function () {
     Route::get('allpublication', 'SourceController@getdata');
     Route::get('/scraper/openArch', 'ScrapingController@scrapOpenArch');
     //search chat user
-    Route::get('/chat/user/search', 'ChatController@searchUser');    
+    Route::get('/chat/user/search', 'ChatController@searchUser');  
+    Route::get('/chats/{id}/messages', 'ChatController@chatMessages');  
 });
