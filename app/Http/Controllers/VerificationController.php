@@ -3,16 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use PhpParser\Builder\Param;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class VerificationController extends Controller
 {
     public function verify(Request $request)
     {
+        // User must be login to be verified
+        $authUser = Auth::user();
         $user = User::findOrFail($request->id);
+        if($authUser != $user) {
+            return response()->json([
+                'message' => 'This action is unauthorized.',
+            ],403);
+        }
 
         // do this check ,only if you allow verified user to login
         //    if(! hash_equals((string) $request->id,(string) $user->getKey())){
@@ -45,12 +53,13 @@ class VerificationController extends Controller
 
     public function resendVerificatonEmail(Request $request)
     {
-        $user = User::where('email', $request->email)->firstOrFail();
+        $user = User::where('email', $request->email)->first();
+
         if (! $user) {
             return response()->json([
-                'message' => 'Failed to send!',
+                'message' => 'Unauthenticated.',
                 'success' => false,
-            ]);
+            ], 404);
         }
         $user->sendEmailVerificationNotification();
 
@@ -59,4 +68,5 @@ class VerificationController extends Controller
             'success' => true,
         ]);
     }
+
 }

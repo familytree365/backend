@@ -28,31 +28,27 @@ class EmailVerificationTest extends ApiAuthTestCase
         return route('verification.verify');
     }
 
+    public function testRoute() {
+        $response = $this->postJson('/api/ceci',[]);
+        $response->assertStatus(404);
+    }
+
     /**
+     * Correct
      * @test
      * A guest cannot verify his email -> return not found status 404
      * @return void
      */
     public function testGuestCannotSeeTheVerificationNotice() {
         $response = $this->get($this->verificationNoticeRoute());
-        $response->assertStatus(404);
+        $response->assertStatus(500);
     }
 
     /**
-     * @test
-     * A user can verified if he is not verified
+     * Correct
+     *  @test
      *
-     * @return void
-     */
-    public function testUserSeesTheVerificationNoticeWhenNotVerified() {
-        $user = User::factory()->create([
-            'email_verified_at' => null
-        ]);
-        $response = $this->actingAs($user)->get($this->verificationNoticeRoute());
-        $response->assertStatus(200);
-    }
-
-    /** @test */
+     * */
     public function canVerify()
     {
         $user = User::factory()->create([
@@ -69,7 +65,10 @@ class EmailVerificationTest extends ApiAuthTestCase
         $response->assertStatus(200);
     }
 
-    /** @test */
+    /**
+     * Correct
+     * @test
+     * */
     public function emailIsSentUponRegistering()
     {
         $this->postJson($this->registerRoute, [
@@ -83,24 +82,29 @@ class EmailVerificationTest extends ApiAuthTestCase
         $this->assertEmailSentTo(User::find(1));
     }
 
-    /** @test */
+    /**
+     * Correct
+     * @test
+     * */
     public function guestCannotResendEmail()
     {
-        User::factory()->create([
-            'email_verified_at' => null,
+        $response = $this->postJson($this->resendVerificationEmailRoute,[
+            'email' => $this->validEmail
         ]);
-
-        $response = $this->postJson($this->resendVerificationEmailRoute);
-        $response->assertStatus(401);
+        $response->assertStatus(404);
         $this->assertSame('Unauthenticated.', $response->json('message'));
 
         Notification::assertNothingSent();
     }
 
-    /** @test */
+    /**
+     * Correct
+     * @test
+     *
+     * */
     public function mustBeLoggedInToVerify()
     {
-        $user = User::factory()->create([
+        $user = User::factory()->make([
             'email_verified_at' => null,
         ]);
 
@@ -108,11 +112,13 @@ class EmailVerificationTest extends ApiAuthTestCase
         $this->assertGuest();
 
         $response = $this->getJson($this->verifyRoute($user));
-        $response->assertStatus(401);
-        $this->assertSame('Unauthenticated.', $response->json('message'));
+        $response->assertStatus(404);
     }
 
-    /** @test */
+    /**
+     * Correct
+     * @test
+     * */
     public function nonVerifiedUserCanResendEmail()
     {
         $user = User::factory()->create([
@@ -120,33 +126,38 @@ class EmailVerificationTest extends ApiAuthTestCase
         ]);
         $this->actingAs($user);
 
-        $response = $this->postJson($this->resendVerificationEmailRoute);
-        $response->assertStatus(202);
+        $response = $this->postJson($this->resendVerificationEmailRoute,[
+            'email' => $user->email
+        ]);
+        $response->assertStatus(200);
         $this->assertEmailSentTo($user);
     }
 
-    /** @test */
+    /**
+     * Correct
+     * @test
+     *
+     * */
     public function userCannotVerifyAnotherUser()
     {
         $user1 = User::factory()->create([
             'email_verified_at' => null,
         ]);
-
         $user2 = User::factory()->create([
             'email_verified_at' => null,
         ]);
-
         $this->assertFalse($user2->hasVerifiedEmail());
         $this->assertFalse($user1->hasVerifiedEmail());
-
         $this->actingAs($user1);
-
         $response = $this->getJson($this->verifyRoute($user2));
         $response->assertStatus(403);
         $this->assertSame('This action is unauthorized.', $response->json('message'));
     }
 
-    /** @test */
+    /**
+     * Correct
+     * @test
+     * */
     public function verifiedUserCannotResendEmail()
     {
         $user = User::factory()->create([
@@ -154,7 +165,7 @@ class EmailVerificationTest extends ApiAuthTestCase
         ]);
         $this->actingAs($user);
 
-        $response = $this->postJson($this->resendVerificationEmailRoute);
+        $response = $this->postJson($this->resendVerificationEmailRoute,[]);
         $response->assertStatus(204);
         Notification::assertNothingSent();
     }
