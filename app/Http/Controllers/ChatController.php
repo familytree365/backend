@@ -153,7 +153,14 @@ class ChatController extends Controller
     public function chatMessages(Request $request, $chatId){
         $chat = Chat::find($chatId);
         $chat->updateLastReadMsg($request->user()->id);
-        return ChatMessageResource::collection($chat->chatMessages()->paginate());
+        $chatMessages = ChatMessageResource::collection($chat->chatMessages()->paginate());
+        return [
+            'unreadMsgCount' => $request->user()->totalUnreadMessages(),
+            'chat' => $chat,
+            'data' => $chatMessages
+        ];
+
+        //return $chatMessages;
     }
 
 }

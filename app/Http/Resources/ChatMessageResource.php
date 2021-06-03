@@ -29,6 +29,7 @@ class ChatMessageResource extends JsonResource
             'seen' => false,
             'disableActions' => false,
             'disableReactions' => false,
+            'roomId' => $this->chat->id
         ];
     }
 }
