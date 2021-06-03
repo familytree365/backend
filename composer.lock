@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f34084748b6c37800f9caf69aac731e8",
+    "content-hash": "2455fa0159d5d1385fe29aac6a30aa8a",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -79,6 +79,87 @@
                 "source": "https://github.com/algolia/algoliasearch-client-php/tree/3.0.2"
             },
             "time": "2021-05-04T09:15:35+00:00"
+        },
+        {
+            "name": "algolia/scout-extended",
+            "version": "v1.18.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/algolia/scout-extended.git",
+                "reference": "f0434c48ff667dbcffe98796f4438f049bbc987b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/algolia/scout-extended/zipball/f0434c48ff667dbcffe98796f4438f049bbc987b",
+                "reference": "f0434c48ff667dbcffe98796f4438f049bbc987b",
+                "shasum": ""
+            },
+            "require": {
+                "algolia/algoliasearch-client-php": "^3.0.0",
+                "ext-json": "*",
+                "illuminate/console": "^6.0|^7.0|^8.0",
+                "illuminate/contracts": "^6.0|^7.0|^8.0",
+                "illuminate/database": "^6.0|^7.0|^8.0",
+                "illuminate/filesystem": "^6.0|^7.0|^8.0",
+                "illuminate/support": "^6.0|^7.0|^8.0",
+                "laravel/scout": "^8.0|^9.0",
+                "php": "^7.3|^8.0",
+                "riimu/kit-phpencoder": "^2.4"
+            },
+            "require-dev": {
+                "fakerphp/faker": "^1.13",
+                "laravel/legacy-factories": "^1.1",
+                "mockery/mockery": "^1.4",
+                "nunomaduro/larastan": "^0.6",
+                "orchestra/testbench": "^4.9|^5.9|^6.6",
+                "phpstan/phpstan": "^0.12.14",
+                "phpunit/phpunit": "^8.0|^9.0"
+            },
+            "suggest": {
+                "ext-dom": "Required to use the HTML Splitter."
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Algolia\\ScoutExtended\\ScoutExtendedServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Algolia\\ScoutExtended\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nuno Maduro",
+                    "email": "enunomaduro@gmail.com"
+                },
+                {
+                    "name": "Algolia Team",
+                    "email": "contact@algolia.com"
+                }
+            ],
+            "description": "Scout Extended extends Laravel Scout adding algolia-specific features",
+            "keywords": [
+                "algolia",
+                "analytics",
+                "extended",
+                "laravel",
+                "places",
+                "scout",
+                "search"
+            ],
+            "support": {
+                "issues": "https://github.com/algolia/scout-extended/issues",
+                "source": "https://github.com/algolia/scout-extended/tree/v1.18.0"
+            },
+            "time": "2021-04-30T13:16:19+00:00"
         },
         {
             "name": "asm89/stack-cors",
@@ -1056,16 +1137,16 @@
         },
         {
             "name": "familytree365/laravel-gedcom",
-            "version": "v3.0.9",
+            "version": "v3.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/familytree365/laravel-gedcom.git",
-                "reference": "fafe8ea56fbdc3df6f0210e0effda6a17b3ec90c"
+                "reference": "19208496328cf99b54403e189e4a478e658c42c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/familytree365/laravel-gedcom/zipball/fafe8ea56fbdc3df6f0210e0effda6a17b3ec90c",
-                "reference": "fafe8ea56fbdc3df6f0210e0effda6a17b3ec90c",
+                "url": "https://api.github.com/repos/familytree365/laravel-gedcom/zipball/19208496328cf99b54403e189e4a478e658c42c4",
+                "reference": "19208496328cf99b54403e189e4a478e658c42c4",
                 "shasum": ""
             },
             "require": {
@@ -1092,7 +1173,7 @@
             "description": "A package that converts gedcom files to Eloquent models",
             "support": {
                 "issues": "https://github.com/familytree365/laravel-gedcom/issues",
-                "source": "https://github.com/familytree365/laravel-gedcom/tree/v3.0.9"
+                "source": "https://github.com/familytree365/laravel-gedcom/tree/v3.0.10"
             },
             "funding": [
                 {
@@ -1100,20 +1181,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-05-27T04:07:25+00:00"
+            "time": "2021-05-29T12:49:51+00:00"
         },
         {
             "name": "familytree365/php-gedcom",
-            "version": "v1.2.5",
+            "version": "v1.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/familytree365/php-gedcom.git",
-                "reference": "63882da57dae52c0698bd46c0a6294d38be97928"
+                "reference": "f2d627e82a11b06827701991bee0393613101b99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/familytree365/php-gedcom/zipball/63882da57dae52c0698bd46c0a6294d38be97928",
-                "reference": "63882da57dae52c0698bd46c0a6294d38be97928",
+                "url": "https://api.github.com/repos/familytree365/php-gedcom/zipball/f2d627e82a11b06827701991bee0393613101b99",
+                "reference": "f2d627e82a11b06827701991bee0393613101b99",
                 "shasum": ""
             },
             "require": {
@@ -1141,7 +1222,7 @@
             ],
             "support": {
                 "issues": "https://github.com/familytree365/php-gedcom/issues",
-                "source": "https://github.com/familytree365/php-gedcom/tree/v1.2.5"
+                "source": "https://github.com/familytree365/php-gedcom/tree/v1.2.6"
             },
             "funding": [
                 {
@@ -1149,7 +1230,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-05-27T04:09:04+00:00"
+            "time": "2021-05-29T10:30:11+00:00"
         },
         {
             "name": "fideloper/proxy",
@@ -4453,6 +4534,61 @@
                 }
             ],
             "time": "2020-08-18T17:17:46+00:00"
+        },
+        {
+            "name": "riimu/kit-phpencoder",
+            "version": "v2.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Riimu/Kit-PHPEncoder.git",
+                "reference": "ca6f004e1290aec7ef4bebf6c0807b30fcf981d7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Riimu/Kit-PHPEncoder/zipball/ca6f004e1290aec7ef4bebf6c0807b30fcf981d7",
+                "reference": "ca6f004e1290aec7ef4bebf6c0807b30fcf981d7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.4 || ^6.5 || ^5.7"
+            },
+            "suggest": {
+                "ext-gmp": "To convert GMP numbers into PHP code"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Riimu\\Kit\\PHPEncoder\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Riikka Kalliomäki",
+                    "email": "riikka.kalliomaki@gmail.com",
+                    "homepage": "http://riimu.net"
+                }
+            ],
+            "description": "Highly customizable alternative to var_export for PHP code generation",
+            "homepage": "http://kit.riimu.net",
+            "keywords": [
+                "code",
+                "encoder",
+                "export",
+                "generator",
+                "variable"
+            ],
+            "support": {
+                "issues": "https://github.com/Riimu/Kit-PHPEncoder/issues",
+                "source": "https://github.com/Riimu/Kit-PHPEncoder/tree/v2.4.1"
+            },
+            "time": "2020-11-29T16:53:17+00:00"
         },
         {
             "name": "sabberworm/php-css-parser",
