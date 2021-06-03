@@ -62,22 +62,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Provider::class, 'user_id', 'id');
     }
 
-    public function userStartedChats()
-    {
-        return $this->hasMany(Chat::class, 'user_1')->join('users as partner', 'user_2', '=', 'partner.id');
-    }
-
-    public function userNotStartedChats()
-    {
-        return $this->hasMany(Chat::class, 'user_2')->join('users as partner', 'user_1', '=', 'partner.id');
-    }
-
     public function userChats()
-    {
-        //return $this->userStartedChats->merge($this->userNotStartedChats);
-        $chatModelObject = new Chat();        
-        return $this->belongsToMany(Chat::class, ChatMember::class, 'user_id', 'chat_id');        
-        //return $chatModelObject->getChatsByUser($this->id);
+    {     
+        return $this->belongsToMany(Chat::class, ChatMember::class, 'user_id', 'chat_id')->withPivot('latest_read_msg'); 
     }
 
     public function Company()
@@ -105,6 +92,16 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function userName(){
         return $this->first_name;
+    }
+
+    public function totalUnreadMessages(){
+        $count = 0;
+        $userChats = $this->userChats;
+        foreach($userChats as $chat){
+            $latestReadMsgId = $chat->pivot->latest_read_msg;
+            $count += $chat->chatMessages()->where('id', '>', $latestReadMsgId)->count();
+        }
+        return $count;
     }
 
 }

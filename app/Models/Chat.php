@@ -22,7 +22,7 @@ class Chat extends Model
 
     public function users()
     {        
-        return $this->belongsToMany(User::class, ChatMember::class, 'chat_id', 'user_id');  
+        return $this->belongsToMany(User::class, ChatMember::class, 'chat_id', 'user_id')->withPivot('latest_read_msg');  
     }
 
     public function getChatsByUser($userId){
@@ -31,20 +31,7 @@ class Chat extends Model
         })->get();
         //return $chats[0]->users;
         foreach($chats as $chat){
-            if($chat->chat_type == 'private'){
-                $chat->withUser = $chat->users[0]->pivot->user_id == $userId ? User::find($chat->users[1]->pivot->user_id) : User::find($chat->users[0]->pivot->user_id);
-            }
-
-            $chat->chatLabel = $chat->chat_type == 'private' ? $chat->withUser->first_name : $chat->chat_name;
-            
-            $chat->lastMessage = $chat->lastMessage();
-            $chat->is_member = $chat->isMember($userId);
-            $chatUsers = [];
-            //$chat->users = [];
-            foreach($chat->users as $chatUser){
-                $chatUsers[] = $chatUser->chatFormat();
-            }
-            $chat->formattedUsers = $chatUsers;
+            $chat = $this->format($chat, $userId);
         }
         return $chats;
     }
@@ -58,7 +45,7 @@ class Chat extends Model
                 "content" => $lastMessage->message,
                 "senderId" => $lastMessage->sender_id,
                 "username" => $lastMessage->sender->first_name,
-                "timestamp" => $lastMessage->created_at,
+                "timestamp" => date('d M h:i',strtotime($lastMessage->created_at)),
                 "saved" => true,
                 "distributed" => true,
                 "seen" => true,
@@ -68,9 +55,34 @@ class Chat extends Model
         return $formattedMessage;
     }
 
+    public function format($chat, $userId){    
+        if($chat->chat_type == 'private'){
+            $chat->withUser = $chat->users[0]->pivot->user_id == $userId ? User::find($chat->users[1]->pivot->user_id) : User::find($chat->users[0]->pivot->user_id);
+        }    
+        $chat->chatLabel = $chat->chat_type == 'private' ? $chat->withUser->first_name : $chat->chat_name;
+        
+        $chat->lastMessage = $chat->lastMessage();
+        $chatUsers = [];
+        foreach($chat->users as $chatUser){
+            $chatUsers[] = $chatUser->chatFormat();
+        }
+        $chat->formattedUsers = $chatUsers;
+
+        $latestReadMsg = $chat->users()->wherePivot('user_id', $userId)->first()->pivot->latest_read_msg;
+        $chat->unreadCount = $chat->chatMessages()->where('id', '>', $latestReadMsg)->count();
+        return $chat;
+    }
+
     public function isMember($userId)
     {
         return $this->users->contains($userId);
+    }
+
+    public function updateLastReadMsg($userId)
+    {        
+        $this->users()->updateExistingPivot($userId, [
+            'latest_read_msg' => $this->chatMessages()->latest()->first()->id,
+        ]);
     }
 
     // public function firstUser()

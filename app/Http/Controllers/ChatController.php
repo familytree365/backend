@@ -8,6 +8,8 @@ use App\Models\ChatMember;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\ChatMessageResource;
+use App\Http\Resources\UserFilterResource;
 
 class ChatController extends Controller
 {
@@ -62,7 +64,7 @@ class ChatController extends Controller
         $checkDuplicate = Chat::where('chat_name', $potentialChatName1)->orWhere('chat_name', $potentialChatName2)->first();
 
         if($checkDuplicate){
-            return $checkDuplicate;
+            return $checkDuplicate->format($checkDuplicate, $request->user()->id);
         }
 
         DB::beginTransaction();
@@ -74,7 +76,7 @@ class ChatController extends Controller
                 'chat_name' => $request->chat_name ?? $potentialChatName1
             ]);
 
-            $chat->chatMembers()->attach([$request->user()->id, $request->chat_with]);
+            $chat->users()->attach([$request->user()->id, $request->chat_with]);
             
             // ChatMember::create([
             //     'user_id' => $request->user()->id,
@@ -94,7 +96,7 @@ class ChatController extends Controller
         }
         
 
-        return $chat->with('chatMembers')->first();
+        return $chat->format($chat, $request->user()->id);
     }
 
     /**
@@ -142,10 +144,23 @@ class ChatController extends Controller
         //
     }
 
-
     public function searchUser(Request $request){
         $query = $request->get('query');
-        return User::where('first_name', 'like', '%'.$query.'%')->orWhere('last_name', 'like', '%'.$query.'%')->get();
+        return UserFilterResource::collection(User::where('first_name', 'like', '%'.$query.'%')->orWhere('last_name', 'like', '%'.$query.'%')->paginate(5));
+    }
+
+
+    public function chatMessages(Request $request, $chatId){
+        $chat = Chat::find($chatId);
+        $chat->updateLastReadMsg($request->user()->id);
+        $chatMessages = ChatMessageResource::collection($chat->chatMessages()->paginate());
+        return [
+            'unreadMsgCount' => $request->user()->totalUnreadMessages(),
+            'chat' => $chat,
+            'data' => $chatMessages
+        ];
+
+        //return $chatMessages;
     }
 
 }

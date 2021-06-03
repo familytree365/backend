@@ -10,6 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\ChatMessage;
+use App\Http\Resources\ChatMessageResource;
 
 class ChatMessageSentEvent implements ShouldBroadcast
 {
@@ -56,7 +57,7 @@ class ChatMessageSentEvent implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'message' => $this->chatMessage,
+            'message' => new ChatMessageResource($this->chatMessage),
         ];
     }
 }

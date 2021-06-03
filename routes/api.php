@@ -18,7 +18,11 @@ use App\Models\User;
  */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    // add unread messages count to user object
+    $user = $request->user();
+    $user->unreadMsgCount = $user->totalUnreadMessages();
+
+    return $user;
 });
 
 Route::get('/notify', function () {
@@ -126,5 +130,6 @@ Route::middleware('tenant')->group(function () {
     Route::get('allpublication', 'SourceController@getdata');
     Route::get('/scraper/openArch', 'ScrapingController@scrapOpenArch');
     //search chat user
-    Route::get('/chat/user/search', 'ChatController@searchUser');
+    Route::get('/chat/user/search', 'ChatController@searchUser');  
+    Route::get('/chats/{id}/messages', 'ChatController@chatMessages');  
 });
