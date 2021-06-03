@@ -106,6 +106,7 @@ class RegisterTest extends ApiAuthTestCase
             'email' => $this->validEmail,
             'password' => $this->validPassword,
             'password_confirmation' => $this->validPassword,
+            'conditions_terms' => true
         ], $params));
     }
 

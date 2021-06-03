@@ -13,7 +13,6 @@ class ResetPasswordTest extends ApiAuthTestCase
     public function canResetPasswordWithValidToken()
     {
         $response = $this->attemptResetPassword();
-
         $response->assertStatus(200);
         $this->assertTrue(Hash::check('new-password', $response->user->fresh()->password));
     }
@@ -24,7 +23,7 @@ class ResetPasswordTest extends ApiAuthTestCase
         $response = $this->attemptResetPasswordAndExpectFail([
             'token' => 'invalid',
         ], [
-            'email' => Lang::get('passwords.token'),
+            'password' => Lang::get('passwords.token'),
         ]);
 
         $this->assertSame($response->user->password, $response->user->fresh()->password);
@@ -39,13 +38,18 @@ class ResetPasswordTest extends ApiAuthTestCase
         $this->assertSame($response->user->email, $response->user->fresh()->email);
     }
 
-    /** @test */
-    public function emailFieldIsRequired()
+    /**
+     * Correct
+     * @test
+     * */
+    public function testTheEmailFieldIsRequired()
     {
         $this->attemptResetPasswordAndExpectFail(['email' => ''], 'email');
     }
-
-    public function emailFieldMustBeValidEmail()
+    /**
+     * Correct
+     */
+    public function testTheEmailFieldMustBeValidEmail()
     {
         $this->attemptResetPasswordAndExpectFail([
             'email' => 'not-an-email',
@@ -63,7 +67,10 @@ class ResetPasswordTest extends ApiAuthTestCase
         $this->assertAuthenticatedAs($response->user);
     }
 
-    /** @test */
+    /**
+     * Correct
+     * @test
+     * */
     public function passwordFieldIsRequired()
     {
         $this->attemptResetPasswordAndExpectFail([
@@ -72,7 +79,10 @@ class ResetPasswordTest extends ApiAuthTestCase
         ], 'password');
     }
 
-    /** @test */
+    /**
+     * Correct
+     * @test
+     * */
     public function passwordFieldMustBeAtLeast8Characters()
     {
         $this->attemptResetPasswordAndExpectFail([
@@ -86,7 +96,10 @@ class ResetPasswordTest extends ApiAuthTestCase
         ]);
     }
 
-    /** @test */
+    /**
+     * Correct
+     * @test
+     * */
     public function passwordFieldMustBeConfirmed()
     {
         $this->attemptResetPasswordAndExpectFail([
@@ -97,7 +110,10 @@ class ResetPasswordTest extends ApiAuthTestCase
         ]);
     }
 
-    /** @test */
+    /**
+     * Correct
+     * @test
+     * */
     public function tokenFieldIsRequired()
     {
         $this->attemptResetPasswordAndExpectFail([
@@ -129,6 +145,7 @@ class ResetPasswordTest extends ApiAuthTestCase
             'token' => Password::createToken($user),
         ], $params));
 
+
         // so we can make additional assertions about the user
         $response->user = $user;
 
@@ -144,6 +161,7 @@ class ResetPasswordTest extends ApiAuthTestCase
         $response = $this->attemptResetPassword($params);
 
         $response->assertStatus(422);
+        dd($response);
         $response->assertJsonValidationErrors($errors);
 
         return $response;

@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ResetPasswordRequest;
-use App\Models\User;
 use Auth;
-use Carbon\Carbon;
-use DB;
 use Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
+use Carbon\Carbon;
+use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\ResetPasswordRequest;
 use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
 
 class ForgotPasswordController extends Controller
@@ -28,7 +28,6 @@ class ForgotPasswordController extends Controller
                 'error' => '404',
                 'error_msg' => 'Email not exits in record'],405);
         }
-                dd($request->get('email'));
         $token = $this->generateToken();
         DB::connection($this->getConnectionName())->table('password_resets')->insert([
             'email' => $request->email,
@@ -58,8 +57,10 @@ class ForgotPasswordController extends Controller
         $credentials = request()->validate([
             'email' => 'required|email',
             'token' => 'required|string',
-            'password' => 'required|string|confirmed',
+            'password' => 'required|string|confirmed|min:8',
         ]);
+
+
         $tokenData = DB::connection($this->getConnectionName())->table('password_resets')
         ->where('token', $request->token)->where('email', $request->email)->first();
         if ($tokenData) {
@@ -68,13 +69,12 @@ class ForgotPasswordController extends Controller
                 $user->password = bcrypt($request->password);
                 $user->save(); //or $user->save();
                 DB::connection($this->getConnectionName())->table('password_resets')->where('email', $user->email)->delete();
-
-                return response()->json(['msg' => 'Password has been successfully changed.']);
+                return response()->json(['msg' => 'Password has been successfully changed.'], 200);
             } else {
-                return response()->json(['error_msg' => 'User Not available.']);
+                return response()->json(['error_msg' => 'User Not available.'],404);
             }
         } else {
-            return response()->json(['error_msg' => 'Token not match for this email.']);
+            return response()->json(['error_msg' => 'Token not match for this email.'], 422);
         }
     }
 }
