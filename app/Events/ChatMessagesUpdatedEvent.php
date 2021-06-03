@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ChatMessagesUpdatedEvent
+class ChatMessagesUpdatedEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -22,6 +22,16 @@ class ChatMessagesUpdatedEvent
     public function __construct()
     {
         //
+    }
+
+    /**
+     * The event's broadcast name.
+     *
+     * @return string
+     */
+    public function broadcastAs()
+    {
+        return 'unreadUpdated';
     }
 
     /**
