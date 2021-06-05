@@ -21,8 +21,6 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-
-
         $result = $request->validate([
             'first_name' => ['required'],
             'last_name' => ['required'],
@@ -30,7 +28,6 @@ class RegisterController extends Controller
             'password' => ['required', 'min:8', 'confirmed'],
             'conditions_terms' => ['required', 'accepted'],
         ]);
-
         DB::connection($this->getConnectionName())->beginTransaction();
 
         try {
@@ -97,13 +94,15 @@ class RegisterController extends Controller
             ]);
 
 
-            DB::getConnection()->statement('CREATE DATABASE :schema', array('schema' => 'hello'));
+
+            DB::getConnection()->statement('CREATE DATABASE :schema', array('schema' => 'tenant'.$tree_id));
+
+            //Artisan::call('migrate', ['--force' => true, '--database' => 'tenant'.$tree_id]);
             Artisan::call('tenants:artisan "migrate --database=tenant --force"');
         } catch (Exception $e) {
-            dd($e->getMessage());
             DB::connection($this->getConnectionName())->rollback();
         }
-        dd('Hello');
+
         DB::connection($this->getConnectionName())->commit();
         event(new Registered($user));
     }

@@ -61,8 +61,10 @@ class ForgotPasswordController extends Controller
         ]);
 
 
+
         $tokenData = DB::connection($this->getConnectionName())->table('password_resets')
         ->where('token', $request->token)->where('email', $request->email)->first();
+
         if ($tokenData) {
             $user = User::where('email', $request->email)->first();
             if ($user) {
