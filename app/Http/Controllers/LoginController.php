@@ -50,7 +50,7 @@ class LoginController extends Controller
         if (Auth::attempt($request->only(['email', 'password']), $remember)) {
             return response()->json(auth()->user(), 200);
         }
-        dd("Salut");
+
         throw ValidationException::withMessages([
             'email' => ['The provided credentials are incorrect.'],
         ]);
