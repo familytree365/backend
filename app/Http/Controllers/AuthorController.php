@@ -12,19 +12,16 @@ class AuthorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, Author $author)
     {
-        $query = Author::query();
+        $query = $author->query();
 
-        if ($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'description', 'is_active'];
-            $search_term = json_decode($request->searchTerm)->searchTerm;
-            if (! empty($search_term)) {
-                $searchQuery = '%'.$search_term.'%';
-                foreach ($columnsToSearch as $column) {
-                    $query->orWhere($column, 'LIKE', $searchQuery);
-                }
-            }
+        if ($searchTerm = $request->searchTerm) {
+            $columnsToSearch = collect($author->getFillable());
+
+            $columnsToSearch->each(function ($column) use ($query, $searchTerm) {
+                $query->orWhere($column, 'like', "%$searchTerm%");
+            });
         }
 
         if ($request->has('columnFilters')) {
