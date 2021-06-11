@@ -36,7 +36,7 @@ class VerificationController extends Controller
 
         if ($user->hasVerifiedEmail()) {
             return response()->json([
-                'message' => 'User Allready Verified!',
+                'message' => 'User Already Verified!',
                 'success' => false,
             ]);
         }
