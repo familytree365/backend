@@ -8,7 +8,11 @@ use Illuminate\Support\Facades\Hash;
 
 class LogoutTest extends ApiAuthTestCase
 {
-    /** @test */
+    /**
+     * Correct
+     * @test
+     *
+     * */
     public function userCanLogout()
     {
         $this->be(User::factory()->create());
