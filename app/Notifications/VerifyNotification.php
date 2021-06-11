@@ -48,7 +48,7 @@ class VerifyNotification extends Notification
         $url = env('FRONTEND_URL').'/verify-email?';
 
         foreach ($param as $key => $params) {
-            $url .= "{$key}={$params}&";
+            $url .= "{$key}={$params}";
         }
 
         return (new MailMessage)
