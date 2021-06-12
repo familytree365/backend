@@ -76,7 +76,7 @@ class LoginController extends Controller
                 ->getTargetUrl()
         );
 
-        // return Socialite::driver($provider)->stateless()->redirect();
+         // return Socialite::driver($provider)->stateless()->redirect();
     }
 
     /**
@@ -122,7 +122,7 @@ class LoginController extends Controller
                         'provider_id' => $user->getId(),
                     ],
                     [
-                        'avarar' => $user->getAvatar(),
+                        'avatar' => $user->getAvatar(),
                     ]
                 );
                 $token = $userCreated->createToken('token-name')->plainTextToken;
@@ -140,7 +140,7 @@ class LoginController extends Controller
                 DB::connection($this->getConnectionName())->rollback();
             }
         }
-        // return response()->json($userCreated, 200, ['Access-Token' => $token]);
+        return response()->json($userCreated, 200, ['Access-Token' => $token]);
     }
 
     /**
