@@ -45,11 +45,7 @@ class VerifyNotification extends Notification
             'hash' => sha1($notifiable->getEmailForVerification()),
         ];
 
-        $url = env('FRONTEND_URL').'/verify-email?';
-
-        foreach ($param as $key => $params) {
-            $url .= "{$key}={$params}";
-        }
+        $url = env('FRONTEND_URL').'/verify-email?'.http_build_query($param);
 
         return (new MailMessage)
                     ->line('THE VERIFY EMAIL')
