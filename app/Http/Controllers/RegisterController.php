@@ -99,7 +99,6 @@ class RegisterController extends Controller
             // Config::set('database.connections.tenant.database', $tenant_db);
 
             DB::connection($this->getConnectionName())->commit();
-            error_log('11');
 
         } catch (Exception $e) {
             error_log('failed to register');
