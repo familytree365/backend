@@ -95,7 +95,7 @@ class RegisterController extends Controller
 
 
 
-            DB::getConnection()->statement('CREATE DATABASE :schema', array('schema' => 'tenant'.$tree_id));
+            DB::connection($this->getConnectionName())->statement('CREATE DATABASE :schema', array('schema' => 'tenant'.$tree_id));
 
             //Artisan::call('migrate', ['--force' => true, '--database' => 'tenant'.$tree_id]);
             Artisan::call('tenants:artisan "migrate --database=tenant --force"');
