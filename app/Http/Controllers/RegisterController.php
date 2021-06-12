@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Artisan;
@@ -28,10 +29,10 @@ class RegisterController extends Controller
             'password' => ['required', 'min:8', 'confirmed'],
             'conditions_terms' => ['required', 'accepted'],
         ]);
-        DB::connection($this->getConnectionName())->beginTransaction();
 
+        DB::connection($this->getConnectionName())->beginTransaction();
         try {
-        // $user_id = DB::connection($this->getConnectionName())->table('users')->insertGetId([
+            // $user_id = DB::connection($this->getConnectionName())->table('users')->insertGetId([
             // 	'first_name' => $request->first_name,
             // 	'last_name' => $request->last_name,
             // 	'email' => $request->email,
@@ -87,25 +88,30 @@ class RegisterController extends Controller
                 'current_tenant' => 1,
             ]);
 
+            $tenant_db = 'tenant'.$tree_id;
+
             $tenant_id = DB::connection($this->getConnectionName())->table('tenants')->insertGetId([
-                'name' => 'tenant'.$tree_id,
+                'name' => $tenant_db,
                 'tree_id' => $tree_id,
-                'database' => 'tenant'.$tree_id,
+                'database' => $tenant_db,
             ]);
 
+            // Config::set('database.connections.tenant.database', $tenant_db);
 
+            DB::connection($this->getConnectionName())->commit();
+            error_log('11');
 
-            DB::connection($this->getConnectionName())->statement('CREATE DATABASE :schema', array('schema' => 'tenant'.$tree_id));
-
-            //Artisan::call('migrate', ['--force' => true, '--database' => 'tenant'.$tree_id]);
-            Artisan::call('tenants:artisan "migrate --database=tenant --force"');
         } catch (Exception $e) {
+            error_log('failed to register');
+            error_log($e->getMessage());
             DB::connection($this->getConnectionName())->rollback();
+
         }
 
-        DB::connection($this->getConnectionName())->commit();
+        DB::connection($this->getConnectionName())->statement('CREATE DATABASE ' . $tenant_db);
+        Artisan::call('tenants:artisan "migrate --database=tenant --force"');
         event(new Registered($user));
-    }
+      }
 
     /**
      * @param $table
