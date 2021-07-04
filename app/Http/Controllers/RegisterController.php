@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use App\Models\Role;
 use App\Models\User;
-use Artisan;
-use DB;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Artisan;
 use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
 
 class RegisterController extends Controller
@@ -19,7 +22,7 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-        $request->validate([
+        $result = $request->validate([
             'first_name' => ['required'],
             'last_name' => ['required'],
             'email' => ['required', 'email', 'unique:landlord.users'],
@@ -28,9 +31,8 @@ class RegisterController extends Controller
         ]);
 
         DB::connection($this->getConnectionName())->beginTransaction();
-
         try {
-        // $user_id = DB::connection($this->getConnectionName())->table('users')->insertGetId([
+            // $user_id = DB::connection($this->getConnectionName())->table('users')->insertGetId([
             // 	'first_name' => $request->first_name,
             // 	'last_name' => $request->last_name,
             // 	'email' => $request->email,
@@ -53,13 +55,21 @@ class RegisterController extends Controller
             // moved that down to make sure user receives verification notification after he is really registered
             // event(new Registered($user));
 
+            /*
             $user_id = $user->id;
             $user = User::find($user_id);
-            $user->assignRole('free');
+            */
+            $role = Role::where("name","=","free")->first();
+
+            if($role == null) {
+                $role = Role::create(['name' => 'free']);
+            }
+            $user->assignRole([$role->id]);
 
             // $user->sendEmailVerificationNotification();
 
             $random = $this->unique_random('companies', 'name', 5);
+
             $company_id = DB::connection($this->getConnectionName())->table('companies')->insertGetId([
                 'name' => 'company'.$random,
                 'status' => 1,
@@ -67,7 +77,7 @@ class RegisterController extends Controller
             ]);
 
             DB::connection($this->getConnectionName())->table('user_company')->insert([
-                'user_id' => $user_id,
+                'user_id' => $user->id,
                 'company_id' => $company_id,
             ]);
 
@@ -78,22 +88,29 @@ class RegisterController extends Controller
                 'current_tenant' => 1,
             ]);
 
+            $tenant_db = 'tenant'.$tree_id;
+
             $tenant_id = DB::connection($this->getConnectionName())->table('tenants')->insertGetId([
-                'name' => 'tenant'.$tree_id,
+                'name' => $tenant_db,
                 'tree_id' => $tree_id,
-                'database' => 'tenant'.$tree_id,
+                'database' => $tenant_db,
             ]);
 
-            DB::statement('create database tenant'.$tree_id);
+            // Config::set('database.connections.tenant.database', $tenant_db);
 
-            Artisan::call('tenants:artisan "migrate --database=tenant --force"');
+            DB::connection($this->getConnectionName())->commit();
+
         } catch (Exception $e) {
+            error_log('failed to register');
+            error_log($e->getMessage());
             DB::connection($this->getConnectionName())->rollback();
+
         }
 
-        DB::connection($this->getConnectionName())->commit();
+        DB::connection($this->getConnectionName())->statement('CREATE DATABASE ' . $tenant_db);
+        Artisan::call('tenants:artisan "migrate --database=tenant --force"');
         event(new Registered($user));
-    }
+      }
 
     /**
      * @param $table

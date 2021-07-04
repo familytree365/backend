@@ -2,6 +2,6 @@
 
 namespace App;
 
-class ImportJob extends \GenealogiaWebsite\LaravelGedcom\Models\ImportJob
+class ImportJob extends \FamilyTree365\LaravelGedcom\Models\ImportJob
 {
 }

@@ -15,7 +15,7 @@ Run following commands
 ```bash
 # install dependencies
 $ composer install
-$ cp .env.example .env
+$ cp .env.testing .env
 ```
 
 Set the database information in .env [DB_DATABASE, DB_USERNAME, DB_PASSWORD], then run following commands
@@ -23,6 +23,7 @@ Set the database information in .env [DB_DATABASE, DB_USERNAME, DB_PASSWORD], th
 ```bash
 $ php artisan key:generate
 $ php artisan migrate --path=database/migrations/landlord --database=landlord
+$ php artisan db:seed
 
 # serve with hot reload at localhost:8000
 $ php artisan serve

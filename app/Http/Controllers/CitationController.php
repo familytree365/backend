@@ -12,19 +12,16 @@ class CitationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, Citation $citation)
     {
-        $query = Citation::query();
+        $query = $citation->query();
 
-        if ($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'description', 'date', 'is_active', 'volume', 'page', 'confidence', 'source_id'];
-            $search_term = json_decode($request->searchTerm)->searchTerm;
-            if (! empty($search_term)) {
-                $searchQuery = '%'.$search_term.'%';
-                foreach ($columnsToSearch as $column) {
-                    $query->orWhere($column, 'LIKE', $searchQuery);
-                }
-            }
+        if ($searchTerm = $request->searchTerm) {
+            $columnsToSearch = collect($citation->getFillable());
+
+            $columnsToSearch->each(function ($column) use ($query, $searchTerm) {
+                $query->orWhere($column, 'like', "%$searchTerm%");
+            });
         }
 
         if ($request->has('columnFilters')) {

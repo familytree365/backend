@@ -3,21 +3,40 @@
 namespace Tests\Feature\ApiAuth;
 
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Artisan;
 
 class RegisterTest extends ApiAuthTestCase
 {
     /** @test */
     public function canRegister()
     {
+        /*
+        DB::statement('CREATE DATABASE tenant1');
+        $config = config('database.connections.tenant');
+
+        $config['database'] ="tenant1";
+        $config['username'] = "root";
+        $config['password'] = "";
+
+        config()->set('database.connections.' . $config['database'], $config);
+        config()->set('database.default', $config['database']);
+
+        $r = Artisan::call('migrate', ['--force' => true, '--database' => $config['database']]);
+        dd($r);
+        */
         $response = $this->attemptToRegister();
         $response->assertStatus(200);
         // $this->assertAuthenticatedAs(User::first());
     }
 
-    /** @test */
+    /**
+     * Correct
+     * @test
+     * */
     public function cannotRegisterWithRegisteredEmailAddress()
     {
         $user = User::factory()->create([
@@ -34,7 +53,10 @@ class RegisterTest extends ApiAuthTestCase
     }
 
 
-    /** @test */
+    /**
+     * Correct
+     * @test
+     * */
     public function emailIsRequired()
     {
         $this->attemptToRegisterAndExpectFail([
@@ -44,7 +66,9 @@ class RegisterTest extends ApiAuthTestCase
         ]);
     }
 
-    /** @test */
+    /**
+     * @test
+     * */
     public function emailMustBeAValidEmailAddress()
     {
         $this->attemptToRegisterAndExpectFail([
@@ -66,7 +90,10 @@ class RegisterTest extends ApiAuthTestCase
     }
 **/
 
-    /** @test */
+    /**
+     * Correct
+     * @test
+     * */
     public function passwordIsRequired()
     {
         $this->attemptToRegisterAndExpectFail([
@@ -76,7 +103,10 @@ class RegisterTest extends ApiAuthTestCase
         ]);
     }
 
-    /** @test */
+    /**
+     * Correct
+     * @test
+     * */
     public function passwordMustBeAtLeast8Characters()
     {
         $this->attemptToRegisterAndExpectFail([
@@ -87,7 +117,10 @@ class RegisterTest extends ApiAuthTestCase
         ]);
     }
 
-    /** @test */
+    /**
+     * Correct
+     * @test
+     * */
     public function passwordsMustMatch()
     {
         $this->attemptToRegisterAndExpectFail([
@@ -106,6 +139,7 @@ class RegisterTest extends ApiAuthTestCase
             'email' => $this->validEmail,
             'password' => $this->validPassword,
             'password_confirmation' => $this->validPassword,
+            'conditions_terms' => true
         ], $params));
     }
 
