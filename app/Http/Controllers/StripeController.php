@@ -19,31 +19,37 @@ class StripeController extends Controller
 
     public function getPlans()
     {
+        $result = array();
         foreach ($this->plans as $plan) {
+            $row = {};
+            foreach($plan as $k=>$v) {
+                $row[$k] = $v;
+            }
             switch ($plan->nickname) {
                 case 'UTY':
-                    $plan->title = 'Unlimited trees yearly.';
+                    $row['title'] = 'Unlimited trees yearly.';
                 break;
                 case 'UTM':
-                    $plan->title = 'Unlimited trees monthly.';
+                    $row['title'] = 'Unlimited trees monthly.';
                 break;
                 case 'TTY':
-                    $plan->title = 'Ten trees yearly.';
+                    $row['title'] = 'Ten trees yearly.';
                 break;
                 case 'TTM':
-                    $plan->title = 'Ten trees monthly.';
+                    $row['title'] = 'Ten trees monthly.';
                 break;
                 case 'OTY':
-                    $plan->title = 'One tree yearly.';
+                    $row['title'] = 'One tree yearly.';
                 break;
                 case 'OTM':
-                    $plan->title = 'One tree monthly.';
+                    $row['title'] = 'One tree monthly.';
                 break;
             }
-            $plan->subscribed = false;
+            $row['subscribed'] = false;
+            $result[] = $row;
         }
 
-        return $this->plans;
+        return $result;
     }
 
     public function getCurrentSubscription()
