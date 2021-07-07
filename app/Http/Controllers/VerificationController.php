@@ -13,10 +13,8 @@ class VerificationController extends Controller
 {
     public function verify(Request $request)
     {
-        // User must be login to be verified
-        $authUser = Auth::user();
         $user = User::findOrFail($request->id);
-        if($authUser != $user) {
+        if(!$user) {
             return response()->json([
                 'message' => 'This action is unauthorized.',
             ],403);
@@ -36,7 +34,7 @@ class VerificationController extends Controller
 
         if ($user->hasVerifiedEmail()) {
             return response()->json([
-                'message' => 'User Allready Verified!',
+                'message' => 'User Already Verified!',
                 'success' => false,
             ]);
         }

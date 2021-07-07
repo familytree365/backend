@@ -7,8 +7,8 @@ use App\Models\Family;
 use App\Models\Person;
 use App\Models\Tree;
 use App\Models\User;
-use Artisan;
-use DB;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
 

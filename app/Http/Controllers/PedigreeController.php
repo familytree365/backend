@@ -12,7 +12,7 @@ use File;
 // use LaravelEnso\Files\Models\File as UploadFile;
 
 // use App\Traits\ConnectionTrait;
-use GenealogiaWebsite\LaravelGedcom\Utils\GedcomGenerator;
+use FamilyTree365\LaravelGedcom\Utils\GedcomGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use LaravelEnso\Core\Models\User as CoreUser;

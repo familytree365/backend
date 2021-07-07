@@ -12,19 +12,16 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, Event $event)
     {
-        $query = Event::query();
+        $query = $event->query();
 
-        if ($request->has('searchTerm')) {
-            $columnsToSearch = ['name', 'email', 'phone'];
-            $search_term = json_decode($request->searchTerm)->searchTerm;
-            if (! empty($search_term)) {
-                $searchQuery = '%'.$search_term.'%';
-                foreach ($columnsToSearch as $column) {
-                    $query->orWhere($column, 'LIKE', $searchQuery);
-                }
-            }
+        if ($searchTerm = $request->searchTerm) {
+            $columnsToSearch = collect($event->getFillable());
+
+            $columnsToSearch->each(function ($column) use ($query, $searchTerm) {
+                $query->orWhere($column, 'like', "%$searchTerm%");
+            });
         }
 
         if ($request->has('columnFilters')) {

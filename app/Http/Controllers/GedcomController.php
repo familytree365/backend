@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Jobs\ExportGedCom;
 use App\Jobs\ImportGedcom;
 use App\Models\ImportJob;
-use GenealogiaWebsite\LaravelGedcom\Utils\GedcomGenerator;
-use GenealogiaWebsite\LaravelGedcom\Utils\GedcomParser;
-use GenealogiaWebsite\LaravelGedcom\Utils\GedcomWriter;
+use FamilyTree365\LaravelGedcom\Utils\GedcomGenerator;
+use FamilyTree365\LaravelGedcom\Utils\GedcomParser;
+use FamilyTree365\LaravelGedcom\Utils\GedcomWriter;
 use Illuminate\Http\Request;
 use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
 

@@ -18,7 +18,7 @@ jobs:
       - run: sudo docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd
       - run: sudo docker-php-ext-install zip bcmath pdo_mysql
       - run: sudo apt-get install mariadb-client
-      - run: cp .env.example .env
+      - run: cp .env.testing .env
       - run: composer install -n --prefer-dist
       - run: php artisan key:generate
 
