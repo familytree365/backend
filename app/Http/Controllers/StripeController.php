@@ -21,22 +21,22 @@ class StripeController extends Controller
     {
         foreach ($this->plans as $plan) {
             switch ($plan->nickname) {
-                case 'Unlimited trees yearly.':
+                case 'UTY':
                     $plan->title = 'Unlimited trees yearly.';
                 break;
-                case 'Unlimited trees monthly.':
+                case 'UTM':
                     $plan->title = 'Unlimited trees monthly.';
                 break;
-                case 'Ten trees yearly.':
+                case 'TTY':
                     $plan->title = 'Ten trees yearly.';
                 break;
-                case 'Ten trees monthly.':
+                case 'TTM':
                     $plan->title = 'Ten trees monthly.';
                 break;
-                case 'One tree yearly.':
+                case 'OTY':
                     $plan->title = 'One tree yearly.';
                 break;
-                case 'One tree monthly.':
+                case 'OTM':
                     $plan->title = 'One tree monthly.';
                 break;
             }
