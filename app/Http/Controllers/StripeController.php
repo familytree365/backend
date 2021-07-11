@@ -21,25 +21,31 @@ class StripeController extends Controller
     {
         $result = array();
         foreach ($this->plans as $plan) {
-            $row = (array) $plan;
+            // $row = (array) $plan;
             switch ($plan->nickname) {
                 case 'UTY':
                     $row['title'] = 'Unlimited trees yearly.';
+                    $row['amount'] = $plan->amount;
                 break;
                 case 'UTM':
                     $row['title'] = 'Unlimited trees monthly.';
+                    $row['amount'] = $plan->amount;
                 break;
                 case 'TTY':
                     $row['title'] = 'Ten trees yearly.';
+                    $row['amount'] = $plan->amount;
                 break;
                 case 'TTM':
                     $row['title'] = 'Ten trees monthly.';
+                    $row['amount'] = $plan->amount;
                 break;
                 case 'OTY':
                     $row['title'] = 'One tree yearly.';
+                    $row['amount'] = $plan->amount;
                 break;
                 case 'OTM':
                     $row['title'] = 'One tree monthly.';
+                    $row['amount'] = $plan->amount;
                 break;
             }
             $row['subscribed'] = false;
