@@ -24,6 +24,7 @@ class StripeController extends Controller
             // $row = (array) $plan;
             $row ['id'] = $plan->id;
             $row['amount'] = $plan->amount;
+            $row['nickname'] = $plan->nickname;
             switch ($plan->nickname) {
                 case 'UTY':
                     $row['title'] = 'Unlimited trees yearly.';
