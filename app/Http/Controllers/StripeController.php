@@ -21,7 +21,7 @@ class StripeController extends Controller
     {
         $result = array();
         foreach ($this->plans as $plan) {
-            $row = {};
+            $row = [];
             foreach($plan as $k=>$v) {
                 $row[$k] = $v;
             }
