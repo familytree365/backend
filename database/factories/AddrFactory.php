@@ -19,15 +19,15 @@ class AddrFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            'adr1' => $this->faker->address(),
-            'adr2' => $this->faker->address(),
-            'city' => $this->faker->city(),
-            'stae' => $this->faker->state(),
-            'post' => $this->faker->postcode(),
-            'ctry' => $this->faker->countryCode(), 'created_at', 'updated_at'
+            'adr1' => $this->faker->address,
+            'adr2' => $this->faker->address,
+            'city' => $this->faker->city,
+            'stae' => $this->faker->state,
+            'post' => $this->faker->postcode,
+            'ctry' => $this->faker->countryCode,
         ];
     }
 }
