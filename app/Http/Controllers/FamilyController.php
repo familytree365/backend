@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Family;
 use App\Models\Person;
-use DB;
 use Illuminate\Http\Request;
 
 class FamilyController extends Controller
@@ -22,7 +21,7 @@ class FamilyController extends Controller
             $columnsToSearch = ['description', 'is_active', 'husband_id', 'wife_id', 'type_id', 'chan', 'nchi', 'rin'];
             $search_term = json_decode($request->searchTerm)->searchTerm;
             if (! empty($search_term)) {
-                $searchQuery = '%'.$search_term.'%';
+                $searchQuery = '%' . $search_term . '%';
                 foreach ($columnsToSearch as $column) {
                     $query->orWhere($column, 'LIKE', $searchQuery);
                 }
@@ -34,7 +33,7 @@ class FamilyController extends Controller
 
             foreach ($filters as $key => $value) {
                 if (! empty($value)) {
-                    $query->orWhere($key, 'like', '%'.$value.'%');
+                    $query->orWhere($key, 'like', '%' . $value . '%');
                 }
             }
         }
@@ -63,9 +62,11 @@ class FamilyController extends Controller
     {
         $male = Person::where('sex', 'M')->get();
         $female = Person::where('sex', 'F')->get();
-        $types = DB::table('types')->get();
+        $persons = Person::all();
 
-        return response()->json(['male' => $male, 'female' => $female, 'types' => $types]);
+        $types = \DB::table('types')->get();
+
+        return response()->json(['male' => $male, 'female' => $female, 'types' => $types, 'persons' => $persons]);
     }
 
     /**
@@ -78,25 +79,29 @@ class FamilyController extends Controller
     {
         $request->validate([
             'description' => 'required',
-            'is_active' => 'required',
-            'husband_id' => 'required',
-            'wife_id' => 'required',
-            'type_id' => 'required',
-            'chan' => 'required',
-            'nchi' => 'required',
-            'rin' => 'required',
+            'is_active'   => 'required',
+            'husband_id'  => 'required',
+            'wife_id'     => 'required',
+            'type_id'     => 'required',
+            'chan'        => 'required',
+            'nchi'        => 'required',
+            'rin'         => 'required',
         ]);
 
-        return Family::create([
+        $family = Family::create([
             'description' => $request->description,
-            'is_active' => $request->is_active,
-            'husband_id' => $request->husband_id,
-            'wife_id' => $request->wife_id,
-            'type_id' => $request->type_id,
-            'chan' => $request->chan,
-            'nchi' => $request->nchi,
-            'rin' => $request->rin,
+            'is_active'   => $request->is_active,
+            'husband_id'  => $request->husband_id,
+            'wife_id'     => $request->wife_id,
+            'type_id'     => $request->type_id,
+            'chan'        => $request->chan,
+            'nchi'        => $request->nchi,
+            'rin'         => $request->rin,
         ]);
+
+        $this->syncChildren($family, (array) $request->children);
+
+        return $family;
     }
 
     /**
@@ -107,7 +112,11 @@ class FamilyController extends Controller
      */
     public function show($id)
     {
-        return Family::find($id);
+        $family = Family::find($id);
+
+        $family->load('children');
+
+        return $family;
     }
 
     /**
@@ -132,13 +141,13 @@ class FamilyController extends Controller
     {
         $request->validate([
             'description' => 'required',
-            'is_active' => 'required',
-            'husband_id' => 'required',
-            'wife_id' => 'required',
-            'type_id' => 'required',
-            'chan' => 'required',
-            'nchi' => 'required',
-            'rin' => 'required',
+            'is_active'   => 'required',
+            'husband_id'  => 'required',
+            'wife_id'     => 'required',
+            'type_id'     => 'required',
+            'chan'        => 'required',
+            'nchi'        => 'required',
+            'rin'         => 'required',
         ]);
 
         $family = Family::find($id);
@@ -151,6 +160,8 @@ class FamilyController extends Controller
         $family->nchi = $request->nchi;
         $family->rin = $request->rin;
         $family->save();
+
+        $this->syncChildren($family, (array) $request->children);
 
         return $family;
     }
@@ -171,5 +182,24 @@ class FamilyController extends Controller
         }
 
         return 'false';
+    }
+
+    protected function syncChildren(Family $family, array $children)
+    {
+        $old_children = $family->children;
+
+        foreach ($old_children as $ch) {
+            if (! \in_array($ch->id, $children)) {
+                $ch->child_in_family_id = null;
+                $ch->save();
+            }
+        }
+
+        $children = Person::find($children);
+
+        foreach ($children as $child) {
+            $child->child_in_family_id = $family->id;
+            $child->save();
+        }
     }
 }
