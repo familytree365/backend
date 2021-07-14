@@ -64,7 +64,7 @@ class FamilyController extends Controller
         $female = Person::where('sex', 'F')->get();
         $persons = Person::all();
 
-        $types = DBtable('types')->get();
+        $types = \DB::table('types')->get();
 
         return response()->json(['male' => $male, 'female' => $female, 'types' => $types, 'persons' => $persons]);
     }
@@ -99,7 +99,7 @@ class FamilyController extends Controller
             'rin'         => $request->rin,
         ]);
 
-        $family->children($request->chlildren);
+        $this->syncChildren($family, (array) $request->children);
 
         return $family;
     }
@@ -112,7 +112,11 @@ class FamilyController extends Controller
      */
     public function show($id)
     {
-        return Family::find($id);
+        $family = Family::find($id);
+
+        $family->load('children');
+
+        return $family;
     }
 
     /**
@@ -157,6 +161,8 @@ class FamilyController extends Controller
         $family->rin = $request->rin;
         $family->save();
 
+        $this->syncChildren($family, (array) $request->children);
+
         return $family;
     }
 
@@ -176,5 +182,24 @@ class FamilyController extends Controller
         }
 
         return 'false';
+    }
+
+    protected function syncChildren(Family $family, array $children)
+    {
+        $old_children = $family->children;
+
+        foreach ($old_children as $ch) {
+            if (! \in_array($ch->id, $children)) {
+                $ch->child_in_family_id = null;
+                $ch->save();
+            }
+        }
+
+        $children = Person::find($children);
+
+        foreach ($children as $child) {
+            $child->child_in_family_id = $family->id;
+            $child->save();
+        }
     }
 }
