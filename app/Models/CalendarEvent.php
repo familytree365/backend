@@ -9,5 +9,16 @@ class CalendarEvent extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title'];
+    protected $fillable = 
+        [
+            'title', 
+            'body', 
+            'frequency',
+            'start_date',
+            'start_time',
+            'end_date',
+            'end_time',
+            'is_all_day',
+            'class'
+        ];
 }
