@@ -15,7 +15,6 @@ class CalendarEventController extends Controller
     public function index(Request $request)
     {
         $calender_event = CalendarEvent::get();
-
         return $calender_event;
     }
 
@@ -36,10 +35,49 @@ class CalendarEventController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        return CalendarEvent::create([
-            'title' => $request->name,
-        ]);
+    {       
+        $start_date = date("y-m-d", time());    
+        $start_time = date("h-i-s",time());
+        $end_date = date("y-m-d", time()); 
+        $end_time = date("h-i-s",time());
+
+        $start_datetime = explode(" ", $request->start);
+        if($start_datetime) {
+            $start_date = $start_datetime[0];
+            if(count($start_datetime) > 1)
+            {
+                $start_time = $start_datetime[1];
+            }            
+        }        
+
+        $end_datetime = explode(" ", $request->end);
+        if($end_datetime) {
+            $end_date = $end_datetime[0];
+            if(count($end_datetime) > 1)
+            {
+                $end_time = $end_datetime[1];
+            }            
+        }        
+
+        $calender_event = CalendarEvent::create([
+            'title' => $request->title,
+            'body' => $request->content,
+            'frequency' => 1,
+            'start_date' => $start_date,
+            'start_time' => $start_time,
+            'end_date' => $end_date,
+            'end_time' => $end_time,
+            'is_all_day' => 1,
+            'class' => $request->class
+        ]);    
+
+        if(!$calender_event) {
+            return response()->json(['fail' => 'db creation error'], 500);
+        }            
+        return response()->json(['success' => $calender_event],200);
+        // return CalendarEvent::create([
+        //     'title' => $request->name,
+        // ]);
     }
 
     /**
