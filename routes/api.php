@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Cashier\Http\Middleware\VerifyWebhookSignature;
 use App\Models\User;
+use App\Http\Controllers\PayPalPaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,14 @@ Route::get('wikitree/search-person', 'WikitreeController@searchPerson');
 Route::prefix('open-arch')->group(function () {
     Route::get('/search-person', 'OpenArchController@searchPerson');
 });
+
+// Paypal
+Route::post('getPlans', [PayPalPaymentController::class, "getPlans"]);
+Route::get('getTest', [PayPalPaymentController::class, "getTest"]);
+Route::post('handle-payment', [PayPalPaymentController::class, "handlePayment"])->name('make.payment');
+Route::post('unsubscribePaypal', [PayPalPaymentController::class, "unsubscribePaypal"])->name('cancel.payment');
+// Route::get('cancel-payment', [PayPalPaymentController::class, "paymentCancel"])->name('cancel.payment');
+// Route::get('payment-success', [PayPalPaymentController::class, "paymentSuccess"])->name('success.payment');
 
 
 Route::get('getroles', 'RoleController@getRole')->middleware(['auth:sanctum']);
