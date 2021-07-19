@@ -4,10 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-// Import the class namespaces first, before using it directly
-use Srmklive\PayPal\Facades\PayPal;
-use Srmklive\PayPal\Services\ExpressCheckout;
-use Srmklive\PayPal\Services\AdaptivePayments;
 // use Srmklive\PayPal\Services\AdaptivePayments;
 use leifermendez\paypal\PaypalSubscription;
 use Carbon\Carbon;
@@ -320,7 +316,7 @@ class PayPalPaymentController extends Controller
     $pp = new PaypalSubscription($this->app_id, $this->app_sk, $this->mode);
     $plans = $pp->getPlans();
 
-    dd($pp->getSubscription("I-HLK6NP44YJBT"));
+    dd($pp->getSubscription("I-06KLSAK8JCLM"));
   }
 
   public function getPlans(Request $request) {
@@ -346,8 +342,10 @@ class PayPalPaymentController extends Controller
               ]);
       }
     } else {
-      $subscription = false;
+      $subscription = [];
     }
+
+    // var_dump(array_key_exists('plan_id', $subscription));
 
     $result = array();
         foreach ($this->plans as $plan) {
@@ -358,32 +356,32 @@ class PayPalPaymentController extends Controller
                 case 'UTY':
                     $row['title'] = 'Unlimited trees yearly.';
                     $row['amount'] = '75';
-                    $row['subscribed'] = ($subscription && $plan['id'] == $subscription['plan_id'] && $subscription['status'] == "ACTIVE") ? true : false;
+                    $row['subscribed'] = (array_key_exists('plan_id', $subscription) && $plan['id'] == $subscription['plan_id'] && $subscription['status'] == "ACTIVE") ? true : false;
                 break;
                 case 'UTM':
                     $row['title'] = 'Unlimited trees monthly.';
                     $row['amount'] = '7.5';
-                    $row['subscribed'] = ($subscription && $plan['id'] == $subscription['plan_id'] && $subscription['status'] == "ACTIVE") ? true : false;
+                    $row['subscribed'] = (array_key_exists('plan_id', $subscription) && $plan['id'] == $subscription['plan_id'] && $subscription['status'] == "ACTIVE") ? true : false;
                 break;
                 case 'TTY':
                     $row['title'] = 'Ten trees yearly.';
                     $row['amount'] = '25';
-                    $row['subscribed'] = ($subscription && $plan['id'] == $subscription['plan_id'] && $subscription['status'] == "ACTIVE") ? true : false;
+                    $row['subscribed'] = (array_key_exists('plan_id', $subscription) && $plan['id'] == $subscription['plan_id'] && $subscription['status'] == "ACTIVE") ? true : false;
                 break;
                 case 'TTM':
                     $row['title'] = 'Ten trees monthly.';
                     $row['amount'] = '2.5';
-                    $row['subscribed'] = ($subscription && $plan['id'] == $subscription['plan_id'] && $subscription['status'] == "ACTIVE") ? true : false;
+                    $row['subscribed'] = (array_key_exists('plan_id', $subscription) && $plan['id'] == $subscription['plan_id'] && $subscription['status'] == "ACTIVE") ? true : false;
                 break;
                 case 'OTY':
                     $row['title'] = 'One tree yearly.';
                     $row['amount'] = '10';
-                    $row['subscribed'] = ($subscription && $plan['id'] == $subscription['plan_id'] && $subscription['status'] == "ACTIVE") ? true : false;
+                    $row['subscribed'] = (array_key_exists('plan_id', $subscription) && $plan['id'] == $subscription['plan_id'] && $subscription['status'] == "ACTIVE") ? true : false;
                 break;
                 case 'OTM':
                     $row['title'] = 'One tree monthly.';
                     $row['amount'] = '1';
-                    $row['subscribed'] = ($subscription && $plan['id'] == $subscription['plan_id'] && $subscription['status'] == "ACTIVE") ? true : false;
+                    $row['subscribed'] = (array_key_exists('plan_id', $subscription) && $plan['id'] == $subscription['plan_id'] && $subscription['status'] == "ACTIVE") ? true : false;
                 break;
             }
 
@@ -441,8 +439,8 @@ class PayPalPaymentController extends Controller
                   'payer_selected' => 'PAYPAL',
                   'payee_preferred' => 'IMMEDIATE_PAYMENT_REQUIRED',
               ],
-              'return_url' => 'http://127.0.0.1:3000/success',
-              'cancel_url' => 'http://127.0.0.1:3000/cancel'
+              'return_url' => env('PAYPAL_APP_MODE') == 'test' ? 'http://127.0.0.1:3000/success' : 'https://www.familytree365.com/subscription/paypal',
+              'cancel_url' => env('PAYPAL_APP_MODE') == 'test' ? 'http://127.0.0.1:3000/cancel' : 'https://www.familytree365.com/subscription/paypal'
       
           ]
       ];

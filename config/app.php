@@ -176,7 +176,6 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         // Paypal provider
-        Srmklive\PayPal\Providers\PayPalServiceProvider::class,
 
 
     ],
@@ -232,7 +231,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         // Paypal
-        'PayPal' => Srmklive\PayPal\Facades\PayPal::class,
 
 
     ],
