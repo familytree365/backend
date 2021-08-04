@@ -176,7 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         // Paypal provider
-        Srmklive\PayPal\Providers\PayPalServiceProvider::class,
+        // Srmklive\PayPal\Providers\PayPalServiceProvider::class,
 
 
     ],
