@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Family;
+use App\Models\User;
+use App\Models\PersonEvent;
+use App\Models\Place;
 
 class Person extends Model
 {
